@@ -4,10 +4,9 @@
 12 LINE (9,9)-(202, 160),11, B
 20 FOR J=1 TO 6
 21 FOR I=0 TO 11
-22 C=C+1
-32 IF C>12 THEN C=6
-30 A(I,J)=1
-31 LINE (10+I*16, 10+J*8)-(25+I*16, 17+J*8), c, BF
+23 READ C
+30 A(I,J)=C
+31 LINE (10+I*16, 10+J*8)-(25+I*16, 17+J*8), C, BF
 40 NEXT I
 41 NEXT J
 49 ' LOAD SPRITES
@@ -38,11 +37,18 @@
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx-3)\16 ELSE sa=(bx-10)\16
 411 sb=(by-6)\8
-412 if a(sa, sb) = 1 THEN a(sa, sb) = 0: LINE (10+sa*16, 10+sb*8)-(25+sa*16, 17+sb*8), 4, BF: vx=-vx
+412 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (10+sa*16, 10+sb*8)-(25+sa*16, 17+sb*8), 4, BF: vx=-vx
 415 if vy>0 THEN sb=(by-3)\8 ELSE sb=(by-10)\8
 416 sa=(bx-6)\16
-420 if a(sa, sb) = 1 THEN a(sa, sb) = 0: LINE (10+sa*16, 10+sb*8)-(25+sa*16, 17+sb*8), 4, BF: vy=-vy
-900 goto 80
+420 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (10+sa*16, 10+sb*8)-(25+sa*16, 17+sb*8), 4, BF: vy=-vy
+700 goto 80
+
+900 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
+901 DATA 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8
+902 DATA 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6
+903 DATA 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8
+904 DATA 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6
+905 DATA 0, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 0
 
 1000 ' BALL SPRITE
 1001 DATA &H38,&H7C,&HFE,&HFE,&HFE,&H7C,&H38,&H00
