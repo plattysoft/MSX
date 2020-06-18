@@ -1,4 +1,11 @@
 1 SCREEN 2, 2
+2 ' TODO: make the ball smaller
+3 ' TODO: Initial screen
+4 ' TODO: Game over animation + lives
+5 ' TODO: Better colors
+6 ' TODO: WIN animation and next screen
+7 ' TODO: Consider tiles for better looking bricks
+8 ' TODO: Make undestructible bricks, 2 and 3 hit bricks.
 10 ' INIT BRICK GRID
 11 DIM A(12,19)
 12 LINE (7,7)-(200, 160),11, B
