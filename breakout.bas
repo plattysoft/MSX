@@ -1,12 +1,12 @@
 1 SCREEN 2, 2
 10 ' INIT BRICK GRID
 11 DIM A(12,19): C = 6
-12 LINE (9,9)-(202, 160),11, B
+12 LINE (7,7)-(200, 160),11, B
 20 FOR J=1 TO 6
 21 FOR I=0 TO 11
 23 READ C
 30 A(I,J)=C
-31 LINE (10+I*16, 10+J*8)-(25+I*16, 17+J*8), C, BF
+31 LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
 40 NEXT I
 41 NEXT J
 49 ' LOAD SPRITES
@@ -32,21 +32,21 @@
 112 if s=7 then ax=ax-1
 121 ax=ax*0.9
 130 x=x+ax
-131 if x<10 then x=10:ax=0
-132 if x>170 then x=170:ax=0
+131 if x<8 then x=8:ax=0
+132 if x>168 then x=168:ax=0
 140 by=by+vy
 150 bx=bx+vx
-300 if bx > 196 THEN bx = 196: vx = -vx
-310 if bx < 10 THEN bx = 10: vx = -vx
+300 if bx > 194 THEN bx = 194: vx = -vx
+310 if bx < 8 THEN bx = 8: vx = -vx
 320 if by > 152 THEN by = 152: vy = -vy
-330 if by < 10 THEN by = 10: vy = -vy
+330 if by < 8 THEN by = 8: vy = -vy
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx-3)\16 ELSE sa=(bx-10)\16
 411 sb=(by-6)\8
-412 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (10+sa*16, 10+sb*8)-(25+sa*16, 17+sb*8), 4, BF: vx=-vx
+412 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vx=-vx
 415 if vy>0 THEN sb=(by-3)\8 ELSE sb=(by-10)\8
 416 sa=(bx-6)\16
-420 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (10+sa*16, 10+sb*8)-(25+sa*16, 17+sb*8), 4, BF: vy=-vy
+420 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vy=-vy
 700 goto 100
 
 900 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
