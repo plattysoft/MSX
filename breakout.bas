@@ -2,24 +2,27 @@
 10 ' INIT BRICK GRID
 11 DIM A(12,19): C = 6
 12 LINE (7,7)-(200, 160),11, B
+17 L=1
+18 if L = 1 then restore 900 else restore 910
 20 FOR J=1 TO 6
-21 FOR I=0 TO 11
-23 READ C
-30 A(I,J)=C
-31 LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
-40 NEXT I
+21   FOR I=0 TO 11
+23     READ C
+30     A(I,J)=C
+31     LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
+40   NEXT I
 41 NEXT J
-49 ' LOAD SPRITES
+48 ' LOAD SPRITES
+49 RESTORE 1000
 50 FOR I=1 TO 8
-51 READ L: A$=A$+CHR$(L)
+51   READ L: A$=A$+CHR$(L)
 52 NEXT
 53 SPRITE$(0)=A$
 60 FOR S=1 TO 2
-61 A$=""
-62 FOR I=1 TO 32
-63 READ L: A$=A$+CHR$(L)
-64 NEXT I
-65 SPRITE$(S)=A$
+61   A$=""
+62   FOR I=1 TO 32
+63     READ L: A$=A$+CHR$(L)
+64   NEXT I
+65   SPRITE$(S)=A$
 66 NEXT S
 75 bx = 100: by = 100: vx = -2: vy = -4
 76 x = 90
@@ -55,6 +58,13 @@
 903 DATA 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8
 904 DATA 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6
 905 DATA 0, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 0
+
+910 DATA 0, 6, 8, 9, 9, 9, 8, 6, 8, 6, 8, 0
+911 DATA 0, 8, 6, 8, 9, 9, 9, 8, 6, 8, 6, 0
+912 DATA 0, 6, 8, 6, 8, 9, 9, 9, 8, 6, 8, 0
+913 DATA 0, 8, 6, 8, 6, 8, 9, 9, 9, 8, 6, 0
+914 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
+915 DATA 0, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 0
 
 1000 ' BALL SPRITE
 1001 DATA &H38,&H7C,&HFE,&HFE,&HFE,&H7C,&H38,&H00
