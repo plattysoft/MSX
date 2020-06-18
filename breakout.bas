@@ -1,35 +1,13 @@
 1 SCREEN 2, 2
 10 ' INIT BRICK GRID
-11 DIM A(12,19): C = 6
+11 DIM A(12,19)
 12 LINE (7,7)-(200, 160),11, B
 17 L=1
-18 if L = 1 then restore 900 else restore 910
-20 FOR J=1 TO 6
-21   FOR I=0 TO 11
-23     READ C
-30     A(I,J)=C
-31     LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
-40   NEXT I
-41 NEXT J
-48 ' LOAD SPRITES
-49 RESTORE 1000
-50 FOR I=1 TO 8
-51   READ L: A$=A$+CHR$(L)
-52 NEXT
-53 SPRITE$(0)=A$
-60 FOR S=1 TO 2
-61   A$=""
-62   FOR I=1 TO 32
-63     READ L: A$=A$+CHR$(L)
-64   NEXT I
-65   SPRITE$(S)=A$
-66 NEXT S
-75 bx = 100: by = 100: vx = -2: vy = -4
+40 GOSUB 500
+50 GOSUB 600
+75 bx = 100: by = 100: vx = 0: vy = 4
 76 x = 90
 100 ' GAME LOOP
-101 put sprite 0, (bx,by), 15, 0
-102 put sprite 1, (x,140), 15, 1
-103 put sprite 2, (x+16,140), 15, 2
 110 s=stick(0)
 111 if s=3 then ax=ax+1
 112 if s=7 then ax=ax-1
@@ -41,7 +19,8 @@
 150 bx=bx+vx
 300 if bx > 194 THEN bx = 194: vx = -vx
 310 if bx < 8 THEN bx = 8: vx = -vx
-320 if by > 152 THEN by = 152: vy = -vy
+320 'if by > 152 THEN by = 152: vy = -vy
+321 if by>160 THEN goto 800
 330 if by < 8 THEN by = 8: vy = -vy
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx-1)\16 ELSE sa=(bx-8)\16
@@ -50,7 +29,50 @@
 415 if vy>0 THEN sb=(by-1)\8 ELSE sb=(by-8)\8
 416 sa=(bx-4)\16
 420 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vy=-vy
-700 goto 100
+450 if by>138 AND by<150 AND bx>x-7 AND bx<x+32 then GOSUB 700
+461 put sprite 0, (bx,by), 15, 0
+462 put sprite 1, (x,140), 15, 1
+463 put sprite 2, (x+16,140), 15, 2
+490 goto 100
+
+500 ' LOAD AND DRAW LEVEL
+518 if L = 1 then restore 900 else restore 910
+520 FOR J=1 TO 6
+521   FOR I=0 TO 11
+523     READ C
+530     A(I,J)=C
+531     LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
+540   NEXT I
+541 NEXT J
+590 RETURN
+
+600 ' LOAD SPRITES
+610 RESTORE 1000
+650 FOR I=1 TO 8
+651   READ L: A$=A$+CHR$(L)
+652 NEXT
+653 SPRITE$(0)=A$
+660 FOR S=1 TO 2
+661   A$=""
+662   FOR I=1 TO 32
+663     READ L: A$=A$+CHR$(L)
+664   NEXT I
+665   SPRITE$(S)=A$
+666 NEXT S
+690 RETURN
+
+700 d=bx-x-12
+710 if d<-15 then vy=-1:vx=-4:return
+720 if d<-10 then vy=-3:vx=-3:return
+730 if d<-5 then vy=-4:vx=-1:return
+740 if d<5 then vy=-vy:return
+750 if d<10 then vy=-4:vx=1:return
+760 if d<15 then vy=-3:vx=3:return
+770 vy=-4:vx=1
+799 RETURN
+
+800 ' GAME OVER
+801 END
 
 900 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
 901 DATA 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8
