@@ -41,11 +41,11 @@
 320 if by > 152 THEN by = 152: vy = -vy
 330 if by < 8 THEN by = 8: vy = -vy
 400 ' BOUNDING BOX COLISION DETECTION
-410 if vx>0 THEN sa=(bx-3)\16 ELSE sa=(bx-10)\16
-411 sb=(by-6)\8
+410 if vx>0 THEN sa=(bx-1)\16 ELSE sa=(bx-8)\16
+411 sb=(by-4)\8
 412 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vx=-vx
-415 if vy>0 THEN sb=(by-3)\8 ELSE sb=(by-10)\8
-416 sa=(bx-6)\16
+415 if vy>0 THEN sb=(by-1)\8 ELSE sb=(by-8)\8
+416 sa=(bx-4)\16
 420 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vy=-vy
 700 goto 100
 
