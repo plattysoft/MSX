@@ -7,7 +7,6 @@
 7 ' TODO: Consider tiles for better looking bricks
 8 ' TODO: Make undestructible bricks, 2 and 3 hit bricks.
 10 ' INIT BRICK GRID
-11 DIM A(12,19)
 12 LINE (7,7)-(200, 160),11, B
 17 L=1
 40 GOSUB 500
@@ -16,8 +15,8 @@
 76 x = 90
 100 ' GAME LOOP
 110 s=stick(0)
-111 if s=3 then ax=ax+1
-112 if s=7 then ax=ax-1
+111 if s=3 then ax=ax+0.5
+112 if s=7 then ax=ax-0.5
 121 ax=ax*0.9
 130 x=x+ax
 131 if x<8 then x=8:ax=0
@@ -28,18 +27,19 @@
 310 if bx < 8 THEN bx = 8: vx = -vx
 320 'if by > 152 THEN by = 152: vy = -vy
 321 if by>160 THEN goto 800
-330 if by < 8 THEN by = 8: vy = -vy
+330 if by<8 THEN by = 8: vy = -vy
+361 put sprite 0, (bx,by), 15, 0
+362 put sprite 1, (x,140), 15, 1
+363 put sprite 2, (x+16,140), 15, 2 
 400 ' BOUNDING BOX COLISION DETECTION
-410 if vx>0 THEN sa=(bx-1)\16 ELSE sa=(bx-8)\16
-411 sb=(by-4)\8
-412 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vx=-vx
-415 if vy>0 THEN sb=(by-1)\8 ELSE sb=(by-8)\8
-416 sa=(bx-4)\16
-420 if a(sa, sb) > 0 THEN a(sa, sb) = 0: LINE (8+sa*16, 8+sb*8)-(23+sa*16, 15+sb*8), 4, BF: vy=-vy
+410 if vx>0 THEN sa=(bx+7) ELSE sa=(bx-1)
+411 sb=(by+3)
+412 if POINT(sa,sb)>4 THEN LINE ((sa\16*16)-8, (sb\8)*8)-((sa\16)*16+7, 8+(sb\8)*8), 4, BF: vx=-vx
+415 if vy>0 THEN sb=(by+7) ELSE sb=(by-1)
+416 sa=(bx+3)
+420 if POINT(sa,sb)>4 THEN LINE ((sa\16)*16-8, (sb\8)*8)-((sa\16)*16+7, 8+(sb\8)*8), 4, BF: vy=-vy
 450 if by>138 AND by<150 AND bx>x-7 AND bx<x+32 then GOSUB 700
-461 put sprite 0, (bx,by), 15, 0
-462 put sprite 1, (x,140), 15, 1
-463 put sprite 2, (x+16,140), 15, 2
+
 490 goto 100
 
 500 ' LOAD AND DRAW LEVEL
@@ -47,7 +47,6 @@
 520 FOR J=1 TO 6
 521   FOR I=0 TO 11
 523     READ C
-530     A(I,J)=C
 531     LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
 540   NEXT I
 541 NEXT J
@@ -57,7 +56,7 @@
 610 RESTORE 1000
 650 FOR I=1 TO 8
 651   READ L: A$=A$+CHR$(L)
-652 NEXT
+652 NEXT I
 653 SPRITE$(0)=A$
 660 FOR S=1 TO 2
 661   A$=""
