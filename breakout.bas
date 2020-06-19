@@ -1,13 +1,13 @@
-1 SCREEN 2, 2
-2 ' TODO: make the ball smaller
-3 ' TODO: Initial screen
-4 ' TODO: Game over animation + lives
-5 ' TODO: Better colors
+1 color 15,1,1
+2 SCREEN 2, 2
+3 ' TODO: make the ball smaller
+4 ' TODO: Initial screen
+5 ' TODO: Game over animation + lives
 6 ' TODO: WIN animation and next screen
 7 ' TODO: Consider tiles for better looking bricks
 8 ' TODO: Make undestructible bricks, 2 and 3 hit bricks.
 10 ' INIT BRICK GRID
-12 LINE (7,7)-(200, 160),11, B
+12 LINE (15,7)-(208, 160),2, B
 17 L=1
 40 GOSUB 500
 50 GOSUB 600
@@ -19,12 +19,12 @@
 112 if s=7 then ax=ax-0.5
 121 ax=ax*0.9
 130 x=x+ax
-131 if x<8 then x=8:ax=0
-132 if x>168 then x=168:ax=0
+131 if x<16 then x=16:ax=0
+132 if x>176 then x=176:ax=0
 140 by=by+vy
 150 bx=bx+vx
-300 if bx > 194 THEN bx = 194: vx = -vx
-310 if bx < 8 THEN bx = 8: vx = -vx
+300 if bx > 202 THEN bx = 202: vx = -vx
+310 if bx < 16 THEN bx = 16: vx = -vx
 320 'if by > 152 THEN by = 152: vy = -vy
 321 if by>160 THEN goto 800
 330 if by<8 THEN by = 8: vy = -vy
@@ -32,12 +32,12 @@
 362 put sprite 1, (x,140), 15, 1
 363 put sprite 2, (x+16,140), 15, 2 
 400 ' BOUNDING BOX COLISION DETECTION
-410 if vx>0 THEN sa=(bx+7) ELSE sa=(bx-1)
+410 if vx>0 THEN sa=(bx+6) ELSE sa=(bx-1)
 411 sb=(by+3)
-412 if POINT(sa,sb)>4 THEN LINE ((sa\16*16)-8, (sb\8)*8)-((sa\16)*16+7, 8+(sb\8)*8), 4, BF: vx=-vx
-415 if vy>0 THEN sb=(by+7) ELSE sb=(by-1)
+412 if POINT(sa,sb)>4 THEN vx=-vx: GOSUB 850
+415 if vy>0 THEN sb=(by+6) ELSE sb=(by-1)
 416 sa=(bx+3)
-420 if POINT(sa,sb)>4 THEN LINE ((sa\16)*16-8, (sb\8)*8)-((sa\16)*16+7, 8+(sb\8)*8), 4, BF: vy=-vy
+420 if POINT(sa,sb)>4 THEN vy=-vy: GOSUB 850
 450 if by>138 AND by<150 AND bx>x-7 AND bx<x+32 then GOSUB 700
 
 490 goto 100
@@ -47,7 +47,7 @@
 520 FOR J=1 TO 6
 521   FOR I=0 TO 11
 523     READ C
-531     LINE (8+I*16, 8+J*8)-(23+I*16, 15+J*8), C, BF
+531     LINE (16+I*16, 8+J*8)-(31+I*16, 15+J*8), C, BF
 540   NEXT I
 541 NEXT J
 590 RETURN
@@ -79,6 +79,9 @@
 
 800 ' GAME OVER
 801 END
+
+850 LINE ((sa\16)*16, (sb\8)*8)-((sa\16)*16+15, 7+(sb\8)*8), 1, BF: 
+890 RETURN
 
 900 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
 901 DATA 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8
