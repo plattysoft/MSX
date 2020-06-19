@@ -5,7 +5,6 @@
 5 ' TODO: Game over animation + lives
 6 ' TODO: WIN animation and next screen
 7 ' TODO: Consider tiles for better looking bricks
-8 ' TODO: Make undestructible bricks, 2 and 3 hit bricks.
 10 ' INIT BRICK GRID
 12 LINE (15,7)-(208, 160),2, B
 17 L=1
@@ -34,10 +33,10 @@
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx+6) ELSE sa=(bx-1)
 411 sb=(by+3)
-412 if POINT(sa,sb)>4 THEN vx=-vx: GOSUB 850
+412 if POINT(sa,sb)>3 THEN vx=-vx: GOSUB 850
 415 if vy>0 THEN sb=(by+6) ELSE sb=(by-1)
 416 sa=(bx+3)
-420 if POINT(sa,sb)>4 THEN vy=-vy: GOSUB 850
+420 if POINT(sa,sb)>3 THEN vy=-vy: GOSUB 850
 450 if by>138 AND by<150 AND bx>x-7 AND bx<x+32 then GOSUB 700
 
 490 goto 100
@@ -80,9 +79,16 @@
 800 ' GAME OVER
 801 END
 
-850 LINE ((sa\16)*16, (sb\8)*8)-((sa\16)*16+15, 7+(sb\8)*8), 1, BF: 
+850 ' BRICK HIT at sa, sb 
+851 bc=POINT(sa,sb): nc=1
+852 if bc=14 THEN RETURN ' UNDESTRUCTIBLE BRICK
+853 if bc=11 THEN nc=10
+854 if bc=4  THEN nc=5
+855 if bc=5  THEN nc=7
+860 LINE ((sa\16)*16, (sb\8)*8)-((sa\16)*16+15, 7+(sb\8)*8), nc, BF: 
 890 RETURN
 
+899 ' DATA for levels, color 11 is undestructible, 11 is 2 hits (11->10), 4 is 3 hits (4->5->7)
 900 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
 901 DATA 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8
 902 DATA 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6
@@ -90,12 +96,12 @@
 904 DATA 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6
 905 DATA 0, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 0
 
-910 DATA 0, 6, 8, 9, 9, 9, 8, 6, 8, 6, 8, 0
-911 DATA 0, 8, 6, 8, 9, 9, 9, 8, 6, 8, 6, 0
-912 DATA 0, 6, 8, 6, 8, 9, 9, 9, 8, 6, 8, 0
-913 DATA 0, 8, 6, 8, 6, 8, 9, 9, 9, 8, 6, 0
-914 DATA 0, 6, 8, 6, 8, 6, 8, 6, 8, 6, 8, 0
-915 DATA 0, 8, 6, 8, 6, 8, 6, 8, 6, 8, 6, 0
+910 DATA 0,  6,  8,  9, 9,  9,  8, 6,  8,  6,  8, 0
+911 DATA 0,  8,  6,  8, 9,  9,  9, 8,  6,  8,  6, 0
+912 DATA 0,  6,  8,  6, 8,  9,  9, 9,  8,  6,  8, 0
+913 DATA 0,  8,  6,  8, 6,  8,  9, 9,  9,  8,  6, 0
+914 DATA 0,  6, 14,  6, 8,  6,  8, 6,  8, 14,  8, 0
+915 DATA 0, 14,  4,  4, 4, 5,  5, 11, 4,  4, 14, 0
 
 1000 ' BALL SPRITE
 1001 DATA &H38,&H7C,&HFE,&HFE,&HFE,&H7C,&H38,&H00
