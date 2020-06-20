@@ -14,5 +14,6 @@ All these can be compiled to run with MSX-Basic-Kun, which is an amazing runtime
 * OpenMSX: Good emulator for programming: https://openmsx.org/
 * fMSX: Good emulator for loading games easily: https://fms.komkon.org/fMSX/
 * MSX-Basic-Kun compiler: https://konamiman.github.io/MSX2-Technical-Handbook/md/KunBASIC.html
+* Image Converter: to load an image from disk: http://msx.jannone.org/conv/
 * Gimp plugin to export images: https://gimp-msx-plugins.readthedocs.io/en/latest/
 * MSX Basic documentation and forums: https://www.msx.org/
