@@ -1,0 +1,24 @@
+1 SCREEN 1
+3 S = 4
+10 SC=PEEK(&HFCAF) ' Current screen mode (= 0/1 for text)
+11 A=384 ' VRAM address for "!"-font outlook (384) -> ASC("0")*8+BASE(SC*5+2)
+12 for I=0 to 19
+13 for J=0 to 26
+14 LOCATE J,I
+15 PRINT CHR$(ASC("0")+(I MOD S))
+16 next J
+17 next I
+18 READ D$
+19 FOR I=0 TO 7
+20 FOR J=0 to S-1
+21 VPOKE A+I+J*8,VAL("&B"+D$)'INT(RND(1)*255)
+23 NEXT J
+24 NEXT I
+25 READ D$: VPOKE A, VAL("&B"+D$)
+29 O = VPEEK (A): VPOKE A+S*8-1, O
+30 FOR I=1 TO S*8-1
+32 VPOKE A+I-1,VPEEK (A+I)
+33 NEXT I
+110 GOTO 29
+200 DATA 11111111
+210 DATA 10000001
