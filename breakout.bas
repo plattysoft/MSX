@@ -1,4 +1,4 @@
-1 color 15,1,1
+1 color 2,1,1
 2 SCREEN 2, 2
 3 ' TODO: make the ball smaller
 4 ' TODO: Initial screen
@@ -6,8 +6,8 @@
 6 ' TODO: WIN animation and next screen
 7 ' TODO: Consider tiles for better looking bricks
 10 ' INIT BRICK GRID
-12 LINE (15,7)-(208, 160),2, B
-17 L=1
+12 GOSUB 3000
+30 L=1
 40 GOSUB 500
 50 GOSUB 600
 75 bx = 100: by = 100: vx = 0: vy = 4
@@ -116,3 +116,10 @@
 2160 DATA &H00,&H00,&HFF,&HFF,&HFF,&HFF,&HFF,&HFF
 2170 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 2180 DATA &H00,&H00,&HE6,&HE6,&HF2,&HF2,&HE6,&HE6
+
+3000 ' DRAW LEVEL
+3001 LINE (15,7)-(208, 160),2, B
+3010 OPEN "GRP:" FOR OUTPUT AS #1
+3020 PSET (216,7),0:PRINT#1,"SCORE"
+3030 PSET (216,23),0:PRINT#1,"LIVES"
+3099 RETURN
