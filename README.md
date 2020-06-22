@@ -9,11 +9,18 @@ All these can be compiled to run with MSX-Basic-Kun, which is an amazing runtime
 
 ## Resources:
 
-* MSXPen, an online emulator with editor https://msxpen.com/
 * Sublime text plugin: https://github.com/farique1/MSX-Sublime-Tools
+
+* MSXPen, An online emulator with editor https://msxpen.com/
 * OpenMSX: Good emulator for programming: https://openmsx.org/
 * fMSX: Good emulator for loading games easily: https://fms.komkon.org/fMSX/
+
 * MSX-Basic-Kun compiler: https://konamiman.github.io/MSX2-Technical-Handbook/md/KunBASIC.html
-* Image Converter: to load an image from disk: http://msx.jannone.org/conv/
+
+* Online sprite editor: http://msx.jannone.org/tinysprite/tinysprite.html
+* Online image converter: to load an image from disk: http://msx.jannone.org/conv/
+* nMSXTiles, tile editor: https://github.com/pipagerardo/nMSXtiles
 * Gimp plugin to export images: https://gimp-msx-plugins.readthedocs.io/en/latest/
+
 * MSX Basic documentation and forums: https://www.msx.org/
+* V9938 Programmers Guide: http://rs.gr8bit.ru/Documentation/V9938-programmers-guide.pdf
