@@ -5,8 +5,8 @@
 6 ' TODO: WIN animation
 7 ' TODO: Consider tiles for better looking bricks
 11 OPEN "GRP:" FOR OUTPUT AS #1
-12 GOSUB 600 'LOAD SPRITES
-90 GOTO 4000 'START SCREEN
+12 GOSUB 600
+90 GOTO 4000
 
 100 ' GAME LOOP
 110 s=stick(0)
@@ -14,25 +14,25 @@
 112 if s=7 then ax=ax-0.5
 121 ax=ax*0.9
 130 x=x+ax
-131 if x<16 then x=16:ax=0
-132 if x>176 then x=176:ax=0
+131 if x<8 then x=8:ax=0
+132 if x>152 then x=152:ax=0
 140 by=by+vy
 150 bx=bx+vx
-300 if bx > 202 THEN bx = 202: vx = -vx
-310 if bx < 16 THEN bx = 16: vx = -vx
-320 'if by > 152 THEN by = 152: vy = -vy
-321 if by>160 THEN goto 800
+300 if bx > 178 THEN bx = 178: vx = -vx
+310 if bx < 8 THEN bx = 8: vx = -vx
+320 if by > 152 THEN by = 152: vy = -vy
+321 'if by>160 THEN goto 800
 330 if by<8 THEN by = 8: vy = -vy
 361 put sprite 0, (bx,by), 15, 0
 362 put sprite 1, (x,140), 15, 1
 363 put sprite 2, (x+16,140), 15, 2 
 400 ' BOUNDING BOX COLISION DETECTION
-410 if vx>0 THEN sa=(bx+6) ELSE sa=(bx-1)
-411 sb=(by+3)
-412 if POINT(sa,sb)>3 THEN vx=-vx: GOSUB 850
-415 if vy>0 THEN sb=(by+6) ELSE sb=(by-1)
-416 sa=(bx+3)
-420 if POINT(sa,sb)>3 THEN vy=-vy: GOSUB 850
+410 if vx>0 THEN sa=(bx+6-8)\16 ELSE sa=(bx-1-8)\16
+411 sb=(by+3)\8
+412 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vx=-vx: GOSUB 850
+415 if vy>0 THEN sb=(by+6)\8 ELSE sb=(by-1)\8
+416 sa=(bx+3-8)\16
+420 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vy=-vy: GOSUB 850
 450 if by>138 AND by<150 AND bx>x-7 AND bx<x+32 then GOSUB 700
 
 490 goto 100
@@ -49,8 +49,8 @@
 532     IF C > 2 THEN NB=NB+1: VPOKE &H1800+i*2+1+j*32, c+3: VPOKE &H1800+i*2+2+j*32, c+3
 540   NEXT I
 541 NEXT J
-575 bx = 100: by = 100: vx = 0: vy = 4
-576 x = 90: ax=0
+575 bx = 96: by = 100: vx = 0: vy = 4
+576 x = 86: ax=0
 590 RETURN
 
 600 ' LOAD SPRITES
@@ -86,20 +86,21 @@
 
 850 ' BRICK HIT at sa, sb 
 851 bc=POINT(sa,sb): nc=1
-852 if bc=14 THEN RETURN ' UNDESTRUCTIBLE BRICK
+852 if bc=14 THEN RETURN
 853 if bc=11 THEN nc=10
 854 if bc=4  THEN nc=5
 855 if bc=5  THEN nc=7
 856 IF NC=1 THEN NB=NB-1
-860 LINE ((sa\16)*16, (sb\8)*8)-((sa\16)*16+15, 7+(sb\8)*8), nc, BF ' SHOULD BE VPOKE
+857 if sb MOD 2 = 0 THEN nc=1:cn=0 ELSE nc=0:cn=1
+859 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 861 IF NB=0 THEN L=L+1: GOSUB 500
 890 RETURN
 
 900 ' DATA for levels, color 11 is undestructible, 11 is 2 hits (11->10), 4 is 3 hits (4->5->7)
 901 DATA 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7
-902 DATA 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0
-903 DATA 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0
-904 DATA 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0
+902 DATA 0, 0, 0, 0, 0, 7, 8, 0, 0, 0, 0
+903 DATA 0, 0, 0, 0, 0, 8, 7, 0, 0, 0, 0
+904 DATA 0, 0, 0, 0, 0, 7, 8, 0, 0, 0, 0
 905 DATA 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0
 906 DATA 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7
 
@@ -132,7 +133,6 @@
 2180 DATA &H00,&H00,&HE6,&HE6,&HF2,&HF2,&HE6,&HE6
 
 3000 ' DRAW THE GRID
-3010 'LINE(15,7)-(200,190),2,b
 3160 FOR K=0 TO 23
 3170 FOR I=0 TO 23
 3180 if i MOD 2 = k MOD 2 THEN V=0 ELSE V=1
@@ -157,7 +157,6 @@
 4080 GOSUB 500
 4090 GOTO 100
 
-
 7000 ' LOAD TILES
 7001 RESTORE 8000
 7010 FOR j=0 to 95
@@ -176,13 +175,13 @@
 7200 RETURN
 
 8000 'TILES PATTERN
-8010 DATA E0,8F,0F,1E,1E,3D,30,7D 'Background 1
-8020 DATA 7D,7D,70,B8,B0,D0,40,80 'Background 2
-8100 DATA 7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A 'Side narrow (1, 2)
-8200 DATA 7E,BF,BF,BF,BF,00,BF,00,BF,00,BF,00,BF,BF,BF,7E 'Side wide (3, 4)
-8210 DATA 00,7F,7F,7F,7F,7F,7F,00,00,FE,FE,FE,FE,FE,FE,00 'Top narrow (1,2)
-8220 DATA 7A,FA,FA,FA,FA,FA,FA,7A,AE,AF,AF,AF,AF,AF,AF,AE 'Top wide (3,4)
-8230 DATA FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF ' Bricks (full, one per color)
+8010 DATA E0,8F,0F,1E,1E,3D,30,7D
+8020 DATA 7D,7D,70,B8,B0,D0,40,80
+8100 DATA 7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A,7A
+8200 DATA 7E,BF,BF,BF,BF,00,BF,00,BF,00,BF,00,BF,BF,BF,7E
+8210 DATA 00,7F,7F,7F,7F,7F,7F,00,00,FE,FE,FE,FE,FE,FE,00
+8220 DATA 7A,FA,FA,FA,FA,FA,FA,7A,AE,AF,AF,AF,AF,AF,AF,AE
+8230 DATA FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF
 
 8300 'COLOR
 8500 DATA 65,65,65,65,65,65,65,65
