@@ -85,7 +85,7 @@
 810 GOTO 4000
 
 850 ' BRICK HIT at sa, sb 
-851 bc=POINT(sa,sb): nc=1
+851 bc=VPEEK(&H1800+sa*2+1+sb*32): nc=1
 852 if bc=14 THEN RETURN
 853 if bc=11 THEN nc=10
 854 if bc=4  THEN nc=5
