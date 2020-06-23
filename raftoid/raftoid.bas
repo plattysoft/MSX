@@ -157,8 +157,9 @@
 
 4000 ' START SCREEN
 4001 GOSUB 3900
-4010 'PSET (100,7),0:PRINT#1,"RAFTOID"
-4011 'PSET (50,100),0:PRINT#1,"press space to start"
+4002 GOSUB 9000
+4010 T$ = "RAFTOID":TX=12:TY=1: GOSUB 9090
+4011 T$ = "PRESS SPACE TO START":TX=5:TY=7: GOSUB 9090
 4020 A$=input$(1)
 4030 if A$=" " GOTO 4050
 4040 GOTO 4020
@@ -217,3 +218,33 @@
 8935 DATA &HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1
 8936 DATA &HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1
 8937 DATA &HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1,&HA1
+
+9000 'LOAD FONT
+9010 RESTORE 9100
+9030 FOR j=0 to 207
+9040 READ R$
+9050 VPOKE 512+j, VAL("&H"+R$)
+9060 VPOKE &H2000+512+j, &H21
+9070 NEXT j
+9080 RETURN
+
+9090 FOR i=1 to LEN(T$)
+9091   CT$=MID$(T$,i,1)
+9092   VPOKE &H1800+tx+ty*32+i, 64+ASC(CT$)-ASC("A")
+9093 NEXT I
+9094 RETURN
+
+9100 DATA 02,06,0e,1e,3e,76,e6,76,fe,cc,d8,fe,cc,d8,f0,e0
+9110 DATA 7e,fc,c0,c0,c0,c0,fc,7e,fe,fe,cc,d8,f0,e0,c0,80
+9120 DATA fe,fe,00,fe,fe,00,fe,fe,ff,fe,c0,fc,f8,c0,c0,80
+9130 DATA 7e,fc,c0,c0,c2,c6,fe,7f,c6,c6,c6,fe,fe,c6,c6,84
+9140 DATA 38,38,38,38,38,38,30,20,02,06,06,06,06,06,7e,fe
+9150 DATA ce,dc,f8,f0,f8,dc,ce,86,40,c0,c0,c0,c0,c0,fe,fc
+9160 DATA 82,c6,ee,fe,fe,d6,c6,c6,c6,e6,f6,fe,de,ce,c6,42
+9170 DATA 7c,fe,c6,c6,c6,c6,fe,7c,fc,fe,06,fe,fc,c0,c0,80
+9180 DATA 7c,fe,c6,c6,d6,fe,7c,10,c8,dc,ce,dc,f8,dc,ce,86
+9190 DATA fe,fe,80,fe,fe,02,fe,fe,fe,fc,30,30,30,30,30,20
+9200 DATA 82,c6,c6,c6,c6,c6,fe,7c,03,06,cc,d8,f0,e0,c0,80
+9210 DATA c6,c6,d6,fe,fe,ee,c6,82,86,ce,fc,78,3c,7e,e6,c2
+9220 DATA 87,ce,fc,78,30,30,30,20,7e,fe,1c,38,70,e0,fe,fc
+9230 DATA f0,e0,f0,e0
