@@ -1,0 +1,15 @@
+
+10 SCREEN 2
+11 CALL TURBO ON
+20 FOR I=0 to 15: READ R:VPOKE i, R: VPOKE &H2000+i, &H68: next i
+30 FOR I=0 to 31: VPOKE &H1800+i, i MOD 2: VPOKE &H1800+i+32, (i+1) MOD 2: next i
+40 FOR I=0 to 31: VPOKE &H1800+i+32*6, (i+1) MOD 2: VPOKE &H1800+i+32*7, i MOD 2:next i
+50 'REMAP THE BRICKS
+51 a=1:b=0
+60 if a=128 THEN a=0:b=1
+70 if b=128 THEN b=0:a=1
+80 a=a*2:b=b*2
+90 FOR I=1 to 6:VPOKE i, a: VPOKE i+8, b: next i
+100 goto 60
+3000 DATA &HFF,&H01,&H01,&H01,&H01,&H01,&H01,&HFF
+3010 DATA &HFF,&H00,&H00,&H00,&H00,&H00,&H00,&HFF
