@@ -89,6 +89,10 @@ LINE, CIRCLE, PAINT
 
 ### Tweak colors map
 
+# Playing sound
+
+PLAY, BEEP, SOUND
+
 # Speeding up
 
 x-basic
