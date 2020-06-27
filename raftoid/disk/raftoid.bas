@@ -38,13 +38,13 @@
 490 goto 100
 
 500 d=bx-x-12
-510 if d<-15 then vy=-1:vx=-4:return
-520 if d<-10 then vy=-3:vx=-3:return
-530 if d<-5 then vy=-4:vx=-1:return
+510 if d<-15 then vy=-0.5:vx=-2:return
+520 if d<-10 then vy=-1.5:vx=-1.5:return
+530 if d<-5 then vy=-2:vx=-0.5:return
 540 if d<5 then vy=-vy:return
-550 if d<10 then vy=-4:vx=1:return
-560 if d<15 then vy=-3:vx=3:return
-570 vy=-4:vx=1
+550 if d<10 then vy=-2:vx=0.5:return
+560 if d<15 then vy=-1.5:vx=1.5:return
+570 vy=-2:vx=0.5
 599 RETURN
 
 600 ' GAME OVER
@@ -80,7 +80,7 @@
 832     IF C > 0 THEN NB=NB+1: VPOKE &H1800+i*2+1+j*32, c*2+8: VPOKE &H1800+i*2+2+j*32, c*2+9
 840   NEXT I
 841 NEXT J
-875 bx = 96: by = 100: vx = 0: vy = 4
+875 bx = 96: by = 100: vx = 0: vy = 2
 876 x = 86: ax=0
 890 RETURN
 
