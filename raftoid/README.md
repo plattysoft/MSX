@@ -14,7 +14,9 @@ The actual version with all its files is in the `disk` directory, which is the o
 init: Load Sprites, Tiles and font
 
 100 - Game Loop
+
 ...
+
 490 - End of game loop
 
 500 - Load level `L` subroutine
@@ -30,12 +32,17 @@ init: Load Sprites, Tiles and font
 4100 - Draw background subroutine
 
 6000 - Load Sprites subroutine
+
 6100 - Sprites Data
 
 7000 - Load tiles subroutine
+
 8000 - Tile pattern data
+
 8300 - Tile color data
 
 9000 - Load font subroutine
+
 9090 - Print text on screen subroutine
+
 9100 - Font data
