@@ -19,9 +19,13 @@ init: Load Sprites, Tiles and font
 
 490 - End of game loop
 
-500 - Load level `L` subroutine
+500 - Paddle bounce
 
-850 - Brick hit at sa, sb subroutine
+600 - Game over
+
+650 - Brick hit at sa, sb subroutine (can detect move to next level)
+
+800 - Load level `L` subroutine
 
 900 - Level data
 

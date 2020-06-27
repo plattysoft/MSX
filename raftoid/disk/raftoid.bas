@@ -21,7 +21,7 @@
 150 bx=bx+vx
 300 if bx > 178 THEN bx = 178: vx = -vx
 310 if bx < 8 THEN bx = 8: vx = -vx
-321 if by>184 THEN goto 800
+321 if by>184 THEN goto 600
 330 if by<8 THEN by = 8: vy = -vy
 361 put sprite 0, (bx,by), 15, 0
 362 put sprite 1, (x,170), 15, 1
@@ -29,60 +29,60 @@
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx+6-8)\16 ELSE sa=(bx-1-8)\16
 411 sb=(by+3)\8
-412 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vx=-vx: GOSUB 850
+412 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vx=-vx: GOSUB 650
 415 if vy>0 THEN sb=(by+6)\8 ELSE sb=(by-1)\8
 416 sa=(bx+3-8)\16
-420 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vy=-vy: GOSUB 850
-450 if by>168 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 700
+420 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vy=-vy: GOSUB 650
+450 if by>168 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
 
 490 goto 100
 
-500 ' LOAD AND DRAW LEVEL
-501 put sprite 0, (0,0), 0, 0
-502 put sprite 1, (0,0), 0, 0
-503 put sprite 2, (0,0), 0, 0
-518 if L = 1 then restore 900 else restore 910
-519 NB = 0
-520 FOR J=1 TO 8
-521   FOR I=0 TO 10
-523     READ C
-532     IF C > 0 THEN NB=NB+1: VPOKE &H1800+i*2+1+j*32, c*2+8: VPOKE &H1800+i*2+2+j*32, c*2+9
-540   NEXT I
-541 NEXT J
-575 bx = 96: by = 100: vx = 0: vy = 4
-576 x = 86: ax=0
-590 RETURN
+500 d=bx-x-12
+510 if d<-15 then vy=-1:vx=-4:return
+520 if d<-10 then vy=-3:vx=-3:return
+530 if d<-5 then vy=-4:vx=-1:return
+540 if d<5 then vy=-vy:return
+550 if d<10 then vy=-4:vx=1:return
+560 if d<15 then vy=-3:vx=3:return
+570 vy=-4:vx=1
+599 RETURN
 
-700 d=bx-x-12
-710 if d<-15 then vy=-1:vx=-4:return
-720 if d<-10 then vy=-3:vx=-3:return
-730 if d<-5 then vy=-4:vx=-1:return
-740 if d<5 then vy=-vy:return
-750 if d<10 then vy=-4:vx=1:return
-760 if d<15 then vy=-3:vx=3:return
-770 vy=-4:vx=1
-799 RETURN
+600 ' GAME OVER
+601 put sprite 0, (0,0), 0, 0
+602 put sprite 1, (0,0), 0, 0
+603 put sprite 2, (0,0), 0, 0
+610 GOTO 4000
 
-800 ' GAME OVER
+650 ' BRICK HIT at sa, sb 
+651 bc=(VPEEK(&H1800+sa*2+1+sb*32)-8)/2: nc=1
+652 if bc=12 THEN RETURN
+653 if bc=11 THEN nc=10
+654 if bc=10 THEN nc=9
+655 if bc=8 THEN nc=7
+656 IF nc=1 THEN GOTO 680
+660 VPOKE &H1800+sa*2+1+sb*32, nc*2+8: VPOKE &H1800+sa*2+2+sb*32, nc*2+8+1
+670 RETURN
+680 NB=NB-1
+687 if sb MOD 2 = 0 THEN nc=NC:cn=nc-1 ELSE cn=nc:nc=nc-1
+689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
+690 IF NB=0 THEN L=L+1: GOSUB 800
+699 RETURN
+
+800 ' LOAD AND DRAW LEVEL
 801 put sprite 0, (0,0), 0, 0
 802 put sprite 1, (0,0), 0, 0
 803 put sprite 2, (0,0), 0, 0
-810 GOTO 4000
-
-850 ' BRICK HIT at sa, sb 
-851 bc=(VPEEK(&H1800+sa*2+1+sb*32)-8)/2: nc=1
-852 if bc=12 THEN RETURN
-853 if bc=11 THEN nc=10
-854 if bc=10 THEN nc=9
-855 if bc=8 THEN nc=7
-856 IF nc=1 THEN GOTO 880
-860 VPOKE &H1800+sa*2+1+sb*32, nc*2+8: VPOKE &H1800+sa*2+2+sb*32, nc*2+8+1
-870 RETURN
-880 NB=NB-1
-887 if sb MOD 2 = 0 THEN nc=NC:cn=nc-1 ELSE cn=nc:nc=nc-1
-889 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
-890 IF NB=0 THEN L=L+1: GOSUB 500
-899 RETURN
+818 if L = 1 then restore 900 else restore 910
+819 NB = 0
+820 FOR J=1 TO 8
+821   FOR I=0 TO 10
+823     READ C
+832     IF C > 0 THEN NB=NB+1: VPOKE &H1800+i*2+1+j*32, c*2+8: VPOKE &H1800+i*2+2+j*32, c*2+9
+840   NEXT I
+841 NEXT J
+875 bx = 96: by = 100: vx = 0: vy = 4
+876 x = 86: ax=0
+890 RETURN
 
 900 ' DATA for levels, color 12 is undestructible, 8 is 2 hits (8->7), 11 is 3 hits (11->10->9)
 901 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -127,7 +127,7 @@
 4050 L=1
 4060 GOSUB 3900
 4071 GOSUB 4100
-4080 GOSUB 500
+4080 GOSUB 800
 4090 GOTO 100
 
 4100 ' DRAW THE GRID
