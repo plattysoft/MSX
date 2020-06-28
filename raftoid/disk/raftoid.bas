@@ -16,12 +16,16 @@
 130 x=x+ax
 131 if x<8 then x=8:ax=0
 132 if x>152 then x=152:ax=0
+113 if strig(0)=-1 then ba=0
+139 if ba>0 then bx=ba+x: GOTO 360
 140 by=by+vy
 150 bx=bx+vx
 300 if bx > 178 THEN bx = 178: vx = -vx
 310 if bx < 8 THEN bx = 8: vx = -vx
 321 if by>184 THEN goto 600
 330 if by<8 THEN by = 8: vy = -vy
+340 if by>172 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
+360 ' Drawing step
 361 put sprite 0, (bx,by), 15, 0
 362 put sprite 1, (x,170), 15, 1
 363 put sprite 2, (x+16,170), 15, 2 
@@ -32,19 +36,19 @@
 415 if vy>0 THEN sb=(by+6)\8 ELSE sb=(by-1)\8
 416 sa=(bx+3-8)\16
 420 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vy=-vy: GOSUB 650
-450 if by>168 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
 
 490 goto 100
 
-500 d=bx-x-12
+500 if pm=1 then ba = bx-x: by=172
+501 d=bx-x-12
 510 if d<-15 then vy=-0.5:vx=-2:return
-520 if d<-10 then vy=-1.5:vx=-1.5:return
-530 if d<-5 then vy=-2:vx=-0.5:return
-540 if d<5 then vy=-vy:return
-550 if d<10 then vy=-2:vx=0.5:return
-560 if d<15 then vy=-1.5:vx=1.5:return
-570 vy=-2:vx=0.5
-599 RETURN
+511 if d<-10 then vy=-1.5:vx=-1.5:return
+512 if d<-5 then vy=-2:vx=-0.5:return
+513 if d<5 then vy=-vy:return
+514 if d<10 then vy=-2:vx=0.5:return
+515 if d<15 then vy=-1.5:vx=1.5:return
+516 vy=-2:vx=0.5
+549 RETURN
 
 600 ' GAME OVER
 601 put sprite 0, (0,0), 0, 0
@@ -123,11 +127,12 @@
 4009 next i
 4010 'T$ = "RAFTOID":TX=12:TY=1: GOSUB 9090
 4011 T$ = "PRESS SPACE TO START":TX=5:TY=14: GOSUB 9090
+4019 if inkey$<>"" goto 4019
 4020 A$=inkey$
 4030 if A$=" " GOTO 4050
 4031 if A$="q" then END
 4040 GOTO 4020
-4050 L=1
+4050 L=1:pm=1
 4060 GOSUB 3900
 4071 GOSUB 4100
 4080 GOSUB 800
