@@ -17,10 +17,10 @@
 131 if x<8 then x=8:ax=0
 132 if x>152 then x=152:ax=0
 113 if strig(0)=-1 then ba=0
+120 py=py+1
 139 if ba>0 then bx=ba+x: GOTO 360
 140 by=by+vy
 150 bx=bx+vx
-200 py=py+1
 210 if py > 184 THEN py=0:pc=0
 300 if bx > 178 THEN bx = 178: vx = -vx
 310 if bx < 8 THEN bx = 8: vx = -vx
@@ -42,7 +42,7 @@
 
 490 goto 100
 
-500 if pm=1 then ba = bx-x: by=172
+500 if pm>=1 then pm=pm-1:ba = bx-x: by=172
 501 d=bx-x-12
 510 if d<-15 then vy=-0.5:vx=-2:return
 511 if d<-10 then vy=-1.5:vx=-1.5:return
@@ -70,7 +70,7 @@
 660 VPOKE &H1800+sa*2+1+sb*32, nc*2+8: VPOKE &H1800+sa*2+2+sb*32, nc*2+8+1
 670 RETURN
 680 NB=NB-1
-681 px=(sa*16)+8: py=sb*8: pc=4
+681 if pc=0 AND rnd(1)>0.2 THEN px=(sa*16)+8: py=sb*8: pc=4
 687 if sb MOD 2 = 0 THEN nc=NC:cn=nc-1 ELSE cn=nc:nc=nc-1
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 690 IF NB=0 THEN L=L+1: GOSUB 800
@@ -89,9 +89,10 @@
 832     IF C > 0 THEN NB=NB+1: VPOKE &H1800+i*2+1+j*32, c*2+8: VPOKE &H1800+i*2+2+j*32, c*2+9
 840   NEXT I
 841 NEXT J
-875 bx = 96: by = 100: vx = 0: vy = 2
+875 bx = 102: by = 172: vx = 0.5: vy = -2
 876 x = 86: ax=0
 877 px=0: py=0: pc=0
+878 pm=0: ba = bx-x
 890 RETURN
 
 900 ' DATA for levels, color 12 is undestructible, 8 is 2 hits (8->7), 11 is 3 hits (11->10->9)
@@ -132,14 +133,13 @@
 4005   VPOKE &H1802+i, i
 4006   VPOKE &H1800+512+12+i, i
 4009 next i
-4010 'T$ = "RAFTOID":TX=12:TY=1: GOSUB 9090
 4011 T$ = "PRESS SPACE TO START":TX=5:TY=14: GOSUB 9090
 4019 if inkey$<>"" goto 4019
 4020 A$=inkey$
 4030 if A$=" " GOTO 4050
 4031 if A$="q" then END
 4040 GOTO 4020
-4050 L=1:pm=0
+4050 L=2
 4060 GOSUB 3900
 4071 GOSUB 4100
 4080 GOSUB 800
@@ -154,6 +154,11 @@
 4189 VPOKE &H1800+i+K*32, V
 4190 NEXT I
 4200 NEXT K
+4210 T$ = "SCORE:":TX=24:TY=0: GOSUB 9090
+4211 T$ = "000000":TX=24:TY=2: GOSUB 9090
+4220 T$ = "LIVES:":TX=24:TY=6: GOSUB 9090
+4221 T$ = "<= <=":TX=24:TY=8: GOSUB 9090
+4223 'T$ = "<=":TX=24:TY=9: GOSUB 9090
 4299 RETURN
 
 6000 ' LOAD SPRITES

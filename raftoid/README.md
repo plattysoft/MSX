@@ -11,6 +11,32 @@ background_tile.bas: Example of generating the BG tiles using the VRAM and copyi
 The actual version with all its files is in the `disk` directory, which is the one to be deplyed.
 
 
+## PowerUp ideas:
+
+It would be nice to have RAFT as letters for the bonus
+
+Right now the sprite is the full letter+ bubble, but rolling letters can be 8x8 sprites instead and then we can use 2 colors for them (BG + Letter)
+
+Only one powerup falling at a time, random value based on brick?
+
+Most likely
+
+* M: Magnet: gives 10 magnets, paddle turns same color as powerup (blue)
+* F: Fireball: ball does not bounce except on undestructible bricks, lasts for 5 bounces on paddle) ball turns red (red)
+* L: Life up
+
+Ideas
+
+* P: Bonus points
+* W: Warp level
+* S: safe line under paddle
+* T: Tripple balls
+
+R: 
+A: Anchor (Magnet)
+F: Fireball
+T: 
+
 init: Load Sprites, Tiles and font
 
 100 - Game Loop
