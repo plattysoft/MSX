@@ -1,5 +1,5 @@
 3 color 2,1,1
-4 SCREEN 2, 2
+4 SCREEN 2, 2, 0
 5 ' TODO: make the ball smaller
 6 ' TODO: Game over animation + lives
 7 ' TODO: WIN animation
@@ -70,7 +70,7 @@
 660 VPOKE &H1800+sa*2+1+sb*32, nc*2+8: VPOKE &H1800+sa*2+2+sb*32, nc*2+8+1
 670 RETURN
 680 NB=NB-1
-681 if pc=0 AND rnd(1)>0.2 THEN px=(sa*16)+8: py=sb*8: pc=4
+681 if pc=0 AND rnd(time)>0.8 THEN px=(sa*16)+8: py=sb*8: pc=4
 687 if sb MOD 2 = 0 THEN nc=NC:cn=nc-1 ELSE cn=nc:nc=nc-1
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 690 sc=sc+10*bc: T$=STR$(sc)
