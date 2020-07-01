@@ -60,12 +60,20 @@
 590 py=0:px=200:pc=0
 599 RETURN
 
-600 ' GAME OVER
+600 ' LOST A LIFE
 601 put sprite 0, (0,0), 0, 0
 602 put sprite 1, (0,0), 0, 0
 603 put sprite 2, (0,0), 0, 0
 604 put sprite 3, (0,0), 0, 0
-610 GOTO 4000
+605 pl=pl-1
+606 if pl=0 then T$ = "     ":TX=24:TY=8: GOSUB 9090
+607 if pl=1 then T$ = "<=   ":TX=24:TY=8: GOSUB 9090
+608 if pl<0 GOTO 4000
+610 bx = 102: by = 172: vx = 0.5: vy = -2
+611 x = 86: ax=0
+612 px=0: py=0: pc=0
+613 pm=0: ba = bx-x
+649 GOTO 100
 
 650 ' BRICK HIT at sa, sb 
 651 bc=(VPEEK(&H1800+sa*2+1+sb*32)-8)/2: nc=1
@@ -148,7 +156,7 @@
 4030 if A$=" " GOTO 4050
 4031 if A$="q" then END
 4040 GOTO 4020
-4050 L=2:sc=0
+4050 L=2:sc=0:pl=2
 4060 GOSUB 3900
 4071 GOSUB 4100
 4080 GOSUB 800
