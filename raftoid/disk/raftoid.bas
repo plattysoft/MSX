@@ -12,16 +12,18 @@
 110 s=stick(0)
 111 if s=3 then ax=ax+0.5
 112 if s=7 then ax=ax-0.5
-121 ax=ax*0.9
-130 x=x+ax
-131 if x<8 then x=8:ax=0
-132 if x>152 then x=152:ax=0
 113 if strig(0)=-1 then ba=0
-120 py=py+1
+120 if pc=0 then goto 130 
+121 py=py+1
+122 if py > 184 THEN py=0:pc=0:px=200
+123 if py>172 AND py<184 AND bx>x-7 AND bx<x+32 then GOSUB 550
+130 x=x+ax
+131 ax=ax*0.9
+132 if x<8 then x=8:ax=0
+133 if x>152 then x=152:ax=0
 139 if ba>0 then bx=ba+x: GOTO 360
 140 by=by+vy
 150 bx=bx+vx
-210 if py > 184 THEN py=0:pc=0
 300 if bx > 178 THEN bx = 178: vx = -vx
 310 if bx < 8 THEN bx = 8: vx = -vx
 321 if by>184 THEN goto 600
@@ -52,6 +54,11 @@
 515 if d<15 then vy=-1.5:vx=1.5:return
 516 vy=-2:vx=0.5
 549 RETURN
+
+550 'POWERUP CAPTURED
+560 if pc=4 then pm=pm+4
+590 py=0:px=200:pc=0
+599 RETURN
 
 600 ' GAME OVER
 601 put sprite 0, (0,0), 0, 0
@@ -149,12 +156,12 @@
 
 4100 ' DRAW THE GRID
 4160 FOR K=0 TO 23
-4170 FOR I=0 TO 23
-4180 if i MOD 2 = k MOD 2 THEN V=0 ELSE V=1
-4181 if i=0 OR i=23 THEN V = K MOD 4 + 2
-4183 if K=0 THEN V = 6 + I MOD 4
-4189 VPOKE &H1800+i+K*32, V
-4190 NEXT I
+4170   FOR I=0 TO 23
+4180     if i MOD 2 = k MOD 2 THEN V=0 ELSE V=1
+4181     if i=0 OR i=23 THEN V = K MOD 4 + 2
+4183     if K=0 THEN V = 6 + I MOD 4
+4189     VPOKE &H1800+i+K*32, V
+4190   NEXT I
 4200 NEXT K
 4210 T$ = "SCORE:":TX=24:TY=0: GOSUB 9090
 4211 T$ = "0":TX=29:TY=2: GOSUB 9090
