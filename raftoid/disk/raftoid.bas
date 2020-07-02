@@ -13,7 +13,7 @@
 111 if s=3 then ax=ax+0.5
 112 if s=7 then ax=ax-0.5
 113 if strig(0)=-1 then ba=0
-120 if pc=0 then goto 130 
+120 if pc=0 then goto 130
 121 py=py+1
 122 if py > 184 THEN py=0:pc=0:px=200
 123 if py>172 AND py<184 AND bx>x-7 AND bx<x+32 then GOSUB 550
@@ -32,7 +32,7 @@
 360 ' Drawing step
 361 put sprite 0, (bx,by), 15, 0
 362 put sprite 1, (x,170), 15, 1
-363 put sprite 2, (x+16,170), 15, 2 
+363 put sprite 2, (x+16,170), 15, 2
 364 put sprite 3, (px,py), pc, 3+(py\4 MOD 12)
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx+6-8)\16 ELSE sa=(bx-1-8)\16
@@ -46,12 +46,11 @@
 
 500 if pm>=1 then pm=pm-1:ba = bx-x: by=172
 501 d=bx-x-12
-510 if d<-15 then vy=-0.5:vx=-2:return
-511 if d<-10 then vy=-1.5:vx=-1.5:return
-512 if d<-5 then vy=-2:vx=-0.5:return
-513 if d<5 then vy=-vy:return
-514 if d<10 then vy=-2:vx=0.5:return
-515 if d<15 then vy=-1.5:vx=1.5:return
+510 if d<-12 then vy=-0.5:vx=-2:return
+511 if d<-6 then vy=-1.5:vx=-1.5:return
+512 if d<0 then vy=-2:vx=-0.5:return
+513 if d<6 then vy=-2:vx=0.5:return
+514 if d<12 then vy=-1.5:vx=1.5:return
 516 vy=-2:vx=0.5
 549 RETURN
 
@@ -75,7 +74,7 @@
 613 pm=0: ba = bx-x
 649 GOTO 100
 
-650 ' BRICK HIT at sa, sb 
+650 ' BRICK HIT at sa, sb
 651 bc=(VPEEK(&H1800+sa*2+1+sb*32)-8)/2: nc=1
 652 if bc=12 THEN RETURN
 653 if bc=11 THEN nc=10
