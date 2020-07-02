@@ -37,10 +37,12 @@
 400 ' BOUNDING BOX COLISION DETECTION
 410 if vx>0 THEN sa=(bx+6-8)\16 ELSE sa=(bx-1-8)\16
 411 sb=(by+3)\8
-412 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vx=-vx: GOSUB 650
+412 v = VPEEK (&H1800+sa*2+1+sb*32)
+413 if v>9 AND v<48 THEN vx=-vx: GOSUB 650
 415 if vy>0 THEN sb=(by+6)\8 ELSE sb=(by-1)\8
 416 sa=(bx+3-8)\16
-420 if VPEEK (&H1800+sa*2+1+sb*32) > 9 THEN vy=-vy: GOSUB 650
+420 v = VPEEK (&H1800+sa*2+1+sb*32)
+421 if v>9 AND v<48 THEN vy=-vy: GOSUB 650
 
 490 goto 100
 
@@ -75,7 +77,7 @@
 649 GOTO 100
 
 650 ' BRICK HIT at sa, sb
-651 bc=(VPEEK(&H1800+sa*2+1+sb*32)-8)/2: nc=1
+651 bc=(v-8)/2: nc=1
 652 if bc=12 THEN RETURN
 653 if bc=11 THEN nc=10
 654 if bc=10 THEN nc=9
@@ -85,7 +87,7 @@
 670 RETURN
 680 NB=NB-1
 681 if pc=0 AND rnd(time)>0.8 THEN px=(sa*16)+8: py=sb*8: pc=4
-687 if sb MOD 2 = 0 THEN nc=NC:cn=nc-1 ELSE cn=nc:nc=nc-1
+687 if sb MOD 2 = 0 THEN nc=97:cn=96 ELSE nc=96:cn=97
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 690 sc=sc+10*bc: T$=STR$(sc)
 695 TX=30-LEN(T$):TY=2: GOSUB 9090
@@ -97,7 +99,7 @@
 802 put sprite 1, (0,0), 0, 0
 803 put sprite 2, (0,0), 0, 0
 804 put sprite 3, (0,0), 0, 0
-818 if L = 1 then restore 900 else restore 910
+818 if L = 1 then restore 900 else restore 920
 819 NB = 0
 820 FOR J=1 TO 8
 821   FOR I=0 TO 10
@@ -122,21 +124,22 @@
 908 DATA 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0
 
 910 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+911 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 912 DATA 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 913 DATA 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 914 DATA 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
 915 DATA 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
 916 DATA 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 917 DATA 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
-918 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-920 DATA 0, 2, 1, 2, 1, 2, 1, 2, 1, 2, 0
-922 DATA 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
-923 DATA 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1
-924 DATA 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
-925 DATA 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1
-926 DATA 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0
-
+920 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+921 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+922 DATA 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+923 DATA 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2
+924 DATA 3, 2, 1, 0, 0, 0, 0, 0, 1, 2, 3
+925 DATA 4, 3, 2, 1, 0, 0, 0, 1, 2, 3, 4
+926 DATA 5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5
+927 DATA 6, 5, 4, 3, 2, 1, 2, 3, 4, 5, 6
 3900 'CLS
 3910 FOR I=0 TO 768
 3920   VPOKE &H1800+I, 59
@@ -162,13 +165,21 @@
 4090 GOTO 100
 
 4100 ' DRAW THE GRID
-4160 FOR K=0 TO 23
-4170   FOR I=0 TO 23
-4180     if i MOD 2 = k MOD 2 THEN V=0 ELSE V=1
-4181     if i=0 OR i=23 THEN V = K MOD 4 + 2
-4183     if K=0 THEN V = 6 + I MOD 4
+4101 RESTORE 4110
+4110 DATA 1, 3, 3, 4, 5, 3, 3, 3, 4, 5, 3, 3
+4111 DATA 3, 3, 4, 5, 3, 3, 3, 4, 5, 3, 3, 2
+4112 FOR I=0 TO 23
+4113   READ BG
+4114   VPOKE &H1800+i, BG
+4119 NEXT I
+4160 FOR K=1 TO 23
+4161   km = (k+1) MOD 5
+4162   if km > 2 then VPOKE &H1800+K*32, 5+km else VPOKE &H1800+K*32, 6
+4170   FOR I=1 TO 22
+4180     if i MOD 2 = 0 = k MOD 2 THEN V=96 ELSE V=97
 4189     VPOKE &H1800+i+K*32, V
 4190   NEXT I
+4191   if km > 2 then VPOKE &H1800+23+K*32, 5+km else VPOKE &H1800+23+K*32, 7
 4200 NEXT K
 4210 T$ = "SCORE:":TX=24:TY=0: GOSUB 9090
 4211 T$ = "0":TX=29:TY=2: GOSUB 9090
