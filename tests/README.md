@@ -16,7 +16,9 @@ LOCATE x,y: PRINT "A" Vs VPOKE
 
 **No significant difference without XBASIC**
 
-VPOKE slightly faster with XBASIC, but much slower than on screen 2?
+VPOKE slightly faster with XBASIC, about the same speed on screen 2
+
+It takes ~1 second to draw the screen on the best case
 
 ## SCREEN 2
 
