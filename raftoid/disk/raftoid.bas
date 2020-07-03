@@ -113,7 +113,7 @@
 878 pm=0: ba = bx-x
 890 RETURN
 
-900 ' DATA for levels, color 12 is undestructible, 8 is 2 hits (8->7), 11 is 3 hits (11->10->9)
+900 ' DATA for levels
 901 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 902 DATA 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0
 903 DATA 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0
