@@ -14,6 +14,8 @@ FOR LOOP Vs Unwinded loop
 
 LOCATE x,y: PRINT "A" Vs VPOKE
 
+*No significant difference*
+
 ## SCREEN 2
 
 LINE , BF Vs VPOKE of a defining sprite
