@@ -4,7 +4,7 @@
 6 ' TODO: Game over animation
 7 ' TODO: WIN animation
 8 bload "raftoid.sc2",S
-10 CALL TURBO ON
+10 call turbo on
 15 GOSUB 6000
 90 GOTO 4000
 
@@ -69,7 +69,7 @@
 605 pl=pl-1
 606 if pl=0 then T$ = "     ":TX=24:TY=8: GOSUB 9090
 607 if pl=1 then T$ = "<=   ":TX=24:TY=8: GOSUB 9090
-608 if pl<0 GOTO 4000
+608 if pl<0 then GOTO 4000
 610 bx = 102: by = 172: vx = 0.5: vy = -2
 611 x = 86: ax=0
 612 px=0: py=0: pc=0
@@ -201,7 +201,7 @@
 3950 RETURN
 
 4000 ' START SCREEN
-4001 GOSUB 3900
+4002 GOSUB 3900
 4004 for i=128 to 248
 4005   VPOKE &H1802+i, i
 4006   VPOKE &H1800+512+12+i, i
@@ -213,6 +213,9 @@
 4031 if A$="q" then END
 4040 GOTO 4020
 4050 L=1:sc=0:pl=2
+4053 for k=0 to 900 
+4054   if k MOD 100 = 0 then GOSUB 4400
+4055 next k
 4060 GOSUB 3900
 4071 GOSUB 4100
 4080 GOSUB 800
@@ -241,6 +244,13 @@
 4221 T$ = "<= <=":TX=24:TY=8: GOSUB 9090
 4223 'T$ = "<=":TX=24:TY=9: GOSUB 9090
 4299 RETURN
+
+4400 'BLINK the text on middle map
+4401 vs = &H2000+2048+65*8
+4410 cc = VPEEK (vs)
+4420 if cc=&H20 then cc=0 else cc=&H20
+4430 for i=vs to vs+26*8: VPOKE i,cc:NEXT I
+4440 return
 
 6000 ' LOAD SPRITES
 6010 RESTORE 6100
