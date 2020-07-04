@@ -26,28 +26,7 @@ IF THEN ELSE
 GOTO
 GOSUB... RETURN
 
-## Keyboard input
-
-10 IF INKEY$="" GOTO 10
-
-## Advanced basic
-
-### Reading data
-
-DATA, READ, RESUME
-
-### Defining functions
-
-# Game Basic
-
-## Colors
-
-Use colors
-Define palette
-
-## Handle Joystick
-
-STICK(0)
+# Game Basics
 
 ## Sprites
 
@@ -60,14 +39,16 @@ PUT SPRITE
 SPRITE ON / OFF
 ON SPRITE GOTO / GOSUB
 
-## Move a sprite around the screen
+## Handle Joystick
 
+STICK(0) STRIG(0)
 
-## Protecting your game from easy stops
+### Move a sprite around the screen
 
-ON STOP GOTO / GOSUB
+## Colors
 
-# Screen 1
+Use colors
+Define palette
 
 ## Drawing text on screen
 LOCATE
@@ -78,16 +59,14 @@ LOCATE
 
 ### Tweak colors map
 
-# Screen 2
+# Screen modes
 
-## Drawing functions
+## Screen 1
+
+## Screen 2
+
+### Drawing functions
 LINE, CIRCLE, PAINT
-
-## Advanced drawing
-
-### Remap character map
-
-### Tweak colors map
 
 # Playing sound
 
@@ -101,3 +80,15 @@ CALL RUN
 CALL TURBO ON / OFF
 
 differences with estandard basic
+
+# Advanced basic
+
+## Reading data
+
+DATA, READ, RESUME
+
+## Protecting your game from easy stops
+
+ON STOP GOTO / GOSUB
+
+## Defining functions
