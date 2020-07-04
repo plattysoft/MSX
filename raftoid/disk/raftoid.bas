@@ -98,7 +98,8 @@
 803 put sprite 2, (0,0), 0, 0
 804 put sprite 3, (0,0), 0, 0
 805 T$ = "STAGE:":TX=24:TY=18: GOSUB 9090
-806 T$ = STR$(L):TX=24:TY=20: GOSUB 9090
+806 T$ = "   ":TX=24:TY=20: GOSUB 9090
+807 T$ = STR$(L): GOSUB 9090
 809 LM = L MOD 5
 810 if LM = 1 then restore 900 
 811 if LM = 2 then restore 920 
