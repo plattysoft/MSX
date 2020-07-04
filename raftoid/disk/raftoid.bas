@@ -16,7 +16,7 @@
 120 if pc=0 then goto 130
 121 py=py+1
 122 if py > 184 THEN py=0:pc=0:px=200
-123 if py>172 AND py<184 AND bx>x-7 AND bx<x+32 then GOSUB 550
+123 if py>172 AND py<184 AND px>x-15 AND px<x+32 then GOSUB 550
 130 x=x+ax
 131 ax=ax*0.9
 132 if x<8 then x=8:ax=0
@@ -28,7 +28,7 @@
 310 if bx < 8 THEN bx = 8: vx = -vx
 321 if by>184 THEN goto 600
 330 if by<8 THEN by = 8: vy = -vy
-340 if by>172 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
+340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
 360 ' Drawing step
 361 put sprite 0, (bx,by), 15, 0
 362 put sprite 1, (x,170), 15, 1
