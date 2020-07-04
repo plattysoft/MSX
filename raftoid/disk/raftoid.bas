@@ -69,7 +69,7 @@
 605 pl=pl-1
 606 if pl=0 then T$ = "     ":TX=24:TY=8: GOSUB 9090
 607 if pl=1 then T$ = "<=   ":TX=24:TY=8: GOSUB 9090
-608 if pl<0 then GOTO 4000
+608 if pl<0 then GOTO 2500
 610 bx = 102: by = 172: vx = 0.5: vy = -2
 611 x = 86: ax=0
 612 px=0: py=0: pc=0
@@ -193,6 +193,18 @@
 990 DATA 8, 9, 1, 9, 8, 6, 8, 9, 1, 9, 8
 991 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 992 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+2500 ' Game over screen
+2550 GOSUB 3900
+2560 T$ = "GAME OVER":TX=11:TY=6: GOSUB 9090
+2580 T$ = "SCORE":TX=13:TY=10: GOSUB 9090
+2590 T$=STR$(sc):TX=18-LEN(T$):TY=12: GOSUB 9090
+2591 T$ = "STAGE":TX=13:TY=15: GOSUB 9090
+2592 T$=STR$(l):TX=18-LEN(T$):TY=17: GOSUB 9090
+2593 T$ = "PRESS ANY KEY":TX=9:TY=20: GOSUB 9090
+2690 if inkey$<>"" goto 2690
+2691 if inkey$<>" " goto 2691
+2700 GOTO 4000
 
 3900 'CLS
 3910 FOR I=0 TO 768
