@@ -27,7 +27,7 @@
 330 if by<8 THEN by = 8: vy = -vy
 340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
 360 ' Drawing step
-361 put sprite 0, (bx,by), 15, 0
+361 put sprite 4, (bx,by), 15, 0
 362 put sprite 1, (x,170), 15, 1
 363 put sprite 2, (x+16,170), 15, 2
 364 put sprite 3, (px,py), pc, 3+(py\4 MOD 12)
@@ -44,7 +44,7 @@
 490 goto 100
 
 500 if pm>=1 then pm=pm-1:ba = bx-x: by=172
-501 d=bx-x-12
+501 d=bx-x+12
 510 if d<-12 then vy=-0.5:vx=-2:return
 511 if d<-6 then vy=-1.5:vx=-1.5:return
 512 if d<0 then vy=-2:vx=-0.5:return
@@ -59,7 +59,7 @@
 599 RETURN
 
 600 ' LOST A LIFE
-601 put sprite 0, (0,0), 0, 0
+601 put sprite 4, (0,0), 0, 0
 602 put sprite 1, (0,0), 0, 0
 603 put sprite 2, (0,0), 0, 0
 604 put sprite 3, (0,0), 0, 0
@@ -92,7 +92,7 @@
 699 RETURN
 
 800 ' LOAD AND DRAW LEVEL
-801 put sprite 0, (0,0), 0, 0
+801 put sprite 4, (0,0), 0, 0
 802 put sprite 1, (0,0), 0, 0
 803 put sprite 2, (0,0), 0, 0
 804 put sprite 3, (0,0), 0, 0
