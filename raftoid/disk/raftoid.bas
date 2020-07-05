@@ -44,13 +44,13 @@
 490 goto 100
 
 500 if pm>=1 then pm=pm-1:ba = bx-x: by=172
-501 d=bx-x+12
-510 if d<-12 then vy=-0.5:vx=-2:return
-511 if d<-6 then vy=-1.5:vx=-1.5:return
+501 d=bx-x-13
+510 if d<-15 then vy=-0.5:vx=-2:return
+511 if d<-8 then vy=-1.5:vx=-1.5:return
 512 if d<0 then vy=-2:vx=-0.5:return
-513 if d<6 then vy=-2:vx=0.5:return
-514 if d<12 then vy=-1.5:vx=1.5:return
-516 vy=-2:vx=0.5
+513 if d<8 then vy=-2:vx=0.5:return
+514 if d<15 then vy=-1.5:vx=1.5:return
+516 vy=-0.5:vx=2
 549 RETURN
 
 550 'POWERUP CAPTURED
