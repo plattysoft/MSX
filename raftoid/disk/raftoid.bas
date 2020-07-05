@@ -1,12 +1,9 @@
-3 color 2,1,1
-4 SCREEN 2, 2, 0
-5 ' TODO: make the ball smaller
-6 ' TODO: Game over animation
-7 ' TODO: WIN animation
+1 color 2,1,1
+2 SCREEN 2,2,0
 8 bload "raftoid.sc2",S
 10 call turbo on
 15 GOSUB 6000
-90 GOTO 4000
+20 GOTO 4000
 
 100 ' GAME LOOP
 110 s=stick(0)
@@ -74,6 +71,8 @@
 611 x = 86: ax=0
 612 px=0: py=0: pc=0
 613 pm=0: ba = bx-x
+620 'TODO: Animate losing a life of starting again
+630 'Consider a few lines before 100 to animate first life too
 649 GOTO 100
 
 650 ' BRICK HIT at sa, sb
@@ -261,11 +260,8 @@
 
 6000 ' LOAD SPRITES
 6010 RESTORE 6100
-6020 FOR I=1 TO 8
-6030   READ L: A$=A$+CHR$(L)
-6040 NEXT I
 6050 SPRITE$(0)=A$
-6060 FOR S=1 TO 14
+6060 FOR S=0 TO 14
 6061   A$=""
 6062   FOR I=1 TO 32
 6063     READ L: A$=A$+CHR$(L)
@@ -276,6 +272,9 @@
 
 6100 ' BALL SPRITE
 6101 DATA &H38,&H7C,&HFE,&HFE,&HFE,&H7C,&H38,&H00
+6102 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
+6103 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
+6104 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 
 6120 ' left side of the paddle
 6130 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
