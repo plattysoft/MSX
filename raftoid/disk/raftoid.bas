@@ -100,14 +100,19 @@
 802 put sprite 1, (0,0), 0, 0
 803 put sprite 2, (0,0), 0, 0
 804 put sprite 3, (0,0), 0, 0
-805 T$ = "STAGE:":TX=24:TY=18: GOSUB 9090
-807 T$ = STR$(L):TX=30-LEN(T$):TY=20: GOSUB 9090
-809 LM = L MOD 5
-810 if LM = 1 then restore 900 
-811 if LM = 2 then restore 920 
-812 if LM = 3 then restore 940 
-813 if LM = 4 then restore 960 
-814 if LM = 0 then restore 980 
+805 GOSUB 3900
+806 T$ = "STAGE:":TX=10:TY=8: GOSUB 9090
+807 T$ = STR$(L):TX=16-LEN(T$):TY=10: GOSUB 9090
+808 FOR I=0 TO 5000:NEXT I
+809 GOSUB 3900:GOSUB 4100
+810 T$ = "STAGE:":TX=24:TY=18: GOSUB 9090
+811 T$ = STR$(L):TX=30-LEN(T$):TY=20: GOSUB 9090
+812 LM = L MOD 5
+813 if LM = 1 then restore 900 
+814 if LM = 2 then restore 920 
+815 if LM = 3 then restore 940 
+816 if LM = 4 then restore 960 
+817 if LM = 0 then restore 980 
 819 NB = 0
 820 FOR J=1 TO 13
 821   FOR I=0 TO 10
@@ -227,14 +232,12 @@
 4030 if A$=" " GOTO 4050
 4031 if A$="q" then END
 4040 GOTO 4020
-4050 L=2:sc=0:pl=2
+4050 L=1:sc=0:pl=2
 4051 TX=5:TY=14
 4053 for k=0 to 900 
 4054   if k MOD 200 = 0 then  T$ = "                    ": GOSUB 9090
 4055   if k MOD 200 = 80 then T$ = "PRESS SPACE TO START": GOSUB 9090
 4059 next k
-4060 GOSUB 3900
-4071 GOSUB 4100
 4080 GOSUB 800
 4090 GOTO 100
 
