@@ -88,7 +88,7 @@
 670 RETURN
 680 NB=NB-1
 681 if pc=0 AND rnd(time)>0.8 THEN px=(sa*16)+8: py=sb*8: pc=4
-687 if sb MOD 2 = 0 THEN nc=97:cn=96 ELSE nc=96:cn=97
+687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 690 sc=sc+10*bc: T$=STR$(sc)
 695 TX=30-LEN(T$):TY=2: GOSUB 9090
@@ -227,7 +227,7 @@
 4030 if A$=" " GOTO 4050
 4031 if A$="q" then END
 4040 GOTO 4020
-4050 L=1:sc=0:pl=2
+4050 L=2:sc=0:pl=2
 4051 TX=5:TY=14
 4053 for k=0 to 900 
 4054   if k MOD 200 = 0 then  T$ = "                    ": GOSUB 9090
@@ -250,7 +250,7 @@
 4161   km = (k+1) MOD 5
 4162   if km > 2 then VPOKE &H1800+K*32, 5+km else VPOKE &H1800+K*32, 6
 4170   FOR I=1 TO 22
-4180     if i MOD 2 = 0 = k MOD 2 THEN V=96 ELSE V=97
+4180     if i MOD 2 = k MOD 2 THEN V=96+(l MOD 3)*2 ELSE V=97+(l MOD 3)*2
 4189     VPOKE &H1800+i+K*32, V
 4190   NEXT I
 4191   if km > 2 then VPOKE &H1800+23+K*32, 5+km else VPOKE &H1800+23+K*32, 7
