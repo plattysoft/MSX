@@ -21,9 +21,9 @@
 271 if s=1 then y=y-1:sb=2:sc=5
 272 if s=2 then y=y-1:x=x+1:sb=2:sc=5
 273 if s=3 then x=x+1
-274 if s=4 then y=y+1:x=x+1:sb=4:sc=5
+274 if s=4 then y=y+1:x=x+1:sb=4
 275 if s=5 then y=y+1:sb=4
-276 if s=6 then y=y+1:x=x-1:sb=4:sc=5
+276 if s=6 then y=y+1:x=x-1:sb=4
 377 if s=7 then x=x-1
 278 if s=8 then y=y-1:x=x-1:sb=2:sc=5
 310 PUT SPRITE 0,(x,y),15,sb:PUT SPRITE 1,(x,y),sc,sb+1
