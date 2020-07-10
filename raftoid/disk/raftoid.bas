@@ -9,7 +9,11 @@
 110 s=stick(0)
 111 if s=3 then ax=ax+0.5
 112 if s=7 then ax=ax-0.5
-113 if strig(0)=-1 then ba=0
+113 s=stick(1)
+114 if s=3 then ax=ax+0.5
+115 if s=7 then ax=ax-0.5
+116 if strig(0)=-1 then ba=0
+117 if strig(1)=-1 then ba=0
 120 if pc=0 then goto 130
 121 py=py+1
 122 if py > 184 THEN py=0:pc=0:px=200
@@ -27,7 +31,7 @@
 330 if by<8 THEN by = 8: vy = -vy
 340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
 360 ' Drawing step
-361 put sprite 0, (bx,by), 15, 0
+361 put sprite 4, (bx,by), 15, 0
 362 put sprite 1, (x,170), 15, 1
 363 put sprite 2, (x+16,170), 15, 2
 364 put sprite 3, (px,py), pc, 3+(py\4 MOD 12)
@@ -43,7 +47,7 @@
 420 v = VPEEK (&H1800+sa*2+1+sb*32)
 421 if v>9 AND v<48 THEN vy=-vy: GOSUB 650
 
-490 goto 100
+450 goto 100
 
 499 'Range of hit is from x-7, x+32. Mapped to d into (-20, 19)
 500 if pm>=1 then pm=pm-1:ba = bx-x: by=172
@@ -62,7 +66,7 @@
 599 RETURN
 
 600 ' LOST A LIFE
-601 put sprite 0, (0,0), 0, 0
+601 put sprite 4, (0,0), 0, 0
 602 put sprite 1, (0,0), 0, 0
 603 put sprite 2, (0,0), 0, 0
 604 put sprite 3, (0,0), 0, 0
@@ -96,7 +100,7 @@
 699 RETURN
 
 800 ' LOAD AND DRAW LEVEL
-801 put sprite 0, (0,0), 0, 0
+801 put sprite 4, (0,0), 0, 0
 802 put sprite 1, (0,0), 0, 0
 803 put sprite 2, (0,0), 0, 0
 804 put sprite 3, (0,0), 0, 0
@@ -229,8 +233,8 @@
 4011 T$ = "PRESS SPACE TO START":TX=5:TY=14: GOSUB 9090
 4019 if inkey$<>"" goto 4019
 4020 A$=inkey$
-4030 if A$=" " GOTO 4050
 4031 if A$="q" then END
+4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
 4040 GOTO 4020
 4050 L=1:sc=0:pl=2
 4051 TX=5:TY=14
