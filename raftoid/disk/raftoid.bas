@@ -61,6 +61,8 @@
 549 RETURN
 
 550 'POWERUP CAPTURED
+551 if pb=pc THEN sc=sc+200 ELSE sc=sc+100
+555 T$=STR$(sc):TX=30-LEN(T$):TY=2: GOSUB 9090
 560 pb=pc
 590 py=0:px=200:pc=0
 599 RETURN
@@ -95,15 +97,18 @@
 685 if pb=8 THEN IF sb=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
-690 sc=sc+10*bc: T$=STR$(sc)
+690 if pb=11 THEN sc=sc+10*bc*2 ELSE sc=sc+10*bc
+691 T$=STR$(sc)
 695 TX=30-LEN(T$):TY=2: GOSUB 9090
 698 IF NB=0 THEN L=L+1: GOSUB 800
 699 RETURN
 
 700 'POWERUP falls
 710 px=(sa*16)+8: py=sb*8: pc=7
-720 if rnd(time)>0.5 THEN pc=7 ELSE pc=8
-730 RETURN
+720 pr=rnd(time)
+730 if pr<0.3 THEN pc=11:RETURN
+740 if pr<0.6 THEN pc=8: RETURN
+750 pc=7: RETURN
 
 800 ' LOAD AND DRAW LEVEL
 801 put sprite 4, (0,0), 0, 0
