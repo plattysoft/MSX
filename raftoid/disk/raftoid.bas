@@ -61,7 +61,7 @@
 549 RETURN
 
 550 'POWERUP CAPTURED
-560 if pc=7 then pb=7
+560 pb=pc
 590 py=0:px=200:pc=0
 599 RETURN
 
@@ -70,13 +70,13 @@
 602 put sprite 1, (0,0), 0, 0
 603 put sprite 2, (0,0), 0, 0
 604 put sprite 3, (0,0), 0, 0
-605 pl=pl-1: pb=15
+605 pl=pl-1
 606 if pl=0 then T$ = "     ":TX=24:TY=8: GOSUB 9090
 607 if pl=1 then T$ = "<=   ":TX=24:TY=8: GOSUB 9090
 608 if pl<0 then GOTO 2500
 610 bx = 102: by = 172: vx = 0.5: vy = -2
 611 x = 86: ax=0
-612 px=0: py=0: pc=0
+612 px=0: py=0: pc=0: pb=15
 613 pm=0: ba = bx-x
 620 'TODO: Animate losing a life of starting again
 630 'Consider a few lines before 100 to animate first life too
@@ -91,13 +91,19 @@
 660 VPOKE &H1800+sa*2+1+sb*32, nc*2+8: VPOKE &H1800+sa*2+2+sb*32, nc*2+8+1
 670 RETURN
 680 NB=NB-1
-681 if pc=0 AND rnd(time)>0.8 THEN px=(sa*16)+8: py=sb*8: pc=7
+681 if pc=0 AND rnd(time)>0.8 THEN GOSUB 700
+685 if pb=8 THEN IF sb=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 690 sc=sc+10*bc: T$=STR$(sc)
 695 TX=30-LEN(T$):TY=2: GOSUB 9090
 698 IF NB=0 THEN L=L+1: GOSUB 800
 699 RETURN
+
+700 'POWERUP falls
+710 px=(sa*16)+8: py=sb*8: pc=7
+720 if rnd(time)>0.5 THEN pc=7 ELSE pc=8
+730 RETURN
 
 800 ' LOAD AND DRAW LEVEL
 801 put sprite 4, (0,0), 0, 0
@@ -196,13 +202,13 @@
 981 DATA 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0
 982 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 983 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-984 DATA 1, 2, 3, 9, 6, 8, 6, 9, 3, 2, 1
-985 DATA 2, 3, 4, 3, 9, 6, 9, 3, 4, 3, 2
+984 DATA 1, 2, 3, 9, 6, 9, 6, 9, 3, 2, 1
+985 DATA 2, 3, 4, 3, 8, 9, 8, 3, 4, 3, 2
 986 DATA 3, 4, 5, 4, 3, 9, 3, 4, 5, 4, 3
 987 DATA 4, 5, 6, 5, 4, 3, 4, 5, 6, 5, 4
-988 DATA 5, 6, 8, 6, 5, 4, 5, 6, 8, 6, 5
-989 DATA 6, 8, 9, 8, 6, 5, 6, 8, 9, 8, 6
-990 DATA 8, 9, 1, 9, 8, 6, 8, 9, 1, 9, 8
+988 DATA 5, 9, 8, 6, 5, 4, 5, 6, 8, 9, 5
+989 DATA 8, 5, 9, 8, 6, 5, 6, 8, 9, 5, 8
+990 DATA 1, 8, 5, 9, 8, 6, 8, 9, 5, 8, 1
 991 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 992 DATA 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
