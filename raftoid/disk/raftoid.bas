@@ -31,7 +31,7 @@
 330 if by<8 THEN by = 8: vy = -vy
 340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
 360 ' Drawing step
-361 put sprite 4, (bx,by), 15, 0
+361 put sprite 4, (bx,by), pb, 0
 362 put sprite 1, (x,170), 15, 1
 363 put sprite 2, (x+16,170), 15, 2
 364 put sprite 3, (px,py), pc, 3+(py\4 MOD 12)
@@ -50,7 +50,7 @@
 450 goto 100
 
 499 'Range of hit is from x-7, x+32. Mapped to d into (-20, 19)
-500 if pm>=1 then pm=pm-1:ba = bx-x: by=172
+500 if pb=7 then ba = bx-x: by=172
 501 d=bx-x-13
 510 if d<-14 then vy=-0.5:vx=-2:return
 511 if d<-6 then vy=-1.5:vx=-1.5:return
@@ -61,7 +61,7 @@
 549 RETURN
 
 550 'POWERUP CAPTURED
-560 if pc=4 then pm=pm+4
+560 if pc=7 then pb=7
 590 py=0:px=200:pc=0
 599 RETURN
 
@@ -70,7 +70,7 @@
 602 put sprite 1, (0,0), 0, 0
 603 put sprite 2, (0,0), 0, 0
 604 put sprite 3, (0,0), 0, 0
-605 pl=pl-1
+605 pl=pl-1: pb=15
 606 if pl=0 then T$ = "     ":TX=24:TY=8: GOSUB 9090
 607 if pl=1 then T$ = "<=   ":TX=24:TY=8: GOSUB 9090
 608 if pl<0 then GOTO 2500
@@ -91,7 +91,7 @@
 660 VPOKE &H1800+sa*2+1+sb*32, nc*2+8: VPOKE &H1800+sa*2+2+sb*32, nc*2+8+1
 670 RETURN
 680 NB=NB-1
-681 if pc=0 AND rnd(time)>0.8 THEN px=(sa*16)+8: py=sb*8: pc=4
+681 if pc=0 AND rnd(time)>0.8 THEN px=(sa*16)+8: py=sb*8: pc=7
 687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
 690 sc=sc+10*bc: T$=STR$(sc)
@@ -126,7 +126,7 @@
 841 NEXT J
 875 bx = 102: by = 172: vx = 0.5: vy = -2
 876 x = 86: ax=0
-877 px=0: py=0: pc=0
+877 px=0: py=0: pc=0: pb=15
 878 pm=0: ba = bx-x
 890 RETURN
 
