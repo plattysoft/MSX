@@ -73,8 +73,8 @@
 603 put sprite 2, (0,0), 0, 0
 604 put sprite 3, (0,0), 0, 0
 605 pl=pl-1
-606 if pl=0 then T$ = "     ":TX=24:TY=8: GOSUB 9090
-607 if pl=1 then T$ = "<=   ":TX=24:TY=8: GOSUB 9090
+606 if pl MOD 2 = 0 THEN TX=24 ELSE TX=27
+607 T$="  ":TY=8+(pl)\2: GOSUB 9090
 608 if pl<0 then GOTO 2500
 610 bx = 102: by = 172: vx = 0.5: vy = -2
 611 x = 86: ax=0
@@ -110,9 +110,12 @@
 750 pc=7: RETURN
 
 777 'Update and display score
-780 if sc>10000 then sd=sd+1:sc=sc-10000:se=1
-790 T$=RIGHT$(STR$(sc),4): TX=30-LEN(T$):TY=2: GOSUB 9090
-795 if se=1 THEN T$=RIGHT$(STR$(sd),3):TX=26-LEN(T$):TY=2:se=0:GOSUB 9090
+780 if sc>1000 then sd=sd+1:sc=sc-1000:se=1
+785 if se=0 THEN GOTO 790
+786 TS$=STR$(sd):T$=RIGHT$(TS$,LEN(TS$)-1):TX=27-LEN(T$):TY=2:se=0:GOSUB 9090
+787 if sd>=nl THEN pl=pl+1:nl=nl*2:GOSUB 4300
+788 T$="000":TY=2:TX=27: GOSUB 9090
+790 TS$=STR$(sc):T$=RIGHT$(TS$,LEN(TS$)-1): TX=30-LEN(T$):TY=2:GOSUB 9090
 799 RETURN
 
 800 ' LOAD AND DRAW LEVEL
@@ -226,8 +229,9 @@
 2550 GOSUB 3900
 2560 T$ = "GAME OVER":TX=10:TY=5: GOSUB 9090
 2580 T$ = "SCORE:":TX=5:TY=10: GOSUB 9090
-2581 T$=STR$(sc):TX=11-LEN(T$):TY=12: GOSUB 9090
-2581 T$=STR$(sd):TX=7-LEN(T$):TY=12: GOSUB 9090
+2581 T$=STR$(sd):TX=8-LEN(T$):TY=12: GOSUB 9090
+2582 T$="000":TY=12:TX=8: GOSUB 9090
+2583 TS$=STR$(sc):T$=RIGHT$(TS$,LEN(TS$)-1):TX=11-LEN(T$):TY=12: GOSUB 9090
 2591 T$ = "STAGE:":TX=19:TY=10: GOSUB 9090
 2592 T$=STR$(l):TX=25-LEN(T$):TY=12: GOSUB 9090
 2593 T$ = "PRESS ANY KEY":TX=9:TY=18: GOSUB 9090
@@ -253,7 +257,7 @@
 4031 if A$="q" then END
 4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
 4040 GOTO 4020
-4050 L=1:sc=0:sd=0:pl=2
+4050 L=1:sc=0:sd=0:pl=2:nl=5
 4051 TX=5:TY=14
 4053 for k=0 to 900 
 4054   if k MOD 200 = 0 then  T$ = "                    ": GOSUB 9090
@@ -282,9 +286,16 @@
 4210 T$ = "SCORE:":TX=24:TY=0: GOSUB 9090
 4211 se=1:GOSUB 777
 4220 T$ = "LIVES:":TX=24:TY=6: GOSUB 9090
-4221 T$ = "<= <=":TX=24:TY=8: GOSUB 9090
-4223 'T$ = "<=":TX=24:TY=9: GOSUB 9090
+4221 GOSUB 4300
 4299 RETURN
+
+4300 'Draw lives
+4301 T$="<="
+4310 for j=0 to pl-1
+4320   if j MOD 2 = 0 THEN TX=24 ELSE TX=27
+4330   TY=8+j\2: GOSUB 9090
+4340 NEXT j
+4390 RETURN
 
 6000 ' LOAD SPRITES
 6010 RESTORE 6100
