@@ -61,8 +61,8 @@
 549 RETURN
 
 550 'POWERUP CAPTURED
-551 if pb=pc THEN sc%=sc%+200 ELSE sc%=sc%+100
-555 T$=sc%:TX=30-LEN(T$):TY=2: GOSUB 9090
+551 if pb=pc THEN sc=sc+200 ELSE sc=sc+100
+555 GOSUB 777
 560 pb=pc
 590 py=0:px=200:pc=0
 599 RETURN
@@ -97,9 +97,8 @@
 685 if pb=8 THEN IF sb=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
 689 VPOKE &H1800+sa*2+1+sb*32, NC: VPOKE &H1800+sa*2+2+sb*32, CN
-690 if pb=11 THEN sc%=sc%+10*bc*2 ELSE sc%=sc%+10*bc
-691 T$=sc%
-695 TX=30-LEN(T$):TY=2: GOSUB 9090
+690 if pb=11 THEN sc=sc+10*bc*2 ELSE sc=sc+10*bc
+691 GOSUB 777
 698 IF NB=0 THEN L=L+1: GOSUB 800
 699 RETURN
 
@@ -109,6 +108,12 @@
 730 if pr<0.3 THEN pc=11:RETURN
 740 if pr<0.6 THEN pc=8: RETURN
 750 pc=7: RETURN
+
+777 'Update and display score
+780 if sc>10000 then sd=sd+1:sc=sc-10000:se=1
+790 T$=RIGHT$(STR$(sc),4): TX=30-LEN(T$):TY=2: GOSUB 9090
+795 if se=1 THEN T$=RIGHT$(STR$(sd),3):TX=26-LEN(T$):TY=2:se=0:GOSUB 9090
+799 RETURN
 
 800 ' LOAD AND DRAW LEVEL
 801 put sprite 4, (0,0), 0, 0
@@ -221,7 +226,8 @@
 2550 GOSUB 3900
 2560 T$ = "GAME OVER":TX=10:TY=5: GOSUB 9090
 2580 T$ = "SCORE:":TX=5:TY=10: GOSUB 9090
-2590 T$=sc%:TX=11-LEN(T$):TY=12: GOSUB 9090
+2581 T$=STR$(sc):TX=11-LEN(T$):TY=12: GOSUB 9090
+2581 T$=STR$(sd):TX=7-LEN(T$):TY=12: GOSUB 9090
 2591 T$ = "STAGE:":TX=19:TY=10: GOSUB 9090
 2592 T$=STR$(l):TX=25-LEN(T$):TY=12: GOSUB 9090
 2593 T$ = "PRESS ANY KEY":TX=9:TY=18: GOSUB 9090
@@ -247,7 +253,7 @@
 4031 if A$="q" then END
 4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
 4040 GOTO 4020
-4050 L=1:sc%=0:pl=2
+4050 L=1:sc=0:sd=0:pl=2
 4051 TX=5:TY=14
 4053 for k=0 to 900 
 4054   if k MOD 200 = 0 then  T$ = "                    ": GOSUB 9090
@@ -274,7 +280,7 @@
 4191   if km > 2 then VPOKE &H1800+23+K*32, 5+km else VPOKE &H1800+23+K*32, 7
 4200 NEXT K
 4210 T$ = "SCORE:":TX=24:TY=0: GOSUB 9090
-4211 T$ = "0":TX=29:TY=2: GOSUB 9090
+4211 se=1:GOSUB 777
 4220 T$ = "LIVES:":TX=24:TY=6: GOSUB 9090
 4221 T$ = "<= <=":TX=24:TY=8: GOSUB 9090
 4223 'T$ = "<=":TX=24:TY=9: GOSUB 9090
