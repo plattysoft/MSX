@@ -10,7 +10,7 @@ background_tile.bas: Example of generating the BG tiles using the VRAM and copyi
 
 The actual version with all its files is in the `disk` directory, which is the one to be deplyed.
 
-Try the current version on WebMXS: https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/raftoid/Raftoid.dsk&MACHINE=MSX1E&BASIC_RUN=loader.bas
+Try the current version on WebMXS: https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/raftoid/Raftoid.dsk&MACHINE=MSX1E
 
 
 ## PowerUp ideas:
