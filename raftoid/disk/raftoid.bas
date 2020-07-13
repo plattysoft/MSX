@@ -1,6 +1,3 @@
-1 color 2,1,1
-2 SCREEN 2,2,0
-8 bload "raftoid.sc2",S
 10 call turbo on
 15 GOSUB 6000
 20 GOTO 4000
@@ -261,7 +258,7 @@
 4011 T$ = "PRESS SPACE TO START":TX=5:TY=14: GOSUB 9090
 4019 if inkey$<>"" goto 4019
 4020 A$=inkey$
-4031 if A$="q" then END
+4031 'if A$="q" then END
 4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
 4040 GOTO 4020
 4050 L=1:sc=0:sd=0:pl=2:nl=5
