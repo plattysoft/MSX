@@ -69,20 +69,27 @@
 
 600 ' LOST A LIFE
 601 put sprite 4, (0,0), 0, 0
-602 put sprite 1, (0,0), 0, 0
-603 put sprite 2, (0,0), 0, 0
-604 put sprite 3, (0,0), 0, 0
-605 pl=pl-1
-606 if pl MOD 2 = 0 THEN TX=24 ELSE TX=27
-607 T$="  ":TY=8+(pl)\2: GOSUB 9090
-608 if pl<0 then GOTO 2500
-610 bx = 102: by = 172: vx = 0.5: vy = -2
-611 x = 86: ax=0
-612 px=0: py=0: pc=0: pb=15
-613 pm=0: ba = bx-x
-620 'TODO: Animate losing a life of starting again
-630 'Consider a few lines before 100 to animate first life too
-649 GOTO 100
+602 put sprite 3, (0,0), 0, 0
+603 put sprite 1, (0,0), 0, 0
+604 put sprite 2, (0,0), 0, 0
+605 if pl=0 then GOTO 2500
+606 ' Move the pad to the center
+607 if x>=87 THEN x=x-0.5 
+608 if x=<85 THEN x=x+0.5
+609 put sprite 1, (x,170), 15, 1
+610 put sprite 2, (x+16,170), 15, 2
+611 if x>=87 OR x<=85 THEN GOTO 607
+612 pl=pl-1
+613 TX=24+(pl MOD 3)*2:TY=8+(pl)\3
+614 FOR j=60 to 63
+615   for k=0 to 100: NEXT K:T$=CHR$(j):GOSUB 9090
+616 NEXT J
+617 T$=" ":GOSUB 9090
+618 bx=102: by=172: vx=0.5: vy=-2
+619 x=86: ax=0
+620 px=0: py=0: pc=0: pb=15
+621 pm=0: ba=bx-x
+630 GOTO 100
 
 650 ' BRICK HIT at sa, sb
 651 bc=(v-8)/2: nc=1
@@ -290,10 +297,10 @@
 4299 RETURN
 
 4300 'Draw lives
-4301 T$="<="
+4301 T$="< "
 4310 for j=0 to pl-1
-4320   if j MOD 2 = 0 THEN TX=24 ELSE TX=27
-4330   TY=8+j\2: GOSUB 9090
+4320   TX=24+ (j MOD 3)*2
+4330   TY=8+j\3: GOSUB 9090
 4340 NEXT j
 4390 RETURN
 
@@ -309,10 +316,9 @@
 6066 NEXT S
 6090 RETURN
 
-6100 ' BALL SPRITE
+6100 ' Ball sprite
 6101 DATA &H38,&H7C,&HFE,&HFE,&HFE,&H7C,&H38,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
-6103 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
-
+6102 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 6120 ' left side of the paddle
 6130 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H67,&H67,&H4F,&H4F,&H67,&H67
 6150 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&HFF,&HFF,&HFF,&HFF,&HFF,&HFF
@@ -320,10 +326,11 @@
 6210 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&HFF,&HFF,&HFF,&HFF,&HFF,&HFF
 6230 DATA &H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&HE6,&HE6,&HF2,&HF2,&HE6,&HE6
 
-7000 ' Sample powerup
+7000 ' Powerup
 7010 DATA &H7F,&HFF,&HFF,&HFF,&HFF,&HFF,&H7F,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 7020 DATA &HFC,&HFE,&HFE,&HFE,&HFE,&HFE,&HFC,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 
+7509 ' Brick blinking (10 sprites)
 7510 DATA &H03,&H03,&H07,&H07,&H0F,&H0F,&H1F,&H1F,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 7520 DATA &HF8,&HF8,&HF0,&HF0,&HE0,&HE0,&HC0,&HC0,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 7530 DATA &HBC,&HBC,&H78,&H78,&HF0,&HF0,&HE0,&HE0,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
