@@ -1,43 +1,52 @@
 # Raftoid
-Raftoid is an Arkanoid-style game written in MSX Basic
-It is not fast enough to be run as-is, so it needs to be compiled with x-basic/MSX-Basic-Kun or speed up the emulation CPU (about x3 is good)
 
-Original implementation was using an array to check for bricks, we can VPEEK for the brick we have on the position instead, colors can be the same for multi-hit bricks.
+The era and time of this story is mostly unknown.
+After contact was lost with the mother ship "Arkanoid", a search and rescue ship "Raftoid" was sent
+It took many years to arrive at the place, only to be warped in space too, just a little diffent this time
+
+# Intro
+
+Raftoid is an Arkanoid-style game written in MSX Basic
+It is not fast enough to be run as-is, so it needs to be compiled with x-basic/MSX-Basic-Kun
 
 This directory has some examples of partial code and details.
-
-background_tile.bas: Example of generating the BG tiles using the VRAM and copying them
 
 The actual version with all its files is in the `disk` directory, which is the one to be deplyed.
 
 Try the current version on WebMXS: https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/raftoid/Raftoid.dsk&MACHINE=MSX1E
 
 
-## PowerUp ideas:
+## PowerUps:
 
-It would be nice to have RAFT as letters for the bonus
+Current powerups:
 
-Right now the sprite is the full letter+ bubble, but rolling letters can be 8x8 sprites instead and then we can use 2 colors for them (BG + Letter)
+* Yellow ("Rich"): bricks give double points
+* Blue ("Anchor"): ball sticks to the paddle
+* Red ("Fireball"): ball gets through bricks
 
-Only one powerup falling at a time, random value based on brick?
+## Extra lives
 
-Most likely
+There are extra lives at
+* 5000
+* 10000
+* 20000
+* 40000
+* 80000
+... and so on
 
-* M: Magnet: gives 10 magnets, paddle turns same color as powerup (blue)
-* F: Fireball: ball does not bounce except on undestructible bricks, lasts for 5 bounces on paddle) ball turns red (red)
-* L: Life up
+## Levels
 
-Ideas
+There are 5 levels, once completed, the game cycles them again
 
-* P: Bonus points
-* W: Warp level
-* S: safe line under paddle
-* T: Tripple balls
+* Wall
+* Face
+* Diamond
+* Arrow
+* Wave
 
-R: 
-A: Anchor (Magnet)
-F: Fireball
-T: 
+There are 3 backgrounds, so to see each level with each background you need to reach Stage 15. After that point it just repeats.
+
+# Source Code structure
 
 init: Load Sprites, Tiles and font
 
