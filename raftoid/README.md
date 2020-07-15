@@ -48,6 +48,9 @@ There are 3 backgrounds, so to see each level with each background you need to r
 
 # Source Code structure
 
+Tiles and font are defined into a .sc2 file, which is loaded as part of the init script.
+
+
 init: Load Sprites, Tiles and font
 
 100 - Game Loop
@@ -76,14 +79,4 @@ init: Load Sprites, Tiles and font
 
 6100 - Sprites Data
 
-7000 - Load tiles subroutine
-
-8000 - Tile pattern data
-
-8300 - Tile color data
-
-9000 - Load font subroutine
-
 9090 - Print text on screen subroutine
-
-9100 - Font data
