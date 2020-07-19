@@ -1,7 +1,6 @@
 1 color 15,1,1
 10 SCREEN 2,2,1
 11 BLOAD "editor.sc2",s
-20 ' LOAD SPRITES
 22 A$="": RESTORE 6101
 23 FOR I=1 TO 32
 24   READ L: A$=A$+CHR$(L)
@@ -9,7 +8,7 @@
 26 SPRITE$(0)=A$
 
 90 x=8:y=8:sa=0:sb=1
-100 ' GAME LOOP
+100 ' MAIN LOOP
 110 s=stick(0)
 111 if s=3 and x<168 then x=x+16:sa=sa+1
 112 if s=7 and x>8 then x=x-16:sa=sa-1
