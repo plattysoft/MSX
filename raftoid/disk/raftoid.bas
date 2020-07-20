@@ -144,7 +144,7 @@
 820 FOR J=1 TO 13
 821   FOR I=0 TO 10
 823     READ C
-832     IF C > 0 THEN NB=NB+1: VPOKE &H1800+i*2+1+j*32, c*2+8: VPOKE &H1800+i*2+2+j*32, c*2+9
+832     IF C > 0 THEN VPOKE &H1800+i*2+1+j*32, c*2+8: VPOKE &H1800+i*2+2+j*32, c*2+9: IF C<>9 THEN NB=NB+1
 840   NEXT I
 841 NEXT J
 875 bx = 102: by = 172: vx = 0.5: vy = -2
