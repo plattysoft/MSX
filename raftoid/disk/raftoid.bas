@@ -261,7 +261,7 @@
 4031 'if A$="q" then END
 4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
 4040 GOTO 4020
-4050 L=5:sc=0:sd=0:pl=5:nl=5
+4050 L=1:sc=0:sd=0:pl=2:nl=5
 4051 TX=5:TY=14
 4053 for k=0 to 900 
 4054   if k MOD 200 = 0 then  T$ = "                    ": GOSUB 9090
