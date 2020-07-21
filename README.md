@@ -29,3 +29,4 @@ Tools
 Documentations
 * MSX Basic documentation and forums: https://www.msx.org/
 * V9938 Programmers Guide: http://rs.gr8bit.ru/Documentation/V9938-programmers-guide.pdf
+* Play music using "play" inside X-BASIC: http://ni.x0.com/msx/xbasic.html
