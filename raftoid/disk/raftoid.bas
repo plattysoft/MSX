@@ -38,7 +38,7 @@
 410 if vx>0 THEN sa%=(bx+6-8)\16 ELSE sa%=(bx-1-8)\16
 411 sb%=(by+3)\8
 412 v%=VPEEK(&H1800+sa%*2+1+sb%*32)
-413 if v>9 AND v<48 THEN vx=-vx:GOSUB 650
+413 if v%>9 AND v%<48 THEN vx=-vx:GOSUB 650
 415 if vy>0 THEN sb%=(by+6)\8 ELSE sb%=(by-1)\8
 416 sa%=(bx+3-8)\16
 420 v%=VPEEK(&H1800+sa%*2+1+sb%*32)
