@@ -281,9 +281,9 @@
 4160 FOR K=1 TO 23
 4161   km%=(k+1) MOD 5
 4162   if km%>2 then VPOKE &H1800+K*32,5+km% else VPOKE &H1800+K*32,6
-4170   FOR I=1 TO 22
-4180     if i MOD 2=k MOD 2 THEN V%=96+(l% MOD 3)*2 ELSE V%=97+(l% MOD 3)*2
-4189     VPOKE &H1800+i+K*32,V%
+4163   if k MOD 2=0 THEN cn%=96+(l% MOD 3)*2:nc%=cn%+1 ELSE cn%=97+(l% MOD 3)*2:nc%=cn%-1
+4170   FOR I=1 TO 22 step 2
+4189     VPOKE &H1800+i+K*32,cn%:VPOKE &H1800+i+1+K*32,nc%
 4190   NEXT I
 4191   if km%>2 then VPOKE &H1800+23+K*32,5+km% else VPOKE &H1800+23+K*32,7
 4200 NEXT K
