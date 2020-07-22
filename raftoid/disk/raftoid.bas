@@ -47,7 +47,7 @@
 450 goto 100
 
 499 'Range of hit is from x-7, x+32. Mapped to d into (-20, 19)
-500 if pb=7 then ba=bx-x: by=172
+500 if pb%=7 then ba=bx-x: by=172
 501 d=bx-x-13
 510 if d<-14 then vy=-0.5:vx=-2:return
 511 if d<-6 then vy=-1.5:vx=-1.5:return
@@ -282,8 +282,8 @@
 4161   km%=(k+1) MOD 5
 4162   if km%>2 then VPOKE &H1800+K*32,5+km% else VPOKE &H1800+K*32,6
 4170   FOR I=1 TO 22
-4180     if i MOD 2=k MOD 2 THEN V=96+(l MOD 3)*2 ELSE V=97+(l MOD 3)*2
-4189     VPOKE &H1800+i+K*32,V
+4180     if i MOD 2=k MOD 2 THEN V%=96+(l% MOD 3)*2 ELSE V%=97+(l% MOD 3)*2
+4189     VPOKE &H1800+i+K*32,V%
 4190   NEXT I
 4191   if km%>2 then VPOKE &H1800+23+K*32,5+km% else VPOKE &H1800+23+K*32,7
 4200 NEXT K
