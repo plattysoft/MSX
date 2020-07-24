@@ -11,10 +11,10 @@
 115 if s%=7 then ax=ax-0.5
 116 if strig(0)=-1 then ba=0
 117 if strig(1)=-1 then ba=0
-120 if pc%=0 then goto 130
+120 if pc%=0 goto 130
 121 py%=py%+1
 122 if py%>184 THEN py%=0:pc%=0:px%=200
-123 if py%>172 AND py%<184 AND px%>x-15 AND px%<x+32 GOSUB 550
+123 if py%>172 AND py%<184 AND px%>x-15 AND px%<x+32 THEN GOSUB 550
 130 x=x+ax
 131 ax=ax*0.9
 132 if x<8 then x=8:ax=0
@@ -26,7 +26,7 @@
 310 if bx<8 THEN bx=8:vx=-vx
 321 if by>184 goto 600
 330 if by<8 THEN by=8: vy=-vy
-340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 GOSUB 500
+340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 THEN GOSUB 500
 360 ' Drawing step
 361 put sprite 4,(bx,by),pb%,0
 362 put sprite 1,(x,170),15,1
@@ -97,8 +97,8 @@
 660 VPOKE &H1800+sa%*2+1+sb%*32,nc%*2+8:VPOKE &H1800+sa%*2+2+sb%*32,nc%*2+8+1
 670 RETURN
 680 NB%=NB%-1
-681 if pc%=0 AND rnd(time)>0.8 GOSUB 700
-685 if pb%=8 THEN IF sb%=(by+3)\8 THEN vx=-vx ELSE vy=-vy
+685 if pc%=0 AND rnd(time)>0.8 then GOSUB 700
+686 if pb%=8 THEN IF sb%=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb% MOD 2 = 0 THEN nc%=97+(l% MOD 3)*2:cn%=96+(l% MOD 3)*2 ELSE nc%=96+(l% MOD 3)*2:cn%=97+(l% MOD 3)*2
 689 VPOKE &H1800+sa%*2+1+sb%*32,NC%:VPOKE &H1800+sa%*2+2+sb%*32,CN%
 690 if pb%=11 THEN sc=sc+10*bc%*2 ELSE sc=sc+10*bc%
