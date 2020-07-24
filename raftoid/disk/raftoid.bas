@@ -14,7 +14,7 @@
 120 if pc%=0 then goto 130
 121 py%=py%+1
 122 if py%>184 THEN py%=0:pc%=0:px%=200
-123 if py%>172 AND py%<184 AND px%>x-15 AND px%<x+32 then GOSUB 550
+123 if py%>172 AND py%<184 AND px%>x-15 AND px%<x+32 GOSUB 550
 130 x=x+ax
 131 ax=ax*0.9
 132 if x<8 then x=8:ax=0
@@ -24,9 +24,9 @@
 150 bx=bx+vx
 300 if bx>178 THEN bx=178:vx=-vx
 310 if bx<8 THEN bx=8:vx=-vx
-321 if by>184 THEN goto 600
+321 if by>184 goto 600
 330 if by<8 THEN by=8: vy=-vy
-340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 then GOSUB 500
+340 if by>170 AND by<180 AND bx>x-7 AND bx<x+32 GOSUB 500
 360 ' Drawing step
 361 put sprite 4,(bx,by),pb%,0
 362 put sprite 1,(x,170),15,1
@@ -69,13 +69,13 @@
 602 put sprite 3,(0,0),0,0
 603 put sprite 1,(0,0),0,0
 604 put sprite 2,(0,0),0,0
-605 if pl%=0 then GOTO 2500
+605 if pl%=0 GOTO 2500
 606 ' Move the pad to the center
 607 if x>=87 THEN x=x-0.5 
 608 if x=<85 THEN x=x+0.5
 609 put sprite 1,(x,170),15,1
 610 put sprite 2,(x+16,170),15,2
-611 if x>=87 OR x<=85 THEN GOTO 607
+611 if x>=87 OR x<=85 GOTO 607
 612 pl%=pl%-1
 613 TX%=24+(pl% MOD 3)*2:TY%=8+(pl%)\3
 614 FOR j=60 to 63
@@ -93,11 +93,11 @@
 652 if bc%>7 THEN bb%=0:xb%=sa%*16+8:yb%=sb%*8:cb%=15
 653 if bc%=9 THEN RETURN
 655 if bc%=8 THEN nc%=7
-656 IF nc%=1 THEN GOTO 680
+656 IF nc%=1 GOTO 680
 660 VPOKE &H1800+sa%*2+1+sb%*32,nc%*2+8:VPOKE &H1800+sa%*2+2+sb%*32,nc%*2+8+1
 670 RETURN
 680 NB%=NB%-1
-681 if pc%=0 AND rnd(time)>0.8 THEN GOSUB 700
+681 if pc%=0 AND rnd(time)>0.8 GOSUB 700
 685 if pb%=8 THEN IF sb%=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb% MOD 2 = 0 THEN nc%=97+(l% MOD 3)*2:cn%=96+(l% MOD 3)*2 ELSE nc%=96+(l% MOD 3)*2:cn%=97+(l% MOD 3)*2
 689 VPOKE &H1800+sa%*2+1+sb%*32,NC%:VPOKE &H1800+sa%*2+2+sb%*32,CN%
@@ -115,7 +115,7 @@
 
 777 'Update and display score
 780 if sc>1000 then sd=sd+1:sc=sc-1000:se%=1
-785 if se%=0 THEN GOTO 790
+785 if se%=0 GOTO 790
 786 TS$=STR$(sd):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=27-LEN(T$):TY%=2:se%=0:GOSUB 9090
 787 if sd>=nl% THEN pl%=pl%+1:nl%=nl%*2:GOSUB 4300
 788 T$="000":TY%=2:TX%=27:GOSUB 9090
