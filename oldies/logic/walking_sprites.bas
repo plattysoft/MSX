@@ -1,5 +1,5 @@
 10 COLOR 15,1,1
-20 screen 2,2,1
+20 screen 2,2,0
 100 FOR K=1 TO 4 :B$="":FORI=1TO 32 :READ A$:A=VAL("&H"+A$):B$=B$+CHR$(A):NEXTI:SPRITE$ (K)=B$:NEXTK
 
 190 PS=1:X=100
