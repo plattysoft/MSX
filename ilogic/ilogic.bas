@@ -23,7 +23,7 @@
 300 'End of movement loop 
 301 'Check for floor tiles at 3 points under the sprite Y+16,(X, X+8, X+15)'
 310 Y=Y+VY
-320 IF FN FF(X,Y+16)=1 OR FN FF(X+8,Y+16)=1 OR FN FF(X+15,Y+16)=1 THEN VY=0:Y=Y\8 ELSE VY=VY+1:IF VY>8 THEN VY=8
+320 IF FN FF(X,Y+16)=1 OR FN FF(X+8,Y+16)=1 OR FN FF(X+15,Y+16)=1 THEN VY=0:Y=Y - (Y MOD 8) ELSE VY=VY+1:IF VY>8 THEN VY=8
 390 PUT SPRITE 0,(X, Y),6,PS
 399 GOTO 200
 
