@@ -1,9 +1,9 @@
 PROJECT
 SCREEN
-ilogic.scr
+l_test.scr
 TILES
 ilogic.til
-ONEBANK
+ALLBANKS
 PALETTE
 ilogic.pal
 END
