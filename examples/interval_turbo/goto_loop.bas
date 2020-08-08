@@ -1,4 +1,5 @@
-1 SPRITE$(1) = "DDDDDDDD"
+1 SCREEN 2
+2 SPRITE$(1) = "DDDDDDDD"
 3 DEFINT x,y
 4 x=0:y=0
 
@@ -9,4 +10,5 @@
 150 if s=7 THEN x=x-1
 160 put sprite 0, (x,y), 1, 1
 170 FOR i=0 to 100:NEXT i
+      
 400 GOTO 110
