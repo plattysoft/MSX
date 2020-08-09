@@ -3,11 +3,8 @@ GAME_NAME=ilogic
 
 rm -Rf dist
 mkdir dist
-cp *.scr dist
-cp *.sc2 dist
-cp $GAME_NAME.bas dist/
-cp *.bin dist/
-cp loader.bas dist/autoexec.bas
+cp src/* dist
+mv dist/loader.bas dist/autoexec.bas
 
 (
   echo "<command>set power off</command>";
@@ -17,4 +14,5 @@ cp loader.bas dist/autoexec.bas
   echo "<command>exit</command>"
 ) | openmsx -control stdio
 
-dsk2rom -afc 1 $GAME_NAME.dsk $GAME_NAME.rom 
+dsk2rom -afc 1 output/$GAME_NAME.dsk output/$GAME_NAME.rom 
+
