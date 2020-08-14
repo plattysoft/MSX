@@ -5,7 +5,7 @@ rm -Rf dist
 mkdir dist
 cp src/* dist
 mv dist/loader.bas dist/autoexec.bas
-
+cd dist
 (
   echo "<command>set power off</command>";
   echo "<command>diskmanipulator create $GAME_NAME.dsk 720</command>";
