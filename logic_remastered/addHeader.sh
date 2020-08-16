@@ -5,4 +5,5 @@ for x in map_*; do
 done
 cat header_full.bin>src/start.scr
 cat map_10_0>>src/start.scr
+cat header_full.bin>src/frame.scr
 cat map_10_1>>src/frame.scr
