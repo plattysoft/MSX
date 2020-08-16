@@ -1,9 +1,4 @@
-10 COLOR 15,1,1
-20 screen 2,2,0
-30 BLOAD "logic_r.sc2",s
 40 defint A-Z
-50 BLOAD "sprites.bin",S
-60 FOR I=0 TO 31:PUT SPRITE I,((I MOD 16)*20,132+(I\16)*16),0,0:NEXT I
 70 GOTO 900
 110 DEF FN FF(X,Y)=VPEEK(&H1800+X\8+(Y\8)*32)
 120 R=0:C=0
