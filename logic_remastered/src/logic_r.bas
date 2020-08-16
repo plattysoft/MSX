@@ -3,7 +3,6 @@
 110 DEF FN FF(X,Y)=VPEEK(&H1800+X\8+(Y\8)*32)
 120 R=0:C=0
 130 'LOAD THE GAME FRAME (room 0_0 has the complete header for screen)
-130 BLOAD "frame.scr",S
 150 SJ=0:PS%=0:SX=46:SY=80:SV=0:TH=0:TV=0	
 
 151 R$=STR$(R): R$=RIGHT$(R$,LEN(R$)-1)
