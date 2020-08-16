@@ -1,0 +1,9 @@
+PROJECT
+SCREEN
+start.scr
+TILES
+logic_r.til
+ALLBANKS
+PALETTE
+logic_r.pal
+END
