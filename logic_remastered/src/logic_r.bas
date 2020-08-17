@@ -1,8 +1,9 @@
 40 defint A-Z
 70 GOTO 900
 110 DEF FN FF(X,Y)=VPEEK(&H1800+X\8+(Y\8)*32)
-120 R=0:C=0
+120 R=0:C=0:PL=9
 130 'LOAD THE GAME FRAME (room 0_0 has the complete header for screen)
+130 'bload"frame.scr",S
 150 SJ=0:PS%=0:SX=46:SY=80:SV=0:TH=0:TV=0	
 
 151 R$=STR$(R): R$=RIGHT$(R$,LEN(R$)-1)
@@ -10,7 +11,7 @@
 154 BLOAD "map_"+C$+"_"+R$+".scr",S
 155 GOSUB 670
 
-160 call turbo ON(SX,SY,SV,SJ,R,C)
+160 call turbo ON(SX,SY,SV,SJ,R,C,PL)
 161 'Load enemies for this room
 162 DIMAE(3):DIMDE(3):DIMPO(3):DIMTE(3):DIMMM(3):DIMMN(3):DIMME(3):DIMPM(3):DIMPI(3):DIMCE(3)
 163 RESTORE 850
@@ -90,7 +91,11 @@
 499 GOTO 200
 
 500 'Lost a life (TODO)
-540 GOTO 199
+501 PL=PL-1
+502 IF PL=-1 THEN R=3:C=10:GOTO 700
+503 'Update lifes UI
+505 VPOKE &H1AC6,48+PL
+510 GOTO 199
 
 541 'Sprite collision, lose a life
 541 PUT SPRITE 0,(0,0),0,0
@@ -130,10 +135,15 @@
 701 FOR I=0 TO 4:PUT SPRITE I,(I*20,132),0,0:NEXT I
 705 SPRITE OFF
 710 SX=X:SY=Y:SV=VY:SJ=PJ
-720 call turbo off
+720 CALL TURBO OFF
+730 IF C=10 GOTO 800
 790 GOTO 151
 
 800 'Game Over Screen
+800 BLOAD "over.scr",S
+810 IF INKEY$<>"" GOTO 810
+820 IF INKEY$="" GOTO 820
+830 GOTO 900
 
 850 'Ending Screen
 
