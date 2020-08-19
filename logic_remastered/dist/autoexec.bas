@@ -1,7 +1,6 @@
-10 color 2,1,1
+10 COLOR 2,1,1
 20 SCREEN 2,2,0
-30 'bload "raftoid.sc2",S
-50 bload "xbasic.bin",R
-70 ' Disable turbo if the machine is a MSX turbo
-80 '#I &H3A, &H2D, &H00, &HFE, &H03, &H3E, &H80, &HCC, &H80, &H01
-90 load "logic_r.bas",R
+30 BLOAD "logic_r.sc2",s
+50 BLOAD "xbasic.bin",R
+60 BLOAD "sprites.bin",S
+90 LOAD "logic_r.bas",R
