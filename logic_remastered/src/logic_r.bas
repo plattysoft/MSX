@@ -127,7 +127,7 @@
 665 RETURN
 
 670 'Remap those tiles to empty (read the info from invisible bricks)
-670 L=VPEEK(&H1801)-3
+670 L=VPEEK(&H1800)-23
 671 IF L<=0 THEN RETURN
 672 K=VPEEK(&H1A40+2*L)
 680 IF K<31 OR K>200 THEN RETURN
