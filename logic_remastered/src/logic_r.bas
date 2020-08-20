@@ -186,7 +186,8 @@
 990 IF STRIG(0) THEN S=0: GOTO 120
 991 IF STRIG(1) THEN S=1: GOTO 120
 992 ' If trick is enabled, show the feedback on screen
-997 IF TIME<5 GOTO 990
+993 IF TIME<5 GOTO 990
+997 IF INKEY$="O" THEN run"logic_o.bas"
 998 IF INKEY$="R" THEN TR=1
 999 GOTO 940
 
