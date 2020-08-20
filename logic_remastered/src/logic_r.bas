@@ -7,7 +7,7 @@
 
 151 R$=STR$(R): R$=RIGHT$(R$,LEN(R$)-1)
 152 C$=STR$(C): C$=RIGHT$(C$,LEN(C$)-1)
-153 IF R=0 AND C=9 GOTO 850
+153 IF R=0 AND C=0 GOTO 850
 154 BLOAD "map_"+C$+"_"+R$+".scr",S
 155 GOSUB 670
 
