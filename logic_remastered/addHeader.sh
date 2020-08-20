@@ -14,3 +14,4 @@ cat map_10_2>>src/loading.scr
 cat header_full.bin>src/over.scr
 cat map_10_3>>src/over.scr
 rm src/map_10*
+rm map_*
