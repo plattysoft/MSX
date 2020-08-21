@@ -9,9 +9,9 @@ Armed with his legs, thrusters and determination, he needs to exit the facility.
 
 ## Contols
 
-Left-Right: Walk / Glide (while in the air)
-Up: Long jump
-Down: Short jump
+* Left-Right: Walk / Glide (while in the air)
+* Up: Long jump
+* Down: Short jump
 
 ## Environment
 
