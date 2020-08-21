@@ -15,9 +15,9 @@ Armed with his legs, thrusters and determination, he needs to exit the facility.
 
 ## Environment
 
-Yellow Bricks: Instant death
-Convoy belts: They move you in the direction of the arrows
-Keys / Locks:
+* Yellow Bricks: Instant death
+* Convoy belts: They move you in the direction of the arrows
+* Keys / Locks:
 
 ## Play
 
