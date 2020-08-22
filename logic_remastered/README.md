@@ -1,11 +1,14 @@
 ## Story
 
-Booting sequence completes... he is on a room on an undisclosed location and one simple goal instructed: Get Out.
-This is probably related to its request to be included on a newer A
-Little android LOGIC now has a mission, it needs to prove that his AI is up to the task.
-This is probably just a test scenario, but it looks deadly too. He knows there are keys and locks and that one lock is in disguise. It is all part of the job.
+Booting sequence completed... Little android LOGIC finds itself on a room on an unknown location, all his communications are offline and one simple directive in its program: Get Out.
 
-Armed with his legs, thrusters and determination, he needs to exit the facility.
+This is probably related to its request to be promoted to PGD-4: planners and goal driven droids - Level 4. It was the closest thing to a promotion. It sounded like a good idea back then. Now, not so much. This is probably just a test scenario, but it looks deadly too.
+
+Anyway, LOGIC has a mission, and not much of a choice, so better get moving...
+
+Armed with his just its legs, thrusters, wits and determination, it started exploring the complex.
+
+LOGIC jumped across countless pits, went to the deeper levels of the complex, dodged many foes, avoided deadly traps, run against convoy belts, made it back, found the hidden lock and finally got the key to the main door and succeeded on his trial with sweat and blood, if robots could have such fluids.
 
 ## Contols
 
