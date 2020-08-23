@@ -13,9 +13,10 @@ Editors
 * Sublime text plugin: https://github.com/farique1/MSX-Sublime-Tools
 
 Emulators
-* MSXPen, An online emulator with editor https://msxpen.com/
+* MSXPen, An online emulator with editor (based on WebMSX) https://msxpen.com/
 * OpenMSX: Good emulator for programming: https://openmsx.org/
 * fMSX: Good emulator for loading games easily: https://fms.komkon.org/fMSX/
+* WebMSX: A great way to try out dsk or ROM images: http://webmsx.org
 
 MSX Tools
 * MSX-Basic-Kun compiler: https://konamiman.github.io/MSX2-Technical-Handbook/md/KunBASIC.html
@@ -25,6 +26,9 @@ Tools
 * Online image converter: to load an image from disk: http://msx.jannone.org/conv/
 * nMSXTiles, tile editor: https://github.com/pipagerardo/nMSXtiles
 * Gimp plugin to export images: https://gimp-msx-plugins.readthedocs.io/en/latest/
+
+Libraries:
+* Fusion-C: A library to make MSX Games in C: https://github.com/ericb59/Fusion-C-v1.2
 
 Documentations
 * MSX Basic documentation and forums: https://www.msx.org/
