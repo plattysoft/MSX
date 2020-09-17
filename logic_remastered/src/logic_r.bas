@@ -1,21 +1,23 @@
 100 defint A-Z
 
+110 'Load start screen
 110 GOTO 900
 
 120 FOR I=0 TO 31:PUT SPRITE I,((I MOD 16)*20,164+(I\16)*16),0,0:NEXT I
 130 R=0:C=0:PL=9
 140 SS=0:SJ=0:PS%=0:SX=46:SY=80:SV=0:TH=0:TV=0
 
+151 'Load the room at Row R and Column C
 151 IF R=0 AND C=9 GOTO 850
 154 BLOAD "map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr",S
 155 VPOKE &H1AC6,48+PL
 156 GOSUB 670
 
 160 call turbo ON(SX,SY,SV,SJ,R,C,PL,S,TR,SS)
-161 'Load enemies for this room
 161 DIMAE(3):DIMDE(3):DIMPO(3):DIMTE(3):DIMMM(3):DIMMN(3):DIMME(3):DIMPM(3):DIMPI(3):DIMCE(3)
 162 ON SPRITE GOSUB 541
 
+170 'Load enemies for this room
 170 RESTORE 1000
 171 IF R=0 GOTO 173
 172 FOR I=1 TO R:FOR K=1 TO 10:READ E:FOR J=1 TO E:READ E,E,E,E,E,E,E,E,E,E:NEXT J:NEXT K:NEXT I
@@ -25,6 +27,7 @@
 
 199 X=SX:Y=SY:VY=SV:PJ=SJ:TH=0:TV=0:PS=SS:SPRITE ON
 
+200 ' Game loop
 200 TIME=0
 201 ON STICK(S) GOTO 210,220,230,240,250,260,270,280
 209 GOTO 300
@@ -57,9 +60,8 @@
 282 PS%=2:IF VPEEK(&H1800+X\8+((Y+12)\8)*32)=0 AND TH=0 AND VPEEK(&H1800+X\8+((Y+2)\8)*32)=0 THEN X=X-4 ELSE X=(X\4)*4+2
 289 GOTO 300
 
-300 'End of movement loop 
-301 'Check for floor tiles at 3 points under the sprite Y+16,(X, X+8, X+15)'
-310 Y=Y+VY%
+300 'Collisions: Check for floor tiles at 3 points under the sprite Y+16,(X, X+8, X+15)'
+300 Y=Y+VY%
 320 IF VY%<0 GOTO 340
 330 TV=VPEEK(&H1800+(X+8)\8+((Y+16)\8)*32)
 331 IF VPEEK(&H1800+(X+2)\8+((Y+16)\8)*32)>0 OR TV>0 OR VPEEK(&H1800+(X+12)\8+((Y+16)\8)*32)>0 THEN PJ%=0:VY%=0:Y=Y-(Y MOD 8) ELSE PJ%=-1:VY%=VY%+1:IF VY%>8 THEN VY%=8
@@ -82,6 +84,7 @@
 
 390 PUT SPRITE 0,(X,Y-1),6,PS%
 
+400 ' Update Enemies for the room
 400 FOR I=1 TO E
 410   IF TE(I)=1 THEN 430
 420     DE(I)=DE(I)+ME(I)
@@ -97,14 +100,15 @@
 480   PUT SPRITE I,(DE(I)+8,AE(I)-16),CE(I),PO(I)-1
 481 NEXT I
 
+490 ' Sync timing with VDP for accurate and reliable speed
 490 IF TIME<5 GOTO 490
 499 GOTO 200
 
 530 'Lost a life
-531 IF TR=0 THEN PL=PL-1
+530 IF TR=0 THEN PL=PL-1
 532 IF PL=-1 THEN R=3:C=10:GOTO 700
 533 'Update lifes UI
-534 VPOKE &H1AC6,48+PL
+533 VPOKE &H1AC6,48+PL
 535 K=11
 536 TIME=0
 537 K=K+1: IF K=19 THEN 199
@@ -112,7 +116,7 @@
 539 IF TIME<10 THEN 539 ELSE 536
 
 541 'Sprite collision, lose a life
-542 SPRITE OFF
+541 SPRITE OFF
 549 RETURN 530
 
 550 'Get a key
@@ -134,7 +138,7 @@
 664 GOSUB 670
 665 RETURN
 
-670 'Remap those tiles to empty (read the info from invisible bricks)
+670 'Remap tiles of opened doors (info is read from an invisible tile)
 670 L=VPEEK(&H1800)-23
 671 IF L<=0 THEN RETURN
 672 K=VPEEK(&H1A40+2*L)
@@ -175,6 +179,7 @@
 871 IF INKEY$="" GOTO 871
 875 GOTO 900
 
+890 'Writing text on Screen subroutine
 890 FOR I=1 TO LEN(T$)
 891   CT$=MID$(T$,i,1)
 892   VPOKE &H1800+TX+TY*32+I,ASC(CT$)+159
@@ -193,7 +198,7 @@
 990 IF STRIG(0) THEN S=0: GOTO 120
 991 IF STRIG(1) THEN S=1: GOTO 120
 992 ' If trick is enabled, show the feedback on screen
-993 IF TIME<5 GOTO 990
+992 IF TIME<5 GOTO 990
 997 IF INKEY$="O" THEN run"logic_o.bas"
 998 IF INKEY$="R" THEN TR=1
 999 GOTO 940
