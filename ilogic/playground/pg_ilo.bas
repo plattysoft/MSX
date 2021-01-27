@@ -56,8 +56,9 @@
 380 ' Move to another room
 380 IF X>234 THEN X=6:C=C+1:GOTO 550
 381 IF X<6 THEN X=234:C=C-1:GOTO 550
-382 IF Y>104 THEN Y=4:R=R+1:GOTO 550
-383 IF Y<4 THEN Y=104:R=R-1:GOTO 550
+392 ' We substract VY from the desired Y position to be compensated on next loop
+382 IF Y>104 THEN Y=8-VY%:R=R+1:GOTO 550
+383 IF Y<8 THEN Y=104-VY%:R=R-1:GOTO 550
 390 PUT SPRITE 0,(X,Y-1),6,PS%
 
 400 IF STRIG(0)=-1 AND PJ%=0 THEN GOSUB 600
