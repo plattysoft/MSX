@@ -1,6 +1,8 @@
 10 COLOR 2, 1, 1
-11 call TURBO ON
-20 SCREEN 2
+11 SCREEN 2,2,0
+20 call TURBO ON
+30 DEFINT A-Z
+
 100 FOR j=0 to 63
 110   READ R
 120   VPOKE j, R
@@ -35,7 +37,7 @@
 701 for y=0 to 22
 702   for x=0 to 31
 703     t = VPEEK (&H1800+x+(y+1)*32)
-704     VPOKE &H1800+x+y*32, t
+704     IF VPEEK(&H1800+X+Y*32) <> T THEN VPOKE &H1800+x+y*32, t
 705   next x
 706 next y
 708 for x=0 to 31
@@ -45,11 +47,14 @@
 
 750 ' MOVING RIGHT
 751 for y=0 to 23
-752   for x=0 to 31
-753     t = VPEEK (&H1800+x+y*32)
+752   for x=31 to 1 STEP -1
+753     t = VPEEK (&H17FF+x+y*32)
 754     VPOKE &H1800+x+y*32, t
 755   next x
 756 next y
+757 for Y=0 to 23
+758   VPOKE &H1800+y*32, RND(1)*8
+759 NEXT Y
 760 RETURN
 
 800 ' MOVING DOWN
@@ -66,11 +71,15 @@
 
 850 ' MOVING LEFT
 851 for y=0 to 23
-852   for x=0 to 31
-853     t = VPEEK (&H1800+x+y*32)
+852   for x=0 to 30
+853     t = VPEEK (&H1801+x+y*32)
 854     VPOKE &H1800+x+y*32, t
 855   next x
 856 next y
+857 for Y=0 to 23
+858   VPOKE &H181F+y*32, RND(1)*8
+859 NEXT Y
+
 860 RETURN
 
 990 goto 990
