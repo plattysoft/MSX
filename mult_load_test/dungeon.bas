@@ -35,10 +35,10 @@
 
 700 'Move to another room
 710 SX=X:SY=Y
-720 CALL TURBO ON(R,C)
+720 'CALL TURBO ON(R,C)
 751 A$=CHR$(34)+"map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr"+CHR$(34)+",S"+CHR$(0)
 755 '#I &h21,A$,&h23,&hdd,&h2a,&hCA,&h39,&hcd,&h59,&h01
-756 CALL TURBO OFF
-757 'BLOAD A$
+756 'CALL TURBO OFF
+757 BLOAD "map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr",S
 789 X=SX:Y=SY
 790 GOTO 200
