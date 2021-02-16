@@ -199,6 +199,7 @@
 991 IF STRIG(1) THEN S=1: GOTO 120
 992 ' If trick is enabled, show the feedback on screen
 992 IF TIME<5 GOTO 990
+995 run "intro.bas"
 997 IF INKEY$="O" THEN run"logic_o.bas"
 998 IF INKEY$="R" THEN TR=1
 999 GOTO 940
