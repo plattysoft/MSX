@@ -1,3 +1,4 @@
+600 COLOR 2.1.1
 700 SCREEN 2,1
 800 BLOAD "logic_r.sc2",S
 809 'There are only capital letters on the font, need to update the strings
