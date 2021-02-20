@@ -12,4 +12,4 @@ A flappy bird style game for MSX
 * Music?
 
 Try current version:
-https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/plaffy_patastrato/output/flappy_patastrato.rom&MACHINE=MSX1E
+https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/flappy_patastrato/output/flappy_patastrato.rom&MACHINE=MSX1E
