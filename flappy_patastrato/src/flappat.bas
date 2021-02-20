@@ -33,7 +33,7 @@
 160 BS=BS+1
 170 IF BS=16 THEN BS=0
 180 'REMAP THE BRICKS
-181 aa=aa*2:ab=ab*2
+181 aa=aa*4:ab=ab*4
 182 if aa=256 THEN aa=0:ab=1
 183 if ab=256 THEN ab=0:aa=1
 190 VPOKE 1, aa: VPOKE 4097, aa: VPOKE 9, ab: VPOKE 4105, ab
