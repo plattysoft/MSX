@@ -10,3 +10,6 @@ A flappy bird style game for MSX
 * UI for game screen
 * Proper game over animation
 * Music?
+
+Try current version:
+https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/flappy_patastrato/output/flappy_patastrato.dsk&MACHINE=MSX1E
