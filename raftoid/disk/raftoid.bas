@@ -89,6 +89,7 @@
 630 GOTO 100
 
 650 ' BRICK HIT at sa, sb
+650 SOUND 13, 9
 651 bc%=(v%-8)/2:nc%=1
 652 if bc%>7 THEN bb%=0:xb%=sa%*16+8:yb%=sb%*8:cb%=15
 653 if bc%=9 THEN RETURN
@@ -311,6 +312,16 @@
 6064   NEXT I
 6065   SPRITE$(S)=A$
 6066 NEXT S
+6070 ' Init PSG
+6071 SOUND 0,&hAC ' 8 least significant bits of frequency on channel A
+6072 SOUND 1,1 ' 4 most significant bits of frequency on channel A
+
+6073 SOUND 8,&b11100 ' Sets the volume to 12 on channel A -> R2quired for envelope!!
+6074 SOUND 12,16
+6075 SOUND 11,1
+6076 SOUND 13, 9
+6077 SOUND 7,&b10111110
+
 6090 RETURN
 
 6100 ' Ball sprite
