@@ -185,13 +185,6 @@
 850 'Ending Screen
 850 run "ending.bas
 
-890 'Writing text on Screen subroutine
-890 FOR I=1 TO LEN(T$)
-891   CT$=MID$(T$,i,1)
-892   VPOKE &H1800+TX+TY*32+I,ASC(CT$)+159
-893 NEXT I
-894 RETURN
-
 900 'Start New Game Screen
 900 run "intro.bas
 
