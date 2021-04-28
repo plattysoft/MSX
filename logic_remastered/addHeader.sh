@@ -7,8 +7,8 @@ cat header_full.bin>src/map_0_0.scr
 cat map_0_0>>src/map_0_0.scr
 cat header_full.bin>src/start.scr
 cat map_10_0>>src/start.scr
-cat header_full.bin>src/end.scr
-cat map_10_1>>src/end.scr
+cat header_full.bin>src/demo.scr
+cat map_10_1>>src/demo.scr
 cat header_full.bin>src/loading.scr
 cat map_10_2>>src/loading.scr
 cat header_full.bin>src/over.scr
