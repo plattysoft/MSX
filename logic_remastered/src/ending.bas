@@ -1,8 +1,3 @@
-1 COLOR 2,1,1
-2 SCREEN 2,2,0
-3 BLOAD "logic_r.sc2",S
-4 BLOAD "sprites.bin",S
-
 50 SOUND 8,&b00000
 60 SOUND 1,0:SOUND 0,0
 70 SOUND 11,0

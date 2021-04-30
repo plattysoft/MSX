@@ -1,7 +1,3 @@
-1 'COLOR 2,1,1
-2 'SCREEN 2,2,0
-3 'BLOAD "logic_r.sc2",S
-4 'BLOAD "sprites.bin",S
 10 STRIG(0) ON: STRIG(1) ON
 
 50 SOUND 8,&b00000
