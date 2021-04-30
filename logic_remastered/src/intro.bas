@@ -21,12 +21,12 @@
 181 IF I=20 THEN J=1
 185 NT=TIME+5
 190 IF TIME<NT GOTO 190
-192 ' If trick is enabled, show the feedback on screen
-197 IF INKEY$="O" THEN run"logic_o.bas"
-198 IF INKEY$="R" THEN TR=1
-199 IF TIME >=500 GOTO 800 ELSE GOTO 140
-200 S=0:run"logic_r.bas
-210 S=1:run"logic_r.bas
+192 A$=INKEY$
+197 IF A$="O" THEN run"logic_o.bas"
+198 IF A$="R" THEN TR=1
+199 IF TIME >=800 GOTO 800 ELSE GOTO 140
+200 VPOKE 0,0:VPOKE 1,TR:run"logic_r.bas
+210 VPOKE 0,1:VPOKE 1,TR:run"logic_r.bas
 
 300 'Move left and RIGHT
 300 BLOAD "demo.scr",S
