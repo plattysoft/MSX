@@ -1,6 +1,6 @@
-1 COLOR 2,1,1
-2 SCREEN 2
-3 BLOAD "logic_r.sc2",S
+1 'COLOR 2,1,1
+2 'SCREEN 2
+3 'BLOAD "logic_r.sc2",S
 
 50 SOUND 8,&b00000
 60 SOUND 1,0:SOUND 0,0
@@ -8,7 +8,7 @@
 80 SOUND 8,&b11100
 90 SOUND 7,&b10111110
 
-100 'TODO: Reading the TR variable from a file
+100 TR=VPEEK(1)
 
 850 'Ending Screen
 850 BLOAD "cls.scr",S
