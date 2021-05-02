@@ -176,11 +176,11 @@
 730 IF PL<0 GOTO 800
 790 GOTO 151
 
-800 'Game Over Screen
+800 'Game Over Screen, press fire or wait 3 seconds
 800 BLOAD "over.scr",S
-810 IF INKEY$<>"" GOTO 810
-820 IF INKEY$="" GOTO 820
-830 GOTO 900
+801 TIME=0
+810 IF STRIG(0) OR STRIG(1) OR TIME>150 GOTO 900
+820 GOTO 810
 
 850 'Ending Screen
 850 run "ending.bas
