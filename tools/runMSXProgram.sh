@@ -10,6 +10,7 @@ killall openmsx
 (
   echo "<command>set renderer SDL</command>";
   echo "<command>set power on</command>";
+  echo "<command>cart ~/MSX/tools/MSX-Basic-Kun.MX1</command>";
   echo "<command>debug set_watchpoint write_mem 0xfffe {[debug read \"memory\" 0xfffe] == 0} {diska insert $WORKING_DIR}</command>";
   echo "<command>type_via_keybuf \\r\\r</command>"
   echo "<command>type_via_keybuf poke-2,0\\r</command>";
