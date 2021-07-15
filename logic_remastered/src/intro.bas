@@ -25,7 +25,8 @@
 197 IF A$="O" THEN run"logic_o.bas"
 198 IF A$="R" THEN TR=1
 199 IF TIME >=800 GOTO 800 ELSE GOTO 140
-200 VPOKE 0,0:VPOKE 1,TR:run"logic_r.bas
+200 VPOKE 0,0:VPOKE 1,TR:
+201 IF VPEEK(2)=0 THEN run"logic_n.bas" ELSE run"logic_r.bas"
 210 VPOKE 0,1:VPOKE 1,TR:run"logic_r.bas
 
 300 'Move left and RIGHT
