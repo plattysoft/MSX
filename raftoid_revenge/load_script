@@ -1,0 +1,4 @@
+<command>diskmanipulator create raftoid.dsk 720</command>
+<command>virtual_drive raftoid.dsk</command>
+<command>diskmanipulator import virtual_drive dist/</command>
+<command>exit</command>
