@@ -69,7 +69,7 @@ FILE "map.asm_9_3.plet5"
 
 151 'Load the room at Row R and Column C
 152 IF R=0 AND C=9 GOTO 850
-153 CMD WRTVRAM 2, &H1800
+153 CMD WRTVRAM C+R*10+2, &H1800
 154 'BLOAD "map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr",S
 155 VPOKE &H1AC6,48+PL
 156 GOSUB 670
