@@ -1,4 +1,3 @@
-10 call turbo on
 15 GOSUB 6000
 20 GOTO 4000
 
@@ -72,7 +71,7 @@
 605 if pl%=0 GOTO 2500
 606 ' Move the pad to the center
 607 if x>=87 THEN x=x-0.5 
-608 if x=<85 THEN x=x+0.5
+608 if x<=85 THEN x=x+0.5
 609 put sprite 1,(x,170),15,1
 610 put sprite 2,(x+16,170),15,2
 611 if x>=87 OR x<=85 GOTO 607
@@ -88,7 +87,6 @@
 621 pm%=0:ba=bx-x
 630 GOTO 100
 
-650 ' BRICK HIT at sa, sb
 650 SOUND 13, 9
 651 bc%=(v%-8)/2:nc%=1
 652 if bc%>7 THEN bb%=0:xb%=sa%*16+8:yb%=sb%*8:cb%=15
@@ -98,7 +96,8 @@
 660 VPOKE &H1800+sa%*2+1+sb%*32,nc%*2+8:VPOKE &H1800+sa%*2+2+sb%*32,nc%*2+8+1
 670 RETURN
 680 NB%=NB%-1
-685 if pc%=0 AND rnd(time)>0.8 then GOSUB 700
+681 RT=RND(TIME)
+685 if pc%=0 AND RT>0.8 then GOSUB 700
 686 if pb%=8 THEN IF sb%=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb% MOD 2 = 0 THEN nc%=97+(l% MOD 3)*2:cn%=96+(l% MOD 3)*2 ELSE nc%=96+(l% MOD 3)*2:cn%=97+(l% MOD 3)*2
 689 VPOKE &H1800+sa%*2+1+sb%*32,NC%:VPOKE &H1800+sa%*2+2+sb%*32,CN%
@@ -303,7 +302,7 @@
 4390 RETURN
 
 6000 ' LOAD SPRITES
-6010 RESTORE 6100
+6010 RESTORE 6101
 6050 SPRITE$(0)=A$
 6060 FOR S=0 TO 13
 6061   A$=""

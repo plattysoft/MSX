@@ -1,3 +1,9 @@
+10 COLOR 2,1,1
+20 SCREEN 2,2,0
+30 BLOAD "logic_r.sc2",s
+60 BLOAD "sprites.bin",S
+
+
 100 defint A-Z
 
 130 R=1:C=1
@@ -29,16 +35,28 @@
 382 IF Y>=112 THEN Y=4:R=R+1:GOTO 700
 383 IF Y<=2 THEN Y=110:R=R-1:GOTO 700
 390 PUT SPRITE 0,(X,Y-1),6,1
-490 ' Sync timing with VDP for accurate and reliable speed
 490 IF TIME<5 GOTO 490
 499 TIME=0: GOTO 200
 
 700 'Move to another room
 710 SX=X:SY=Y
-720 'CALL TURBO ON(R,C)
-751 A$=CHR$(34)+"map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr"+CHR$(34)+",S"+CHR$(0)
+720 ON R GOSUB 800,810
+751 'A$=CHR$(34)+"map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr"+CHR$(34)+",S"+CHR$(0)
 755 '#I &h21,A$,&h23,&hdd,&h2a,&hCA,&h39,&hcd,&h59,&h01
 756 'CALL TURBO OFF
-757 BLOAD "map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr",S
+757 'BLOAD "map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr",S
 789 X=SX:Y=SY
 790 GOTO 200
+
+800 ON C GOSUB 801, 802, 803, 804:RETURN
+801 BLOAD "map_0_0.scr",S: RETURN
+802 BLOAD "map_0_1.scr",S: RETURN
+803 BLOAD "map_0_2.scr",S: RETURN
+804 BLOAD "map_0_3.scr",S: RETURN
+
+810 ON C GOSUB 811, 812, 813, 814:RETURN
+811 BLOAD "map_1_0.scr",S: RETURN
+812 BLOAD "map_1_1.scr",S: RETURN
+813 BLOAD "map_1_2.scr",S: RETURN
+814 BLOAD "map_1_3.scr",S: RETURN
+
