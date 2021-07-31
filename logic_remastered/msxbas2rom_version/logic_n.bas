@@ -23,8 +23,6 @@ INCLUDE "map.inc"
 59 SOUND 8,&b11100
 
 61 DIMAE(3):DIMDE(3):DIMPO(3):DIMTE(3):DIMMM(3):DIMMN(3):DIMME(3):DIMPM(3):DIMPI(3):DIMCE(3)
-62 'VRAM position 0, 1, AND 2 hold the key state
-63 VPOKE 0,0: VPOKE 1,0: VPOKE 2,0
 
 80 GOTO 900
 
@@ -32,6 +30,8 @@ INCLUDE "map.inc"
 
 120 FOR I=0 TO 31:PUT SPRITE I,((I MOD 16)*16,164+(I\16)*16),0,0:NEXT I
 130 R=0:C=0:PL=9
+132 'VRAM position 0, 1, AND 2 hold the key state
+133 VPOKE 0,0: VPOKE 1,0: VPOKE 2,0
 140 SS=0:SJ=0:PS=0:SX=46:SY=80:SV=0:TH=0:TV=0
 
 151 'Load the room at Row R and Column C
