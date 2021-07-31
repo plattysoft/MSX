@@ -4,46 +4,7 @@ FILE "start.scr.plet5"
 FILE "over.scr.plet5"
 FILE "cls.scr.plet5"
 FILE "demo.scr.plet5"
-FILE "map.asm_0_0.plet5"
-FILE "map.asm_1_0.plet5"
-FILE "map.asm_2_0.plet5"
-FILE "map.asm_3_0.plet5"
-FILE "map.asm_4_0.plet5"
-FILE "map.asm_5_0.plet5"
-FILE "map.asm_6_0.plet5"
-FILE "map.asm_7_0.plet5"
-FILE "map.asm_8_0.plet5"
-FILE "map.asm_9_0.plet5"
-FILE "map.asm_0_1.plet5"
-FILE "map.asm_1_1.plet5"
-FILE "map.asm_2_1.plet5"
-FILE "map.asm_3_1.plet5"
-FILE "map.asm_4_1.plet5"
-FILE "map.asm_5_1.plet5"
-FILE "map.asm_6_1.plet5"
-FILE "map.asm_7_1.plet5"
-FILE "map.asm_8_1.plet5"
-FILE "map.asm_9_1.plet5"
-FILE "map.asm_0_2.plet5"
-FILE "map.asm_1_2.plet5"
-FILE "map.asm_2_2.plet5"
-FILE "map.asm_3_2.plet5"
-FILE "map.asm_4_2.plet5"
-FILE "map.asm_5_2.plet5"
-FILE "map.asm_6_2.plet5"
-FILE "map.asm_7_2.plet5"
-FILE "map.asm_8_2.plet5"
-FILE "map.asm_9_2.plet5"
-FILE "map.asm_0_3.plet5"
-FILE "map.asm_1_3.plet5"
-FILE "map.asm_2_3.plet5"
-FILE "map.asm_3_3.plet5"
-FILE "map.asm_4_3.plet5"
-FILE "map.asm_5_3.plet5"
-FILE "map.asm_6_3.plet5"
-FILE "map.asm_7_3.plet5"
-FILE "map.asm_8_3.plet5"
-FILE "map.asm_9_3.plet5"
+INCLUDE "map.inc"
 
 10 COLOR 2,1,1
 20 SCREEN 2,2,0
@@ -141,11 +102,11 @@ FILE "map.asm_9_3.plet5"
 350 IF TV<128 OR TV>142 THEN GOTO 355
 351   TH=VPEEK(&H1800+(X+16)\8+((Y+8)\8)*32)
 352   IF VPEEK(&H1800+(X+16)\8+((Y+12)\8)*32)=0 AND TH=0 AND VPEEK(&H1800+(X+16)\8+((Y+2)\8)*32)=0 THEN X=X+4 ELSE X=(X\4)*4+2
-353   GOTO 380
+353   GOTO 360
 355 IF TV<143 OR TV>157 THEN GOTO 360
 356   TH=VPEEK(&H1800+X\8+((Y+8)\8)*32)
 357   IF VPEEK(&H1800+X\8+((Y+12)\8)*32)=0 AND TH=0 AND VPEEK(&H1800+X\8+((Y+2)\8)*32)=0 THEN X=X-4 ELSE X=(X\4)*4+2
-358   GOTO 380
+358   GOTO 360
 360 IF (TV>=96 AND TV<=125) OR (TH>=96 AND TH<=125) THEN GOTO 530
 363 IF (TV>=160 AND TV<=183) OR (TH>=160 AND TH<=183) THEN GOSUB 550
 364 IF (TV>=192 AND TV<=215) OR (TH>=192 AND TH<=215) THEN GOSUB 600
