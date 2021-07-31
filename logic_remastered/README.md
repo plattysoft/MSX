@@ -24,6 +24,9 @@ LOGIC jumped across countless pits, went to the deeper levels of the complex, do
 
 ## Play
 
+Current "Good" version compiled with msxbas2rom: [Play LOGIC remastered on WebMSX](https://webmsx.org/?ROM=https://github.com/plattysoft/MSX/raw/master/logic_remastered/msxbas2rom_version/logic_n.rom&MACHINE=MSX1E) 
+
+
 Play LOGIC remastered here: https://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/master/logic_remastered/logic_rt.dsk&MACHINE=MSX1E
 
 WIP version: https://webmsx.org/?ROM=https://github.com/plattysoft/MSX/raw/master/logic_remastered/output/logic_remastered.rom&MACHINE=MSX1E
