@@ -106,7 +106,7 @@
 686 if pb%=8 THEN IF sb%=(by+3)\8 THEN vx=-vx ELSE vy=-vy
 687 if sb% MOD 2 = 0 THEN nc%=97+(l% MOD 3)*2:cn%=96+(l% MOD 3)*2 ELSE nc%=96+(l% MOD 3)*2:cn%=97+(l% MOD 3)*2
 689 VPOKE &H1800+sa%*2+1+sb%*32,NC%:VPOKE &H1800+sa%*2+2+sb%*32,CN%
-690 if pb%=11 THEN sc=sc+10*bc%*2 ELSE sc=sc+10*bc%
+690 if pb%=11 THEN sc%=sc%+10*bc%*2 ELSE sc%=sc%+10*bc%
 691 GOSUB 777
 698 IF NB%=0 THEN L%=L%+1:GOTO 800
 699 RETURN
