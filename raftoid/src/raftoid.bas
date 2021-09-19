@@ -160,17 +160,18 @@
 831 T$=STR$(L%):TX%=30-LEN(T$):TY%=20:GOSUB 9090
 832 ON L% MOD 5 GOTO 833,834,835,836,837
 833 'TODO Read levels from file instead of from DATA
+833 LF$="build.lvl":GOTO 839
 833 LF$="level_1.dat":GOTO 839
 834 LF$="level_2.dat":GOTO 839
 835 LF$="level_3.dat":GOTO 839
 836 LF$="level_4.dat":GOTO 839
 837 LF$="level_5.dat":GOTO 839
 839 NB%=0
-840 OPEN "level_1.dat" FOR INPUT AS #1
+840 OPEN LF$ FOR INPUT AS #1
 850 FOR J%=1 TO 13
 851   FOR I%=0 TO 10
 853     INPUT #1, C%
-852     IF C%>0 THEN VPOKE &H1800+i%*2+1+j%*32,c%*2+8:VPOKE &H1800+i%*2+2+j%*32,c%*2+9: IF C%<>9 THEN NB%=NB%+1
+854     IF C%>0 THEN VPOKE &H1800+i%*2+1+j%*32,c%*2+8:VPOKE &H1800+i%*2+2+j%*32,c%*2+9: IF C%<>9 THEN NB%=NB%+1
 860   NEXT I%
 861 NEXT J%
 870 CLOSE #1
