@@ -1,6 +1,6 @@
 10 BLOAD "sprites.bin",S
 30 GOTO 4000
-40 call turbo on(NB%, PL%)
+40 call turbo on(NB%, PL%, L%, SC%, SD%)
 
 51 bx=102:by=172:vx=0.5:vy=-2
 52 x=86:ax=0
@@ -133,16 +133,17 @@
 776 RETURN
 
 777 'Update and display score
-780 if sc>1000 then sd=sd+1:sc=sc-1000:se%=1
+780 if sc%>1000 then sd%=sd%+1:sc%=sc%-1000:se%=1
 785 if se%=0 GOTO 790
-786 TS$=STR$(sd):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=27-LEN(T$):TY%=2:se%=0:GOSUB 760
-787 if sd>=nl% THEN pl%=pl%+1:nl%=nl%*2:GOSUB 770
+786 TS$=STR$(sd%):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=27-LEN(T$):TY%=2:se%=0:GOSUB 760
+787 if sd%>=nl% THEN pl%=pl%+1:nl%=nl%*2:GOSUB 770
 788 T$="000":TY%=2:TX%=27:GOSUB 760
-790 TS$=STR$(sc):T$=RIGHT$(TS$,LEN(TS$)-1): TX%=30-LEN(T$):TY%=2:GOSUB 760
+790 TS$=STR$(sc%):T$=RIGHT$(TS$,LEN(TS$)-1): TX%=30-LEN(T$):TY%=2:GOSUB 760
 799 RETURN
 
 800 ' REDIRECTION FOR EXITING TURBO BLOCK
 800 CALL TURBO OFF
+801 'GAME OVER COULD BE PART OF TURBO ON
 801 IF pl%=0 GOTO 2500
 
 811 put sprite 4,(0,0),0,0
@@ -166,12 +167,12 @@
 837 LF$="level_5.dat":GOTO 839
 839 NB%=0
 840 OPEN "level_1.dat" FOR INPUT AS #1
-850 FOR J=1 TO 13
-851   FOR I=0 TO 10
-853     INPUT #1, C
-852     IF C>0 THEN VPOKE &H1800+i*2+1+j*32,c*2+8:VPOKE &H1800+i*2+2+j*32,c*2+9: IF C<>9 THEN NB%=NB%+1
-860   NEXT I
-861 NEXT J
+850 FOR J%=1 TO 13
+851   FOR I%=0 TO 10
+853     INPUT #1, C%
+852     IF C%>0 THEN VPOKE &H1800+i%*2+1+j%*32,c%*2+8:VPOKE &H1800+i%*2+2+j%*32,c%*2+9: IF C%<>9 THEN NB%=NB%+1
+860   NEXT I%
+861 NEXT J%
 870 CLOSE #1
 
 890 goto 40
@@ -257,8 +258,8 @@
 2560 T$="GAME OVER":TX%=10:TY%=5:GOSUB 9090
 2580 T$="SCORE:":TX%=5:TY%=10:GOSUB 9090
 2581 T$="000000":TX%=5:TY%=12:GOSUB 9090
-2582 TS$=STR$(sd):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=8-LEN(T$):TY%=12:GOSUB 9090
-2583 TS$=STR$(sc):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=11-LEN(T$):TY%=12:GOSUB 9090
+2582 TS$=STR$(sd%):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=8-LEN(T$):TY%=12:GOSUB 9090
+2583 TS$=STR$(sc%):T$=RIGHT$(TS$,LEN(TS$)-1):TX%=11-LEN(T$):TY%=12:GOSUB 9090
 2591 T$="STAGE:":TX%=19:TY%=10: GOSUB 9090
 2592 T$=STR$(l%):TX%=25-LEN(T$):TY%=12:GOSUB 9090
 2593 T$="PRESS ANY KEY":TX%=9:TY%=18:GOSUB 9090
@@ -267,14 +268,12 @@
 2700 GOTO 4000
 
 3900 'CLS TODO This can be done with BLOAD
-3910 FOR I=0 TO 767
-3920   VPOKE &H1800+I,59
-3930 NEXT I
+3910 BLOAD "cls.scr",S
 3950 RETURN
 
 4000 ' START SCREEN
 4002 GOSUB 3900
-4004 ' TODO INSTEAD, LOAD A .sc2 with just the name table
+4004 ' TODO INSTEAD, LOAD an .sc2 with just the name table, extract this menu to another program
 4004 for i=128 to 248
 4005   VPOKE &H1802+i,i
 4006   VPOKE &H1800+512+12+i,i
@@ -285,7 +284,7 @@
 4031 'if A$="q" then END
 4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
 4040 GOTO 4020
-4050 L%=1:sc=0:sd=0:pl%=2:nl%=5
+4050 L%=1:sc%=0:sd%=0:pl%=2:nl%=5
 4051 TX%=5:TY%=14
 4053 for k=0 to 10 
 4054   if k MOD 200=0 then  T$ = "                    ":GOSUB 9090
