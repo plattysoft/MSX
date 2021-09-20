@@ -47,7 +47,7 @@
 823     IF C>9 THEN C=0
 830     PRINT #1, C;
 840   NEXT I
-850   PRINT #1, ""
+845   PRINT #1, ""
 850 NEXT J
 860 CLOSE
 
