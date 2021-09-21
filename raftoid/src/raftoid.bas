@@ -1,6 +1,8 @@
 10 BLOAD "sprites.bin",S
-30 GOTO 4000
-40 call turbo on(NB%, PL%, L%, SC%, SD%)
+20 L%=1:sc%=0:sd%=0:pl%=2:nl%=5
+
+30 GOTO 811
+40 call turbo on(NB%, PL%, L%, SC%, SD%, NL%)
 
 51 bx=102:by=172:vx=0.5:vy=-2
 52 x=86:ax=0
@@ -150,12 +152,12 @@
 812 put sprite 1,(0,0),0,0
 813 put sprite 2,(0,0),0,0
 814 put sprite 3,(0,0),0,0
-815 GOSUB 3900
+815 BLOAD "cls.scr",S
 816 T$="STAGE:":TX%=10:TY%=8:GOSUB 9090
 817 T$=STR$(L%):TX%=16-LEN(T$):TY%=10:GOSUB 9090
 819 TIME=0
 820 IF TIME<100 GOTO 820
-829 GOSUB 3900:GOSUB 4100
+829 BLOAD "cls.scr",S:GOSUB 4100
 830 T$="STAGE:":TX%=24:TY%=18:GOSUB 9090
 831 T$=STR$(L%):TX%=30-LEN(T$):TY%=20:GOSUB 9090
 832 ON L% MOD 5 GOTO 833,834,835,836,837
@@ -255,7 +257,7 @@
 992 DATA 0,0,0,0,0,0,0,0,0,0,0
 
 2500 ' Game over screen
-2550 GOSUB 3900
+2550 BLOAD "cls.scr",S
 2560 T$="GAME OVER":TX%=10:TY%=5:GOSUB 9090
 2580 T$="SCORE:":TX%=5:TY%=10:GOSUB 9090
 2581 T$="000000":TX%=5:TY%=12:GOSUB 9090
@@ -268,31 +270,8 @@
 2691 if inkey$="" goto 2691
 2700 GOTO 4000
 
-3900 'CLS TODO This can be done with BLOAD
-3910 BLOAD "cls.scr",S
-3950 RETURN
-
 4000 ' START SCREEN
-4002 GOSUB 3900
-4004 ' TODO INSTEAD, LOAD an .sc2 with just the name table, extract this menu to another program
-4004 for i=128 to 248
-4005   VPOKE &H1802+i,i
-4006   VPOKE &H1800+512+12+i,i
-4009 next i
-4011 T$="PRESS SPACE TO START":TX%=5:TY%=14:GOSUB 9090
-4019 if inkey$<>"" goto 4019
-4020 A$=inkey$
-4031 'if A$="q" then END
-4032 if strig(0)=-1 OR strig(1)=-1 GOTO 4050
-4040 GOTO 4020
-4050 L%=1:sc%=0:sd%=0:pl%=2:nl%=5
-4051 TX%=5:TY%=14
-4053 for k=0 to 10 
-4054   if k MOD 200=0 then  T$ = "                    ":GOSUB 9090
-4055   if k MOD 200=80 then T$ = "PRESS SPACE TO START":GOSUB 9090
-4059 next k
-4080 GOSUB 800
-4090 GOTO 100
+4002 RUN"start.bas"
 
 4100 ' DRAW THE GRID TODO: This can also be done with BLOAD
 4101 RESTORE 4110
