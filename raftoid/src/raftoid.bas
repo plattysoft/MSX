@@ -1,4 +1,3 @@
-10 BLOAD "sprites.bin",S
 20 L%=1:sc%=0:sd%=0:pl%=2:nl%=5
 
 30 GOTO 811
@@ -173,7 +172,7 @@
 850 FOR J%=&H1800 TO &H19A0 STEP &H20
 851   FOR I%=1 TO 21 STEP 2
 853     INPUT #1, C%
-854     IF C%>0 THEN VPOKE j%+%i,c%*2+8:VPOKE j%+i%+1,c%*2+9: IF C%<>9 THEN NB%=NB%+1
+854     IF C%>0 THEN VPOKE j%+i%,c%*2+8:VPOKE j%+i%+1,c%*2+9: IF C%<>9 THEN NB%=NB%+1
 860   NEXT I%
 861 NEXT J%
 870 CLOSE #1

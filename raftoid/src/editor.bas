@@ -8,7 +8,7 @@
 30 FOR I=1 TO 32
 40   READ L: A$=A$+CHR$(L)
 50 NEXT I
-60 SPRITE$(64)=A$
+60 SPRITE$(63)=A$
 
 90 x=8:y=8:sa=0:sb=1
 
@@ -23,7 +23,7 @@
 250 if s=5 AND y<112 then y=y+8:sb=sb+1
 270 if s=7 and x>8 then x=x-16:sa=sa-1
 
-300 put sprite 1, (x,y-1), 15, 64
+300 put sprite 1, (x,y-1), 15, 63
 
 430 B$=inkey$
 440 if B$="0" THEN GOSUB 650
@@ -49,7 +49,9 @@
 840   NEXT I
 845   PRINT #1, ""
 850 NEXT J
-860 CLOSE
+860 RUN "raftoid.bas"
+
+870 'LOAD THE GAME IN PLAYTEST MODE
 
 1000 DATA &HE3,&H80,&H80,&H00,&H00,&H80,&H80,&HE3,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 1010 DATA &HC7,&H01,&H01,&H00,&H00,&H01,&H01,&HC7,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
