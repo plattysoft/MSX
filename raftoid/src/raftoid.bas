@@ -165,15 +165,15 @@
 831 T$=STR$(L):TX=30-LEN(T$):TY=20:GOSUB 9090
 832 ON L MOD 5 GOTO 833,834,835,836,837
 833 'TODO Read levels from file instead of from DATA
-833 LF$="build.lvl":GOTO 839
 833 LF$="level_1.dat":GOTO 839
+833 LF$="build.lvl":GOTO 839
 834 LF$="level_2.dat":GOTO 839
 835 LF$="level_3.dat":GOTO 839
 836 LF$="level_4.dat":GOTO 839
 837 LF$="level_5.dat":GOTO 839
 839 NB=0
 840 OPEN LF$ FOR INPUT AS #1
-850 FOR J=&H1800 TO &H1990 STEP &H20
+850 FOR J=&H1820 TO &H19A0 STEP &H20
 851   FOR I=1 TO 21 STEP 2
 853     INPUT #1, C
 854     IF C>0 THEN VPOKE j+i,c*2+8:VPOKE j+i+1,c*2+9: IF C<>9 THEN NB=NB+1
@@ -259,7 +259,7 @@
 991 DATA 0,0,0,0,0,0,0,0,0,0,0
 992 DATA 0,0,0,0,0,0,0,0,0,0,0
 
-2500 ' Game over screen
+2500 ' Game over screen TODO Extract
 2550 BLOAD "cls.scr",S
 2560 T$="GAME OVER":TX=10:TY=5:GOSUB 9090
 2580 T$="SCORE:":TX=5:TY=10:GOSUB 9090

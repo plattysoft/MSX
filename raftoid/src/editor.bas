@@ -1,5 +1,3 @@
-1 color 15,1,1
-10 SCREEN 2,2,0
 11 BLOAD "editor.sc2",s
 
 12 DEFINT A-Z
@@ -20,7 +18,7 @@
 
 210 if s=1 AND y>8 then y=y-8:sb=sb-1
 230 if s=3 and x<168 then x=x+16:sa=sa+1
-250 if s=5 AND y<112 then y=y+8:sb=sb+1
+250 if s=5 AND y<104 then y=y+8:sb=sb+1
 270 if s=7 and x>8 then x=x-16:sa=sa-1
 
 300 put sprite 1, (x,y-1), 15, 63
@@ -49,7 +47,7 @@
 840   NEXT I
 845   PRINT #1, ""
 850 NEXT J
-860 RUN "raftoid.bas"
+860 RUN "playlvl.bas"
 
 870 'LOAD THE GAME IN PLAYTEST MODE
 
