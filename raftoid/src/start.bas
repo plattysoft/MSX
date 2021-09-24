@@ -1,6 +1,8 @@
 10 DEFINT A-Z
 20 BLOAD "start.scr",S
 
+30 'TODO Add the Platty Animation
+
 100 Y=96
 
 4019 if inkey$<>"" goto 4019
@@ -12,6 +14,5 @@
 4132 if strig(0)=-1 OR strig(1)=-1 GOTO 4150
 4140 GOTO 4020
 4150 IF Y=112 THEN RUN"editor.bas"
-4200 L%=1:sc%=0:sd%=0:pl%=2:nl%=5
 4210 RUN "raftoid.bas"
-4300 'TODO Make an intro and allow to launch the builder
+4300 'TODO launch a tester that is not the main game.
