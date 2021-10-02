@@ -15,11 +15,12 @@
 1010 BLOAD "sprites.bin",S
 1020 FOR I=0 TO 31:PUT SPRITE I,((I MOD 16)*20,132+(I\16)*16),0,0:NEXT I
 
-1200 R=0:C=2
+1200 R=10:C=0
 
-1500 SJ=0:PS%=0:SX=46:SY=80:SV=0:TH=0:TV=0
+1500 SJ=0:PS%=0:SX=100:SY=80:SV=0:TH=0:TV=0
 1510 'MOVE TO ANOTHER ROOM
-1510 BLOAD "map_"+CHR$(C+48)+"_"+CHR$(R+48)+".scr",S
+1510 C$=STR$(C):R$=STR$(R)
+1511 BLOAD "map_"+right$(C$,len(C$)-1)+"_"+right$(R$,len(R$)-1)+".scr",S
 1520 call turbo ON(SX,SY,SV,SJ,R,C)
 
 1540 RU=VPEEK(&H1800+722)
