@@ -1,12 +1,15 @@
-11 BLOAD "editor.sc2",s
+11 'BLOAD "editor.sc2",s
 
 12 DEFINT A-Z
 
+20 'TODO Make this into the main sprite list
 20 A$=""
 30 FOR I=1 TO 32
 40   READ L: A$=A$+CHR$(L)
 50 NEXT I
 60 SPRITE$(63)=A$
+
+70 GOSUB 2000
 
 90 x=8:y=8:sa=0:sb=1
 
@@ -38,7 +41,7 @@
 699 RETURN
 
 800 ' Export level
-810 OPEN "BUILD.LVL" FOR OUTPUT AS #1
+810 OPEN LN$(CL) FOR OUTPUT AS #1
 820 FOR J=1 TO 13
 821   FOR I=0 TO 10
 822     C=(VPEEK(&H1800+I*2+1+J*32)-8)/2
@@ -53,3 +56,21 @@
 
 1000 DATA &HE3,&H80,&H80,&H00,&H00,&H80,&H80,&HE3,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
 1010 DATA &HC7,&H01,&H01,&H00,&H00,&H01,&H01,&HC7,&H00,&H00,&H00,&H00,&H00,&H00,&H00,&H00
+
+
+2000 ' Editor level selection
+2010 OPEN "RAFTOID.BLD" FOR OUTPUT AS #1: CLOSE(1)
+2011 OPEN "RAFTOID.BLD" FOR INPUT AS #1
+2020 DIM LN$(10):CL=1
+2020 ' Read 10 levels or until EOF
+2030 IF EOF(1) GOTO 2100
+2040 INPUT #1, $LN(CL)
+2050 CL=CL+1
+2060 IF CL>10 GOTO 2100
+2100 ' BLOAD the world selection screen (options open, new, delete)
+2100 CLOSE(1)
+2110 B$=inkey$
+2130 if B$="N" THEN CL=CL+1:LN$(CL)="LVL_";CHR$(CL+48);".LVL": GOTO 100
+2140 if B$>="1" AND B$<="9" THEN GOSUB 600
+2150 IF B$="S" GOTO 800
+2160 GOTO 2110
