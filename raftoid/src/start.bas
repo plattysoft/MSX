@@ -7,6 +7,7 @@
 92 STRIG(0) ON: STRIG(1) ON
 93 ON STRIG GOSUB 690, 690
 
+100 'PLATTY SOFT Intro
 100 'Prepare the initial position
 110 FOR I=0 to 3
 120  FOR K=0 TO 3
@@ -52,20 +53,20 @@
 650 TIME=0
 660 IF TIME<75 GOTO 660
 
+690 'END OF INTRO
 690 CALL TURBO OFF
 
 4000 bload "raftoid.sc2",S
 4001 BLOAD "start.scr",S
-4010 Y=96
+4010 Y=103
 
 4019 if inkey$<>"" goto 4019
 4020 S=STICK(0)
-4030 IF S=1 THEN Y=96
-4040 IF S=5THEN Y=112
-4100 put sprite 1,(40,Y),15,1
-4110 put sprite 2,(56,Y),15,2
+4030 IF S=1 THEN Y=103
+4040 IF S=5THEN Y=119
+4100 put sprite 1,(70,Y),15,15
 4132 if strig(0)=-1 OR strig(1)=-1 GOTO 4150
 4140 GOTO 4020
-4150 IF Y=112 THEN RUN"editor.bas"
+4150 IF Y=119 THEN RUN"editor.bas"
 4210 RUN "raftoid.bas"
 4300 'TODO launch a tester that is not the main game.

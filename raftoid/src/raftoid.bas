@@ -164,7 +164,7 @@
 830 T$="STAGE:":TX=24:TY=18:GOSUB 9090
 831 T$=STR$(L):TX=30-LEN(T$):TY=20:GOSUB 9090
 832 ON L MOD 5 GOTO 833,834,835,836,837
-833 'TODO Read levels from file instead of from DATA
+833 'TODO Read levels from file instead of from DATA, load the builder levels if the correct VPOKE Is set
 833 LF$="level_1.dat":GOTO 839
 833 LF$="build.lvl":GOTO 839
 834 LF$="level_2.dat":GOTO 839
