@@ -45,7 +45,7 @@
 845   PRINT #1, ""
 850 NEXT J
 860 CLOSE #1
-860 GOTO 2000
+870 GOTO 2000
 
 2000 ' Editor level selection
 2000 'BLOAD "edit_all.scr",s
