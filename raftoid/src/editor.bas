@@ -2,7 +2,7 @@
 
 12 DEFINT A-Z
 
-70 GOSUB 2000
+70 GOTO 2000
 
 90 BLOAD "editor.scr",S
 91 x=8:y=8:sa=0:sb=1
@@ -48,7 +48,7 @@
 870 GOTO 2000
 
 2000 ' Editor level selection
-2000 'BLOAD "edit_all.scr",s
+2000 BLOAD "editmenu.scr",s
 2010 OPEN "RAFTOID.BLD" FOR APPEND AS #1: CLOSE #1
 2011 OPEN "RAFTOID.BLD" FOR INPUT AS #1
 2020 DIM LN$(10):CL=0
