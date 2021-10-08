@@ -67,6 +67,5 @@
 4100 put sprite 1,(70,Y),15,15
 4132 if strig(0)=-1 OR strig(1)=-1 GOTO 4150
 4140 GOTO 4020
-4150 IF Y=119 THEN RUN"editor.bas"
+4150 IF Y=119 THEN RUN "editor.bas"
 4210 RUN "raftoid.bas"
-4300 'TODO launch a tester that is not the main game.
