@@ -56,8 +56,7 @@
 690 'END OF INTRO
 690 CALL TURBO OFF
 
-4000 'bload "raftoid.sc2",S
-4001 BLOAD "start.scr",S
+4000 BLOAD "start.scr",S
 4010 Y=103
 
 4019 if inkey$<>"" goto 4019

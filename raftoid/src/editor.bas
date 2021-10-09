@@ -1,4 +1,5 @@
 12 DEFINT A-Z
+13 OPEN "RAFTOID.BLD" FOR APPEND AS #1: CLOSE #1
 
 70 GOTO 2000
 
@@ -59,18 +60,17 @@
 
 900 ' Create empty level
 910 OPEN LN$(CL) FOR OUTPUT AS #1
-820 FOR J=0 TO 13
-821   FOR I=0 TO 11
-830     PRINT #1, 0;
-840   NEXT I
-845   PRINT #1, ""
-850 NEXT J
-860 CLOSE #1
+920 FOR J=0 TO 13
+921   FOR I=0 TO 11
+930     PRINT #1, 0;
+940   NEXT I
+945   PRINT #1, ""
+950 NEXT J
+960 CLOSE #1
 990 RETURN
 
 2000 ' Editor level selection
 2000 BLOAD "editmenu.scr",s
-2010 OPEN "RAFTOID.BLD" FOR APPEND AS #1: CLOSE #1
 2011 OPEN "RAFTOID.BLD" FOR INPUT AS #1
 2020 DIM LN$(10):CL=0
 2020 ' Read 10 levels or until EOF
@@ -81,7 +81,6 @@
 2060 IF CL<10 GOTO 2030
 2100 ' BLOAD the world selection screen (options open, new, delete)
 2100 CLOSE #1
-2110 GOSUB 8000
 2120 SS=0: Y=88: OY=80
 2200 ' TODO Use cursors to select
 2200 B$=inkey$
@@ -116,9 +115,9 @@
 3420 'DELETE
 3420 IF OY=112 GOTO 3600
 3430 'NEW
-3430 IF OY=128 THEN CL=(Y-88)/8:  LN$(CL)="STAGE_";CHR$(CL+48);".LVL":GOSUB 900: GOTO 90
-3440 'PLAY ALL: Set a flag and run raftoid
-3440 IF OY=160 GOTO 3800
+3430 IF OY=128 THEN CL=(Y-88)/8:LN$(CL)="STAGE_"+CHR$(CL+48)+".LVL":GOSUB 900:GOTO 90
+3440 'PLAY ALL: A flag was set when we launched editor, just run raftoid.bas
+3440 IF OY=160 GOTO RUN "raftoid.bas"
 3450 'BACK
 3440 IF OY=176 THEN RUN "start.bas"
 3450 GOTO 3000
