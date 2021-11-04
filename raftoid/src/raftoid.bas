@@ -1,16 +1,26 @@
 10 DEFINT A-Z
+11 DIM BB(144)
 
 20 L=1:sc=0:sd=0:pl=2:nl=5
 
 30 GOTO 811
-40 call turbo on(NB, PL, L, SC, SD, NL)
-41 DEFINT A-Z
-42 DEFSNG X
+40 call turbo on(NB, PL, L, SC, SD, NL, BB())
+41 'DIM BB(141)
+42 DEFINT A-Z
+43 DEFSNG X
 
-51 BX!=102:BY!=172:VX!=0.5:VY!=-2
-52 x=86:ax!=0
-53 px=0:py=0:pc=0:pb=15
-54 pm=0:ba=BX!-x
+49 K=1
+50 FOR J=&H1820 TO &H19A0 STEP &H20
+51   FOR I=1 TO 21 STEP 2
+53     C=BB(K):K=K+1
+54     IF C>0 THEN VPOKE j+i,c*2+8:VPOKE j+i+1,c*2+9: IF C<>9 THEN NB=NB+1
+60   NEXT I
+61 NEXT J
+
+71 BX!=102:BY!=172:VX!=0.5:VY!=-2
+72 x=86:ax!=0
+73 px=0:py=0:pc=0:pb=15
+74 pm=0:ba=BX!-x
 
 100 ' GAME LOOP
 110 s=stick(0)
@@ -163,6 +173,7 @@
 829 BLOAD "cls.scr",S:GOSUB 4100
 830 T$="STAGE:":TX=24:TY=18:GOSUB 9090
 831 T$=STR$(L):TX=30-LEN(T$):TY=20:GOSUB 9090
+832 ' IF ON PLAY ALL MODE, READ THE FILES FROM 
 832 ON L MOD 5 GOTO 833,834,835,836,837
 833 'TODO Read levels from file instead of from DATA, load the builder levels if the correct VPOKE Is set
 833 LF$="level_1.dat":GOTO 839
@@ -171,12 +182,13 @@
 835 LF$="level_3.dat":GOTO 839
 836 LF$="level_4.dat":GOTO 839
 837 LF$="level_5.dat":GOTO 839
-839 NB=0
+839 NB=0:K=1
 840 OPEN LF$ FOR INPUT AS #1
 850 FOR J=&H1820 TO &H19A0 STEP &H20
 851   FOR I=1 TO 21 STEP 2
 853     INPUT #1, C
 854     IF C>0 THEN VPOKE j+i,c*2+8:VPOKE j+i+1,c*2+9: IF C<>9 THEN NB=NB+1
+854     BB(K):K=K+1
 860   NEXT I
 861 NEXT J
 870 CLOSE #1
