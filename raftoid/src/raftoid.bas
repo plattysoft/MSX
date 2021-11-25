@@ -1,5 +1,8 @@
 10 DEFINT A-Z
 11 DIM BB(144)
+12 DIM LN$(10)
+
+13 GOSUB 900
 
 20 L=1:sc=0:sd=0:pl=2:nl=5
 
@@ -170,6 +173,7 @@
 816 T$="STAGE:":TX=10:TY=8:GOSUB 9090
 817 T$=STR$(L):TX=16-LEN(T$):TY=10:GOSUB 9090
 819 TIME=0
+830 IF VPEEK(0) = 0 THEN 832 ELSE LF$=LN$(L MOD CL): GOTO 839
 832 ' IF ON PLAY ALL MODE, READ THE FILES FROM 
 832 ON L MOD 5 GOTO 833,834,835,836,837
 833 'TODO Read levels from file instead of from DATA, load the builder levels if the correct VPOKE Is set
@@ -196,6 +200,17 @@
 
 890 goto 40
 
+900 ' Editor level selection
+911 OPEN "RAFTOID.BLD" FOR INPUT AS #1
+912 CL=0
+920 ' Read 10 levels or until EOF
+930 IF EOF(1) GOTO 990
+940 INPUT #1, LN$(CL)
+950 CL=CL+1
+960 IF CL<10 GOTO 930
+990 CLOSE #1
+999 RETURN
+
 2500 ' Game over screen TODO Extract
 2550 BLOAD "cls.scr",S
 2560 T$="GAME OVER":TX=10:TY=5:GOSUB 9090
@@ -211,7 +226,7 @@
 2700 GOTO 4000
 
 4000 ' START SCREEN
-4002 RUN"start.bas"
+4002 IF VPEEK(0)=0 THEN RUN"start.bas" ELSE RUN "editor.bas"
 
 4100 ' DRAW THE GRID TODO: This can also be done with BLOAD or turbo
 4101 RESTORE 4110
