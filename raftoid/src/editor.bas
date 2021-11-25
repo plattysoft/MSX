@@ -24,8 +24,8 @@
 430 B$=inkey$
 440 if B$="0" THEN GOSUB 650
 441 if B$>="1" AND B$<="9" THEN GOSUB 600
-450 IF B$="S" GOTO 800
-451 IF B$="B" GOTO 2000
+450 IF B$="S" OR B$="s" GOTO 800
+451 IF B$="B" OR B$="b" GOTO 2000
 500 goto 100
 
 600 VPOKE &H1800+sa*2+1+sb*32, VAL(B$)*2+8: VPOKE &H1800+sa*2+2+sb*32, VAL(B$)*2+9
