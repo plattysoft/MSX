@@ -2,7 +2,9 @@
 11 DIM BB(144)
 12 DIM LN$(10)
 
-13 GOSUB 900
+13 PUT SPRITE 1,,0: PUT SPRITE 2,,0: 
+
+14 GOSUB 900
 
 20 L=1:sc=0:sd=0:pl=2:nl=5
 
