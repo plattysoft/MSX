@@ -27,6 +27,7 @@
 74 pm=0:ba=BX!-x
 
 100 ' GAME LOOP
+100 TIME=0
 110 s=stick(0)
 111 if s=3 then ax!=ax!+0.5
 112 if s=7 then ax!=ax!-0.5
@@ -68,6 +69,7 @@
 420 v=VPEEK(&H1800+sa*2+1+sb*32)
 421 if v>9 AND v<48 THEN VY!=-VY!:GOSUB 650
 
+440 IF TIME<1 GOTO 440
 450 goto 100
 
 499 'Range of hit is from x-7, x+32. Mapped to d into (-20, 19)
