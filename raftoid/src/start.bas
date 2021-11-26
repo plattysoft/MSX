@@ -9,6 +9,12 @@
 
 100 'PLATTY SOFT Intro
 100 'Prepare the initial position
+
+102  FOR J=1 TO 31
+103   FOR K=0 TO &H300 STEP &H100
+104    VPOKE &HCBF+J+K, 0
+105   NEXT K
+
 110 FOR I=0 to 3
 120  FOR K=0 TO 3
 121   VPOKE &H1800+262+I+K*32,152+I*32+K
