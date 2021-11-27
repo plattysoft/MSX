@@ -23,7 +23,7 @@
 60   NEXT I
 61 NEXT J
 
-71 BX!=102:BY!=172:VX!=0.5:VY!=-2
+71 rnd(-TIME):BX!=102:BY!=172:VX!=0.5:VY!=-2
 72 x=86:ax!=0
 73 px=0:py=0:pc=0:pb=15
 74 pm=0:ba=BX!-x
@@ -125,7 +125,7 @@
 660 VPOKE &H1800+sa*2+1+sb*32,nc*2+8:VPOKE &H1800+sa*2+2+sb*32,nc*2+8+1
 670 RETURN
 680 NB=NB-1
-685 if pc=0 AND rnd(time)>0.8 then GOSUB 700
+685 if pc=0 AND rnd(1)>0.8 then GOSUB 700
 686 if pb=8 THEN IF sb=(BY!+3)\8 THEN VX!=-VX! ELSE VY!=-VY!
 687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
 689 VPOKE &H1800+sa*2+1+sb*32,NC:VPOKE &H1800+sa*2+2+sb*32,CN
@@ -136,7 +136,7 @@
 
 700 'POWERUP falls
 710 px=(sa*16)+8:py=sb*8
-720 PR!=rnd(time)
+720 PR!=rnd(1)
 730 if PR!<0.3 THEN pc=11:RETURN
 740 if PR!<0.6 THEN pc=8:RETURN
 750 pc=7:RETURN
