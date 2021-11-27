@@ -23,7 +23,7 @@
 60   NEXT I
 61 NEXT J
 
-71 rnd(-TIME):BX!=102:BY!=172:VX!=0.5:VY!=-2
+71 PR=RND(-TIME):BX!=102:BY!=172:VX!=0.5:VY!=-2
 72 x=86:ax!=0
 73 px=0:py=0:pc=0:pb=15
 74 pm=0:ba=BX!-x
@@ -128,7 +128,7 @@
 685 if pc=0 AND rnd(1)>0.8 then GOSUB 700
 686 if pb=8 THEN IF sb=(BY!+3)\8 THEN VX!=-VX! ELSE VY!=-VY!
 687 if sb MOD 2 = 0 THEN nc=97+(l MOD 3)*2:cn=96+(l MOD 3)*2 ELSE nc=96+(l MOD 3)*2:cn=97+(l MOD 3)*2
-689 VPOKE &H1800+sa*2+1+sb*32,NC:VPOKE &H1800+sa*2+2+sb*32,CN
+689 VPOKE &H1800+sa*2+1+sb*32,CN:VPOKE &H1800+sa*2+2+sb*32,NC
 690 if pb=11 THEN sc=sc+10*bc*2 ELSE sc=sc+10*bc
 691 GOSUB 777
 698 IF NB=0 THEN L=L+1:GOTO 800
