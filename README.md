@@ -5,7 +5,7 @@ playing around with MSX Basic. It is a bit of a mess, but there a few interestin
 * Raftoid: Arkanoid / Breakout style concept with a level editor (MSXDev 2020)
 * LOGIC: Platformer (MSXDev 2021)
 
-# PoCs
+## PoCs
 * Isometric engine PoC
 * Flappy bird concept
 * Smooth Scrolling test using the VPD and remapping the VRAM
