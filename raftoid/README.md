@@ -4,6 +4,10 @@ The era and time of this story is mostly unknown.
 After contact was lost with the mother ship "Arkanoid", a search and rescue ship "Raftoid" was sent
 It took many years to arrive at the place, only to be warped in space too, just a little diffent this time
 
+# Raftoid now has a level editor!
+
+Try it out here: https://webmsx.org/?MACHINE=MSX1&DISK=https://github.com/plattysoft/MSX/blob/master/raftoid/output/raftoid.dsk?raw=true
+
 # Intro
 
 Raftoid is an Arkanoid-style game written in MSX Basic
