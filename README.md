@@ -1,13 +1,23 @@
 # MSX
-playing around with MSX Basic
+playing around with MSX Basic. It is a bit of a mess, but there a few interesting projects
 
-* Arkanoid / Breakout style concept
+## Full games
+* Raftoid: Arkanoid / Breakout style concept with a level editor (MSXDev 2020)
+* LOGIC: Platformer (MSXDev 2021)
+
+## PoCs
+* Isometric engine PoC
 * Flappy bird concept
 * Smooth Scrolling test using the VPD and remapping the VRAM
 
+## Work In progress
+* SpaceCat: Lander with a cat on a flying saucer (inspired by the Android game) 
+* Raftoid Revenge: Conceptual breakout mixed with shoot-em-up
+* I-LOGIC: Follow up
+
 All these can be compiled to run with MSX-Basic-Kun, which is an amazing runtime compiler
 
-## Resources:
+# Resources:
 
 Editors
 * Sublime text plugin: https://github.com/farique1/MSX-Sublime-Tools
