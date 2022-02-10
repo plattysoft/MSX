@@ -13,7 +13,7 @@
 143 VPOKE S,VAL("&H"+R$):S=S+1
 144 GOTO 142
 
-190 BLOAD "level_"+CHR$(48+L)+".scr",S
+190 BLOAD "level_"+CHR$(64+L)+".scr",S
 
 191 CALL TURBO ON
 192 DIM MX(3),MY(3)
