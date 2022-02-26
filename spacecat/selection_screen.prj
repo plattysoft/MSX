@@ -1,0 +1,9 @@
+PROJECT
+SCREEN
+selection_screen.scr
+TILES
+selection_screen.til
+ONEBANK
+PALETTE
+selection_screen.pal
+END

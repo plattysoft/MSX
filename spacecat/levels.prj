@@ -1,9 +1,9 @@
 PROJECT
 SCREEN
-spacecat.scr
+levels.scr
 TILES
-spacecat.til
+levels.til
 ONEBANK
 PALETTE
-spacecat.pal
+levels.pal
 END

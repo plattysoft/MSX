@@ -1,24 +1,24 @@
 1' STORM RESCUE
 1'
-1' jogo de aÃ§Ã£o e habilidade
+1' jogo de ação e habilidade
 1'
 1' por Renato Murta de Rezende        (pix) renatomdr@gmail.com
 1' MSX 1 + Xbasic - desenvolvido para rodar no site  MSXpen.com
-1' compatÃ­vel com todos os modelos de MSX disponÃ­veis no WEBMSX
+1' compatível com todos os modelos de MSX disponíveis no WEBMSX
 1' testado em um MSX2 real 
 1' programa autoral escrito em MSX BASIC (rodando com o XBASIC)  
-1' sem nenhuma rotina da Bios, Assembly ou algorÃ­timos copiados
+1' sem nenhuma rotina da Bios, Assembly ou algorítimos copiados
 1'
 1' Sinopse:
-1' Um navio fica Ã  deriva, os passageiros pedem ajuda e resgate
-1' a Ãºnica forma de resgate Ã© atravÃ©s de um helicÃ³ptero, porÃ©m, 
-1' uma forte tempestade torna a situaÃ§Ã£o fica mais perigosa!
-1' Somente um piloto  habilidoso e destemido  conseguirÃ¡ salvar
-1' os passageiros, mesmo que arrisque sua prÃ³pria vida.
+1' Um navio fica à deriva, os passageiros pedem ajuda e resgate
+1' a única forma de resgate é através de um helicóptero, porém, 
+1' uma forte tempestade torna a situação fica mais perigosa!
+1' Somente um piloto  habilidoso e destemido  conseguirá salvar
+1' os passageiros, mesmo que arrisque sua própria vida.
 1 '
 1 ' para jogar:
 1 ' Use as  setas do teclado ou joystick A  para controlar o voo
-1 ' para pousar, estabilize o  helicÃ³ptero  pouco acima do local
+1 ' para pousar, estabilize o  helicóptero  pouco acima do local
 1 ' de pouso e deixe a gravidade agir
 1 '
 1 ' para carregar:
@@ -26,19 +26,19 @@
 1 ' 	configure para qualquer modelo de MSX
 1 ' 	inclua o cartucho do Xbasic
 1 ' 	copie e cole o texto (StormRescue.txt) na aba BASIC
-1 ' 	clique no botÃ£o RUN abaixo do emulador
-1 ' 	siga as instruÃ§Ãµes de iniciaÃ§Ã£o
+1 ' 	clique no botão RUN abaixo do emulador
+1 ' 	siga as instruções de iniciação
 1 ' 
 1 ' EMULADORES(StormRescue.dsk)
 1 ' 	escolha um emulador
 1 ' 	insira no drive A o DSK (StormRescue.dsk)
 1 ' 	inicie o emulador para rodar o arquivo Autoexec.bas
-1 ' 	siga as instruÃ§Ãµes de iniciaÃ§Ã£o
+1 ' 	siga as instruções de iniciação
 1 ' 
 1 ' MSX (real)
 1 ' 	copie os arquivos contidos no dsk para um disquete
 1 ' 	insira o disquete no drive A do MSX
-1 ' 	ligue o MSX e siga as instruÃ§Ãµes de iniciaÃ§Ã£o
+1 ' 	ligue o MSX e siga as instruções de iniciação
 1 ' 
 1 BASE(5)=6144:SCREEN1,2,0:DEFINTA-Z:PLAY"L4t32v0":TIME=0:PLAY"CDCDCDCDCDCDCDCDCDCDCDCDCD":TS=TIME:VPOKE2816,TS:GOTO172
 2 DEFINTA-Z
@@ -54,7 +54,7 @@
 10 A=STRIG(0)ORSTRIG(1):IFNOTATHENIFTIME<BTHEN10ELSE4
 11 'introducao
 11 A=1:GOSUB162:GOSUB146:A=1:GOSUB147:TIME=0:A=VPEEK(2816):FORT=0TOA:T=TIME:NEXTT:A=2:GOSUB162:FORA=0TO7:PUTSPRITEA,(-15,(A\4)*176-1),15,62:NEXTA
-12 'ferramentas de visualizaÃ§Ã£o sprites e tiles
+12 'ferramentas de visualização sprites e tiles
 12 'FORT=0 TO 63:putsprite0,(0,0),15,T:LOCATE 4,2:PRINT T:FOR Y=0 TO -1 STEP-1:Y= STRIG(0):NEXT Y:FOR Y=0 TO 500:NEXT Y,T:END
 12 'fort=0to255:vpoke6144+(tmod16)+((t\16)*32),t:nextt:end
 12 VPOKE2817,0:VPOKE2818,36:VPOKE2819,1:PUTSPRITE13,(0,0),15,16:PUTSPRITE18,(223,160),14,21:PUTSPRITE19,(239,160),14,22
@@ -88,20 +88,20 @@
 23 'VENTO baixo movimento
 23 C=VPEEK(2839):IFC<2THEN31ELSEA=RND(1)*2:W=(W+A+1)MOD272
 24 IF255-W<-14THENA=VPEEK(6964):IFA>104ANDA<144THENVPOKE6956,AELSEVPOKE6956,RND(1)*40+104
-25 'VENTO baixo sprite ANIMAÃ‡ÃƒO 35-42
+25 'VENTO baixo sprite ANIMAÇÃO 35-42
 25 PUTSPRITE11,(255-W,VPEEK(6956)),5,(WMOD16)\2+35
 26 'VENTO alto movimento
 26 IFC<4THEN31ELSEA=(W+136)MOD272:IFA<2THENB=VPEEK(6964):IFB>24ANDB<64THENVPOKE6952,BELSEVPOKE6952,RND(1)*40+24
-27 'VENTO alto sprite ANIMAÃ‡ÃƒO 42-35
+27 'VENTO alto sprite ANIMAÇÃO 42-35
 27 PUTSPRITE10,(-16+A,VPEEK(6952)),5,42-(WMOD16)\2
 28 'VENTO baixo movimento
 28 C=VPEEK(2839):IFC<6THEN31ELSEA=RND(1)*2:A=(W+136)MOD272
 29 IF255-A<-14THENVPOKE6960,RND(1)*40+104
-30 'VENTO baixo sprite ANIMAÃ‡ÃƒO 35-42
+30 'VENTO baixo sprite ANIMAÇÃO 35-42
 30 PUTSPRITE12,(255-A,VPEEK(6960)),5,(WMOD16)\2+35
 31 ' H 0 INICIA HELICOPTERO | 1 VOO | 2 EXPLODE | 3 navio | 4 grama
 31 S=0:ONHGOTO38,39,37,38,62,63
-32 ' inicia o helicÃ³ptero
+32 ' inicia o helicóptero
 32 VPOKE2821,127:VPOKE2822,185:HX=0:HY=0:H=1:VPOKE6967,15:SOUND6,31:SOUND12,2:SOUND13,12:SOUND10,16
 33 'helicoptero morreu com vitima a bordo
 33 IFVPEEK(2831)=5THENVPOKE2831,0:A=VPEEK(2839)+1:VPOKE6143+A,8:VPOKE2839,A:VPOKE2841,VPEEK(2841)+1:IFA=14THENVPOKE2843,3
@@ -116,12 +116,12 @@
 39 ' ACELERACAO
 39 A=VPEEK(2822)+(-(S>1ANDS<5)+(S>5))*3:A=-A*(A>0)-(A>255)*(255-A):A=A+(S<2ORS=5)*(-(A>127)+(A<127)):VPOKE2822,A:A=VPEEK(2821)+(-(S>3ANDS<7)+(S=1ORS=2ORS=8))*3:A=A-(S=0ORS=3ORS=7):A=-A*(A>0)-(A>255)*(255-A):VPOKE2821,A
 40 ONHGOTO41,45,60,60
-41 ' COLISÃƒO COM VENTO baixo 1
+41 ' COLISÃO COM VENTO baixo 1
 41 C=VPEEK(2839):IFC<2THEN45ELSEA=VPEEK(6957):B=VPEEK(6965):IFABS(A-B)<16THENA=VPEEK(6956)+7:B=VPEEK(6964)+9:IFABS(A-B)<12THENVPOKE2822,VPEEK(2822)/1.1
-42 ' COLISÃƒO COM VENTO ALTO
+42 ' COLISÃO COM VENTO ALTO
 42 IFC<4THEN45ELSEA=(W+136)MOD272:IFA<16THEN44
 43 A=VPEEK(6953):B=VPEEK(6965):IFABS(A-B)<16THENA=VPEEK(6952)+7:B=VPEEK(6964)+9:IFABS(A-B)<12THENA=VPEEK(2822)*1.1:IFA>254THENA=254:VPOKE2822,AELSEVPOKE2822,A
-44 ' COLISÃƒO COM VENTO baixo 2
+44 ' COLISÃO COM VENTO baixo 2
 44 IFC<6THEN45ELSEA=VPEEK(6961):B=VPEEK(6965):IFABS(A-B)<16THENA=VPEEK(6960)+7:B=VPEEK(6964)+9:IFABS(A-B)<12THENVPOKE2822,VPEEK(2822)/1.1
 45 'MOVIMENTA HELICOPTERO
 45 HX=HX+((VPEEK(2822)-127)*(200/127)):HX=-HX*(HX>0)-(HX>25500)*(25500-HX):HY=HY+((VPEEK(2821)-127)*(200/127)):HY=-HY*(HY>0)-(HY>19100)*(19100-HY):VPOKE6965,HX\100:VPOKE6964,HY\100
@@ -135,7 +135,7 @@
 51 IFVPEEK(6966)\4<>8THEN64
 52 'pousando na grama
 52 IFA<30ANDB>80THENH=4:GOTO64ELSE64
-53 'colisÃ£o com a agua
+53 'colisão com a agua
 53 IFB>159THENH=5:PUTSPRITE8,(VPEEK(6965),174),7,49:HX=0:HY=0:SOUND12,35:SOUND13,14:SOUND10,16:GOTO62
 54 'VITIMA NO MAR=sim GOTO 400
 54 A=VPEEK(2831):IFA>1ANDA<5THEN64
@@ -152,7 +152,7 @@
 61 IFA<127THENSOUND12,2:HX=VPEEK(6965)*100:VPOKE2822,127:IFH=3THENH=1:HY=(VPEEK(6984)-VPEEK(2827))*100:GOTO64ELSEH=1:GOTO64ELSE64
 62 'afundando
 62 HX=HX+1:HY=HY-(HX<80)+(HX>80):VPOKE6964,158+(HX\10):VPOKE6944,170-(HY\5):VPOKE2829,(VPEEK(2829)+1)MOD30:VPOKE6946,(VPEEK(2829)\10+49)*4:IFHX>160THENH=0:GOTO64ELSE64
-63 'iniciando explosÃ£o
+63 'iniciando explosão
 63 H=2:VPOKE2830,3:SOUND6,31:SOUND12,100:SOUND13,0:SOUND10,16:HX=VPEEK(6965)*100:HY=VPEEK(6964)*100:PUTSPRITE17,(0,0),0,0:PUTSPRITE8,(0,0),0,0
 64 ' ESCADA
 64 'maquina de estado escada
@@ -168,13 +168,13 @@
 69 PUTSPRITE17,(0,0),0,0:VPOKE2830,0
 70 'vitima maquina de estado
 70 ONVPEEK(2831)GOTO74,78,80,83,88,90
-71 'inicia vÃ­tima
+71 'inicia vítima
 71 X=X-(X>-1):IFX>300THENX=0:GOTO73
-72 'inicia vÃ­tima caso pouse no navio
+72 'inicia vítima caso pouse no navio
 72 IFH<>3THEN94
 73 'inicia vitima caso passe muito tempo
 73 IFVPEEK(2838)<14THENA=VPEEK(2838)+1:VPOKE6161+A,32:VPOKE2838,A:VPOKE2831,1:PUTSPRITE16,(VPEEK(6985)+24,VPEEK(6984)+8),10,29
-74 'vitima anda no convÃ©s
+74 'vitima anda no convés
 74 IFH=3THENVPOKE2828,VPEEK(6965)+4:VPOKE6976,VPEEK(6964)+8ELSEVPOKE2828,VPEEK(6985)-8+(VPEEK(2823)*20):VPOKE6976,VPEEK(6984)-2
 75 Z=(Z+1)MOD6:ONABS(Z)GOTO94
 76 A=SGN(VPEEK(2828)-VPEEK(6977)):VPOKE6977,VPEEK(6977)+A:IFVPEEK(6977)=VPEEK(2828)THENIFH=3THENVPOKE2831,5:GOTO87ELSEVPOKE2831,2
@@ -213,7 +213,7 @@
 99 A=8192:VPOKE8210,B:VPOKE8211,C:VPOKE8212,D:VPOKE8213,D:VPOKE8214,E:VPOKE8215,E:VPOKE8216,F:GOTO101
 100 A=RND(1)*3:IFA=0THENVPOKE8211,241ELSEIFA=1THENVPOKE8211,225ELSEVPOKE8211,113
 101 A=VPEEK(2834)+1:IFA=15THENR=4:VPOKE2834,45:C=VPEEK(2835):FORT=95TO639STEP32:VPOKE6144+C+T,VPEEK(2048+C+T):NEXTT:GOTO104ELSEVPOKE2834,A
-102 ' colisÃ£o com relampago    
+102 ' colisão com relampago    
 102 A=(VPEEK(2835)*8-4)-(VPEEK(6965)+8):IFABS(A)<12ANDH<>6ANDH<>2THENH=6:GOTO104ELSE104
 103 A=VPEEK(2834):A=A+(A>0):SOUND9,A\3:VPOKE2834,A:IFA=0THENSOUND9,0:SOUND6,31:VPOKE2834,RND(1)*127:R=0
 104 ' ambulancia
@@ -302,7 +302,7 @@
 169 _TURBOOFF
 170 IFA%=4096THENVPOKE8196,27
 171 IFA%=5120THENRETURNELSEVDP(1)=98:RETURN
-172 'programaÃ§Ã£o da Vram
+172 'programação da Vram
 172 'prepara a tela do jogo e registra quantos TIME conta por segundo
 172 WIDTH32:KEYOFF:COLOR15,1,1:KEY1,CHR$(255)+STRING$(6,CHR$(13)):PRINT"Press F1 to start":FORT=0TO1:I$=INKEY$:IFI$<>CHR$(255)THENT=0:NEXTTELSET=1:NEXTT
 173 ' prepara a vram e aciona o start para o escritor fantasma
@@ -311,7 +311,7 @@
 174 OPEN"StorResc.rec"FORINPUTAS#1:INPUT#1,A$:CLOSE#1:GOTO176
 175 OPEN"StorResc.rec"FOROUTPUTAS#1:FORT=0TO5:PRINT#1,"........":PRINT#1,0:NEXTT:CLOSE#1
 176 RESTORE196:A=RND(-TIME)
-177 'imprime telas em diferentes endereÃ§os da Vram
+177 'imprime telas em diferentes endereços da Vram
 177 READA:B=RND(1)*16:COLORB,B,B:IFA=-1THEN180ELSEIFA=-2THENREADA:BASE(5)=A:SCREEN1:GOTO177ELSEIFA=-3THENLOCATE0,0:PRINTCHR$(27)+"L":GOTO177
 178 IFA=-4THENREADA,B,C,A$:FORD=1TOC:LOCATEA,B+D:PRINTA$;:NEXTD:GOTO177ELSEIFA=-5THENEND
 179 READB,C:FORD=1TOC:READA$:LOCATEA,B+D:PRINTA$;:NEXTD:GOTO177
@@ -325,7 +325,7 @@
 186 VDP(1)=166:WIDTH32:CLS:RESTORE186:LOCATE0,1:FORA=1TO7:READA$:PRINTA$:NEXTA:LOCATE0,0:END:DATA"delete1","Ok","delete172-186","Ok","delete196-248","Ok","CLS:VDP(1)=224:run187"
 187 ' escritor fantasma parte 1
 187 DEFINTA-Z
-188 'finalizaÃ§Ã£o da Vram
+188 'finalização da Vram
 188 _TURBOON
 189 FORA=256TO727:IFA<480ORA>503THENB=VPEEK(A):B=(BOR(B/2))/2:VPOKEA,B:IFA>519THENVPOKEA+256,B:NEXTAELSENEXTAELSENEXTA
 190 'letras BOLD 
@@ -341,21 +341,21 @@
 196 ' escritor fantasma parte 2
 196 DATA-2,3072,1,22,1,"2022   pix RENATOMDR@GMAIL.COM"
 197 'tela de titulo
-197 DATA6,0,5,"Ã±Ã°Ã° Ã°Ã°Ã° Ã±Ã°Ã² Ã°Ã°Ã² Ã°Ã·Ã¶Ã°","Ã°    Ã°  Ã° Ã° Ã° Ã° Ã°Ã°Ã°Ã°","Ã³Ã°Ã²  Ã°  Ã° Ã° Ã° Ã° Ã°Ã¸ÃµÃ°","  Ã°  Ã°  Ã° Ã° Ã°Ã°Ã´ Ã°  Ã°","Ã°Ã°Ã´  Ã°  Ã³Ã°Ã´ Ã°Ã¸Ã° Ã°  Ã°"
-198 DATA4,6,5,"Ã°Ã°Ã°Ã² Ã°Ã°Ã° Ã±Ã°Ã° Ã±Ã°Ã° Ã° Ã° Ã°Ã°Ã°","Ã°  Ã° Ã°   Ã°   Ã°   Ã° Ã° Ã°","Ã°  Ã° Ã°Ã°  Ã³Ã°Ã² Ã°   Ã° Ã° Ã°Ã° ","Ã°Ã°Ã°Ã´ Ã°     Ã° Ã°   Ã° Ã° Ã°","Ã° Ã¸Ã° Ã°Ã°Ã° Ã°Ã°Ã´ Ã³Ã°Ã° Ã³Ã°Ã´ Ã°Ã°Ã°"
+197 DATA6,0,5,"ñğğ ğğğ ñğò ğğò ğ÷öğ","ğ    ğ  ğ ğ ğ ğ ğğğğ","óğò  ğ  ğ ğ ğ ğ ğøõğ","  ğ  ğ  ğ ğ ğğô ğ  ğ","ğğô  ğ  óğô ğøğ ğ  ğ"
+198 DATA4,6,5,"ğğğò ğğğ ñğğ ñğğ ğ ğ ğğğ","ğ  ğ ğ   ğ   ğ   ğ ğ ğ","ğ  ğ ğğ  óğò ğ   ğ ğ ğğ ","ğğğô ğ     ğ ğ   ğ ğ ğ","ğ øğ ğğğ ğğô óğğ óğô ğğğ"
 199 DATA1,13,7,"PRESS SPACE OR BUTTON TO START"," ","TO FLY: arrow keys or joystick"," "," TO LAND:stabilize just above","         the landing site and","         let gravity act"
-200 DATA-2,4096,0,21,1,"Ã€ÃÃ€Ã‚Ã€ÃÃ€Ã‚ÃÃ€ÃÃ„ÃƒÃ„Ã†ÃƒÃ†Ã„Ã…ÃƒÃ„Ã…ÃƒÃ„ÃƒÃ…Ã€Ã‚ÃÃ‚Ã„Ã…Â´Â±Â¶Â´ÂµÂ±Â²Â·ÂµÂ³Â¶Â³Â±Â³Â¶Â±Â³ÂµÂ³Â¶Â´Â±Â²Â±Â¶Â±Â²Â³Â·ÂµÂ±Â±Â²Â¶Â´Â·Â²Â±Â·Â³Â±Â´ÂµÂ·Â±Â¶ÂµÂ±ÂµÂ¶Â±Â´Â²Â³ÂµÂ´Â²Â·Â¶Â±Â¶Â²Â·Â±",-3,0,-1,1,"Ã”Ã•Ã–Ã—Ã˜Ã™ÃšÃ›ÃœÃÃÃŸÃÃ‘Ã’Ã“Ã”Ã•Ã–Ã—Ã˜Ã™ÃšÃ›ÃœÃÃÃŸÃÃ‘Ã’Ã“Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã Ã¡Ã¢Ã£"
+200 DATA-2,4096,0,21,1,"ÀÁÀÂÀÁÀÂÁÀÁÄÃÄÆÃÆÄÅÃÄÅÃÄÃÅÀÂÁÂÄÅ±¶µ±²·µ³¶³±³¶±³µ³¶±²±¶±²³·µ±±²¶·²±·³±µ·±¶µ±µ¶±²³µ²·¶±¶²·±",-3,0,-1,1,"ÔÕÖ×ØÙÚÛÜİŞßĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßĞÑÒÓäåæçèéêëìíîïàáâãäåæçèéêëìíîïàáâã"
 201 'tela animacao
-201 DATA0,8,12,"````````Ã·","```Â°````Ã°Ã·","``Â°Â°Â°```Ã°Ã°Ã·","```Â°````Ã°Ã°Ã°","````````Ã°Ã°Ã°","hospitalÃ°Ã°Ã°","````````Ã°Ã°Ã°","````````Ã°Ã°Ã°","````````Ã°Ã¸Ã°","````````Ã°Ã¹Ã°","````````Ã°Ã¹Ã°","````````Ã°Ã¹Ã°",26,16,4,"ÃˆÃ‰ÃŠÃ‹"," ÃŒÃ "," ÃÃ ","Ã¶Ã°Ã°Ã·"
+201 DATA0,8,12,"````````÷","```°````ğ÷","``°°°```ğğ÷","```°````ğğğ","````````ğğğ","hospitalğğğ","````````ğğğ","````````ğğğ","````````ğøğ","````````ğùğ","````````ğùğ","````````ğùğ",26,16,4,"ÈÉÊË"," ÌÍ "," ÎÏ ","öğğ÷"
 202 DATA-4,11,2,13,"]^_________________^]",13,3,1,"___INFORMATIVE"
 203 DATA-2,9216,0,-1,1,"THE DELTAMAR SHIP IS SINKING!      _PASSENGERS NEED   URGENT RESCUE!   _                  BE CARREFUL ABOUT_HEAVY RAIN       _LOTS OF LIGHTNING_AND STRONG WINDS! "
 204 'textos dos informativos
 204 DATA0,4,1,"IT IS A MIRACLE! _THE GREAT PILOT   MANAGED TO SAVE   EVERYBODY ON THE  DELTAMAR SHIP_                      CONGRATULATIONS  _YOU ARE A         TRUE HERO!        "
 205 DATA0,9,1,"IT IS A TRAGEDY!  THE PILOT DIED IN AN ACCIDENT WHILE TRYING TO RESCUE  PASSENGERS FROM   THE DELTAMAR SHIP                   IT IS A SAD DAY   FOR ALL OF US!    "
 206 DATA0,14,1,"BAD NEWS!...______                  RESCUE EFFORTS ON THE DELTAMAR SHIP WERE NOT ENOUGH.__THE SHIP SANK!____                  SOME PASSENGERS   DID NOT SURVIVE   "
-207 DATA-2,5120,0,21,1,"ÂªÂ­Â¡Â£ Â¥Â«Â© Â¨Â©Â¦Â­ Â¤Â­Â¬Â®Â©Â§Â¡Â§Â­Â¯Â¬Â§Â¥Â®Â¡Â¬Â¯Â¢Â©Â«Â¤Â§Â¥Â¦Â¬Â¤Â¢ÂªÂ¤Â¬ Â§Â­Â¤Â¢Â£Â¥Â­Â©Â¦Â«Â¤ Â¢Â¯Â¡Â¬Â¨Â¦Â« ÂªÂ©Â¦Â¥Â«Â¬Â£Â¨Â©Â¯Â®Â¡Â¨Â«ÂªÂ«Â¤ Â¨Â©Â¦Â¡Â©Â¡Â®Â£Â¥Â¢ÂªÂ¦Â¡",-3,0,0,1,"ÃÃÃŸÃÃ‘Ã’Ã“Ã”Ã•Ã–Ã—Ã˜Ã™ÃšÃ›ÃœÃÃÃŸÃÃ‘Ã’Ã“Ã”Ã•Ã–Ã—Ã˜Ã™ÃšÃ›ÃœÃ­Ã®Ã¯Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬"
+207 DATA-2,5120,0,21,1,"ª­¡£ ¥«© š©Š­ €­¬®©§¡§­¯¬§¥®¡¬¯¢©«€§¥Š¬€¢ª€¬ §­€¢£¥­©Š«€ ¢¯¡¬šŠ« ª©Š¥«¬£š©¯®¡š«ª«€ š©Š¡©¡®£¥¢ªŠ¡",-3,0,0,1,"İŞßĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßĞÑÒÓÔÕÖ×ØÙÚÛÜíîïàáâãäåæçèéêëìíîïàáâãäåæçèéêëì"
 208 'tela do jogo 
-208 DATA0,-1,1,"              \\\\[[[[[[[[[[[[[[",0,11,11,"Ã†Ã…Ã„ÃƒÃ‡","ÂµÂ³ÂµÂµÂ¶Â¹","Â²Â´Â²Â³ÂµÂ½","Â³ÂµÂ³ÂµÂµÂ»","ÂµÂ²ÂµÂµÂ´Â·Â¹","ÂµÂ´Â³Â´ÂµÂ´Âº","Â³ÂµÂ¸Â´ÂµÂ·Â½","ÂµÂ´Â³Â¹Â·ÂµÂ»","ÂµÂ¶ÂµÂ¸ÂµÂ¶Â¼","Â´Â³ÂµÂ³Â¹Â·Âµ","ÂµÂ·Â³ÂµÂ·"
+208 DATA0,-1,1,"              \\\\[[[[[[[[[[[[[[",0,11,11,"ÆÅÄÃÇ","µ³µµ¶¹","²²³µœ","³µ³µµ»","µ²µµ·¹","µ³µº","³µµ·œ","µ³¹·µ»","µ¶µµ¶Œ","³µ³¹·µ","µ·³µ·"
 209 ' telas de chuva e gameplay
 209 DATA-2,2048,-2,6144,-1
 210 DATA0040,1C1C083E5D5D141400FE103838384400
