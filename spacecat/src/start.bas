@@ -2,9 +2,8 @@
 1 DEFINT A-Z
 21 DIM LS(24)
 22 FOR I=0 TO 23 STEP 2
-23  LT=VPEEK((I\2)*32+1)
-24  LS(I)=LT\16-1:LS(I+1)=(LT MOD 16)-1 ' TODO THIS IS NOT READING PROPERLY (code is in 3 more places WRITE in 4522 & spacecat.bas READ + WRITE)
-25  LS(I) = -1: LS(I+1) = -1
+23  LT=VPEEK(I\2+1)
+24  LS(I)=LT\16-1:LS(I+1)=(LT MOD 16)-1 ' TODO LAST BLOCK IS NOT READING PROPERLY (code is in 3 more places WRITE in 4522 & spacecat.bas READ + WRITE)
 28 NEXT I
 
 29 BLOAD "loading.SC2",S

@@ -3,7 +3,7 @@ SCREEN
 selection_screen.scr
 TILES
 selection_screen.til
-ONEBANK
+ALLBANKS
 PALETTE
 selection_screen.pal
 END
