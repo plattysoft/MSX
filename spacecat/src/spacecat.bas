@@ -151,7 +151,7 @@
 1250 RETURN
 
 1300 ' TODO: Use a different tile to mark this, so mice can be reloaded without reloading the screen
-1300 IF VPEEK(MP)>0 THEN MC=MC+1: RETURN
+1300 IF VPEEK(MP)>0 THEN MC=MC+1 ELSE RETURN
 1301 VPOKE MP,0:VPOKE MP+1,0:VPOKE MP+&H20,0:VPOKE MP+&H21,0
 1310 RETURN
 
