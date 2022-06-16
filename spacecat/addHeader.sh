@@ -19,6 +19,10 @@ mv level_16_0 level_Q
 mv level_17_0 level_R
 mv level_18_0 level_S
 mv level_19_0 level_T
+mv level_20_0 level_U
+mv level_21_0 level_V
+mv level_22_0 level_W
+mv level_23_0 level_X
 for x in level_*; do 
   ACTUAL_NAME=${x::7}
   echo "Converting $x to $ACTUAL_NAME"
