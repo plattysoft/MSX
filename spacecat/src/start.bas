@@ -73,4 +73,5 @@
 4102 FOR I=0 TO 23 STEP 2
 4103  VPOKE I/2+2, (LS(I)+1)*16+(LS(I+1)+1)
 4104 NEXT I
-4105 run "lselect.bas"
+4110 BLOAD "loading.SC2",S
+4120 run "lselect.bas"
