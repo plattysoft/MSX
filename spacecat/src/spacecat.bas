@@ -109,7 +109,7 @@
 972 IF C1>64 OR C2>64 OR C3>64 OR C4>64 OR C5>64 THEN IF ABS(AY)>1.2 THEN GOTO 1700 ELSE Y=Y-AY:AY=0
 973 IF D1>64 OR D2>64 OR D3>64 OR D4>64 OR D5>64 THEN IF ABS(AX)>1.2 THEN GOTO 1700 ELSE X=X-AX:AX=0
 
-975 'Checking for mice 
+975 'Checking for mice (nmouse start is either 19 or 21, it depends of the value, should go in sets of 2 (19-20/51-52) (21-22/53-54) 
 975 IF C1>=21 AND C1<=54 THEN MP=T1-C1+21:GOSUB 1300
 976 IF C2>=21 AND C2<=54 THEN MP=T2-C2+21:GOSUB 1300
 977 IF C3>=21 AND C3<=54 THEN MP=T3-C3+21:GOSUB 1300
@@ -137,7 +137,7 @@
 1150 FOR I=&H2000+62*8 TO &H2000+64*8 
 1160  VPOKE I, LC:VPOKE I+&H800, LC: VPOKE I+&H1000, LC
 1170 NEXT I
-1180 'TODO Lasers ON enable sound on channel 3 with sound generator
+1180 ' Lasers ON enable sound on channel 3 with sound generator
 1180 IF LC=0 THEN SOUND 8, 0 ELSE IF LP=1 THEN SOUND 8, &B11111
 1199 RETURN
 
