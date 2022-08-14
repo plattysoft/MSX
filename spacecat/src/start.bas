@@ -7,7 +7,7 @@
 28 NEXT I
 
 29 BLOAD "spacecat.SC2",S
-30 bload"sprites.bin",s
+30 BLOAD "sprites.bin",S
 
 40 BLOAD "cls.scr",S
 90 CALL TURBO ON
@@ -83,7 +83,7 @@
 4090 STRIG(0) OFF: STRIG(1) OFF: IF Y=0 THEN SS=0: GOTO 4100 ELSE GOTO 4300
 4091 STRIG(0) OFF: STRIG(1) OFF: IF Y=0 THEN SS=1: GOTO 4100 ELSE GOTO 4300
 4100 'Put level selection in VRAM info
-4100 PUT SPRITE 0, , 0:BLOAD "loading.scr",S
+4100 PUT SPRITE 0,,0:BLOAD "loading.scr",S
 4101 PLAY "o4L8cdefefgagabo5ce", "o3L8cR32L4dfR16L8dR32L4eg"
 4110 VPOKE 1,SS
 4111 VPOKE 0, (X-8)\40+(Y-8)*6\40+1
