@@ -16,8 +16,9 @@
 
 140 bload"sprites.bin",s
 
-190 BLOAD "level_"+CHR$(64+L)+".scr",S
-191 FOR I=0 to 4: PUT SPRITE I,,0:NEXT
+190 IF L=25 THEN GOSUB 3000:RUN"end.bas
+191 BLOAD "level_"+CHR$(64+L)+".scr",S
+192 FOR I=0 to 4: PUT SPRITE I,,0:NEXT
 
 192 ' M IS EXIT MODE: -1 = FAIL, >=0 = SUCCESS, NUMBER OF MICE (0-3)
 192 CALL TURBO ON(M,SS)
