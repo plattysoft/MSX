@@ -9,12 +9,11 @@
 36 SS=VPEEK(1)
 
 100 ' LOAD SCREEN AND SPRITES
-110 COLOR 15,1,1:SCREEN 2,2,0
+101 'bload"sprites.bin",s
+110'COLOR 15,1,1:SCREEN 2,2,0
 111 BLOAD "levels.sc2",S
 113 'L=3
 131 M=0
-
-140 bload"sprites.bin",s
 
 190 IF L=25 THEN GOSUB 3000:RUN"end.bas
 191 BLOAD "level_"+CHR$(64+L)+".scr",S

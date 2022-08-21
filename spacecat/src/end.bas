@@ -8,9 +8,18 @@
 25 NEXT I
 36 SS=VPEEK(1)
 
+100 'LOAD THE END SCREEN
 100 BLOAD "help_1.scr",S
 
 110 ' TODO: PRINT THE SCORE ON THE SCREEN
 
 120 IF INKEY$="" THEN 120
-130 RUN"start.bas
+130 GOSUB 3000:RUN"start.bas
+
+3000 ' SAVE LEVEL VALUES (needs to be done on each exit to prevent problems when you only see the game over dialog)
+3010 FOR I=0 TO 23 STEP 2
+3020  VPOKE I\2+2, (LS(I)+1)*16+(LS(I+1)+1)
+3030 NEXT I
+3040 VPOKE 0, L
+3050 VPOKE 1, SS
+3060 RETURN
