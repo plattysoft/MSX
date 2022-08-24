@@ -1,0 +1,49 @@
+Channel A: Lasers, with envelope
+Channel B: Engines, noise without envelope
+Channel C: Other effects, no envelope
+
+10 `Animated laser test
+
+10 sound 8, &B11111
+20 SOUND 7, &B10111000
+30 SOUND 0, &H40
+40 SOUND 1, &H4
+50 SOUND 11, &H80
+60 SOUND 12, &H4
+70 SOUND 13, 12
+
+Same envelope and frequency for the noise generator for the engine
+
+No envelope for engine
+
+10 SOUND 9, &B00111
+20 SOUND 7, &B10101010 ' Enable noise on channel 2 (and diable tone), disable it on the others.
+80 SOUND 6, &B01101
+
+' Starting a new level, sound like taking off
+' -> envelope 4, /|___ with a very long frequency and tone + noise
+
+WIN: PLAY " S11M128O5l16CDFO6BR32L12GL16F
+
+LOSE: 
+
+10 sound 8, &B11111
+20 SOUND 7, &B10111000
+30 SOUND 0, &H00
+40 SOUND 1, &H8
+50 SOUND 11, &H80
+60 SOUND 12, &H30
+70 SOUND 13, 3
+
+INTO MUSIC DEMO
+ -First channel: quick increscendo
+ -Second channel: slow engine crescendo
+ - Third channel: SpaceCat theme
+ 
+10 PLAY "o4L8cdefefgagabo5ce", "o3L8cR32L4dfR16L8dR32L4eg"
+20 PLAY "o5L8CR32EEDR8FR32FGAGFAA"
+
+CAtch a mice
+PLAY "L16O6EA"
+
+Sound: &H055 -> &H040
