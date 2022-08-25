@@ -28,8 +28,10 @@
 300 'CERTIFIED PILOT STAMP TODO
 300 IF TM>=36 THEN IF TM=72 THEN BLOAD "best_end.scr",S ELSE BLOAD "good_end.scr",S 
 
-1020 IF INKEY$="" THEN 1020
-1030 GOSUB 3000:RUN"start.bas
+1020 IF INKEY$<>"" THEN 1020
+1021 IF INKEY$="" AND NOT STRIG(1) THEN 1021
+
+1030 GOSUB 3000:BLOAD "loading.sc2",S:RUN"start.bas
 
 3000 ' SAVE LEVEL VALUES (needs to be done on each exit to prevent problems when you only see the game over dialog)
 3010 FOR I=0 TO 23 STEP 2
