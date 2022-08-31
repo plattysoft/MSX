@@ -136,7 +136,7 @@
 
 1100 ' SWAP LASER STATE color at tiles 62, 63,from &H89 to 00. Color table starts at &H2000
 1120 IF LS=1 THEN LC=&H00:LS=0 ELSE LC=&H89:LS=1
-1150 FOR I=&H21F0 TO &H2200 
+1150 FOR I=&H21F0 TO &H21FF 
 1160  VPOKE I, LC:VPOKE I+&H800, LC: VPOKE I+&H1000, LC
 1170 NEXT I
 1180 ' Lasers ON enable sound on channel 3 with sound generator
