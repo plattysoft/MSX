@@ -7,9 +7,12 @@
 28 NEXT I
 
 29 BLOAD "spacecat.SC2",S
-30 BLOAD "sprites.bin",S
+30 'BLOAD "sprites.bin",S
 
 40 BLOAD "cls.scr",S
+
+50 SOUND 7, &B10111000
+
 90 CALL TURBO ON
 91 DEFINT A-Z
 
