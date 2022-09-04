@@ -39,6 +39,9 @@ INTO MUSIC DEMO
  -First channel: quick increscendo
  -Second channel: slow engine crescendo
  - Third channel: SpaceCat theme
+
+ // Refined start tune
+10 PLAY "o4L8cdefefgbo5d", "o3L8cR32L4dfR16L16dR32L4e"
  
 10 PLAY "o4L8cdefefgagabo5ce", "o3L8cR32L4dfR16L8dR32L4eg"
 20 PLAY "o5L8CR32EEDR8FR32FGAGFAA"
