@@ -66,7 +66,7 @@
 4500 STRIG(0) OFF:STRIG(1) OFF
 4501 ' LS of the previous level needs to be <>-1 (Maybe play a wrong sound)
 4501 SL=(X-8)\40+(Y-8)*6\40+1
-4502 'IF SL>1 THEN IF LS(SL-2)=-1 THEN GOTO 4200
+4502 IF SL>1 THEN IF LS(SL-2)=-1 THEN GOTO 4200
 4510 BLOAD "loading.sc2",S
 4520 'Put level selection in VRAM info
 4520 VPOKE 0, SL
