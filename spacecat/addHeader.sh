@@ -29,4 +29,4 @@ for x in level_*; do
   cat header.bin>src/$ACTUAL_NAME.scr
   cat $x>>src/$ACTUAL_NAME.scr
 done
-#rm level_*
+rm level_*
