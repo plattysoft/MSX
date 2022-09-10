@@ -8,4 +8,6 @@ cp end_header.bin src/good_end.scr
 cat good_end >> src/good_end.scr
 cp end_header.bin src/best_end.scr
 cat best_end >> src/best_end.scr
-#rm level_*
+rm bad_end
+rm good_end
+rm best_end
