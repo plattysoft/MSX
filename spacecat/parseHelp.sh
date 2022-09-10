@@ -16,4 +16,7 @@ cat header.bin>src/start.scr
 cat start >>src/start.scr
 cat header.bin>src/loading.scr
 cat loading >>src/loading.scr
-#rm level_*
+rm help_*
+rm loading
+rm start
+rm end
