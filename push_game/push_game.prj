@@ -1,0 +1,9 @@
+PROJECT
+SCREEN
+push_game.scr
+TILES
+push_game.til
+ONEBANK
+PALETTE
+push_game.pal
+END
