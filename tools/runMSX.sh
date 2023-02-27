@@ -1,5 +1,5 @@
 #!/bin/bash
-OPENMSX_PATH=/Applications/openMSX.app/Contents/MacOS
+OPENMSX_PATH=/usr/bin
 PROGRAM_NAME=$1
 killall openmsx
 rm -Rf /tmp/tmpdsk 2>/dev/null
