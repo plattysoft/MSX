@@ -14,16 +14,22 @@ Yes, I have played too many Zelda games and watched too much Star Trek
 First 2 rows: (tiles 0 to 63) can be walked and pushed over (normal floor, open doors, floor switches)
 Next 2 rows:  (tiles 64 to 127) can be walked but NOT pushed over (items, stairs, rough terrain)
 Next 2 rows:  (tiles 128 to 191) can NOT be walked or pushed (walls, closed doors, crates, etc)
-Last 2 rows:  Font, numbers and other utility tiles (enemy markers, etc)
+Last 2 rows:  Pushable objects, Font, numbers and other utility tiles
 
 This means: Tile <128 can we walked over, tile>63 can NOT be pushed over
+We only need to record the state for tiles <64 (all the other tiles can not be pushed over)
+Special case is a crate, that maps to the floor under it when scanning the room
 
 Items, floor switches and special floors check on the specific tile
 
 Some tiles
 
 * Crates
+* Walls
 * Doors
+* Stairs
 * Keys
 * Floor Switches
 * Icy floor
+* Rough terrain
+* Items (map, battery, compass, key)
