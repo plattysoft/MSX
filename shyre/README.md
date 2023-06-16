@@ -7,3 +7,23 @@ Now they need to find the highest possible place where the teleport can have a l
 Their fate now dependes on you.
 
 Yes, I have played too many Zelda games and watched too much Star Trek
+
+
+## Tile Structure
+
+First 2 rows: (tiles 0 to 63) can be walked and pushed over (normal floor, open doors, floor switches)
+Next 2 rows:  (tiles 64 to 127) can be walked but NOT pushed over (items, stairs, rough terrain)
+Next 2 rows:  (tiles 128 to 191) can NOT be walked or pushed (walls, closed doors, crates, etc)
+Last 2 rows:  Font, numbers and other utility tiles (enemy markers, etc)
+
+This means: Tile <128 can we walked over, tile>63 can NOT be pushed over
+
+Items, floor switches and special floors check on the specific tile
+
+Some tiles
+
+* Crates
+* Doors
+* Keys
+* Floor Switches
+* Icy floor
