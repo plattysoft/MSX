@@ -3,7 +3,7 @@ SCREEN
 shyre.scr
 TILES
 shyre.til
-ALLBANKS
+ONEBANK
 PALETTE
 shyre.pal
 END
