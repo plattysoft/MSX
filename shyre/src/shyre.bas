@@ -45,7 +45,7 @@ INCLUDE "rooms.inc"
 268 GOSUB 10000
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270 RR=1:RC=3:RH=1
+270 RR=1:RC=4:RH=0
 271 'RR=4:RC=2:RH=0
 272 GOSUB 900
 
@@ -112,8 +112,6 @@ INCLUDE "rooms.inc"
 
 490 ' Other checks
 491 TT=VPEEK(PT)
-492 IF TT=24 OR TT=26 OR TT=28 OR TT=30 THEN IF TT<>22+MD*2 THEN RETURN'The arrow tiles are positioned in relation to movement
-493 'IF (T1>=24 AND T1<=31) OR (T1>=56 AND T1>=63) THEN GOTO 495
 495 IF T1<128 AND T2<128 THEN GS=2:MS=4:GOSUB 500
 496 IF PP>0 THEN VPOKE PP,TL(PP-&H1800):VPOKE PP+1,TL(PP+1-&H1800):VPOKE PP+32,TL(PP+32-&H1800):VPOKE PP+33,TL(PP+33-&H1800)
 497 ' Extra checks for arrows TBD
@@ -126,7 +124,7 @@ INCLUDE "rooms.inc"
 530 Y=Y+2:GOTO 550
 540 X=X-2:GOTO 550
 550 MS=MS-1:IF MS=0 THEN GS=1: GOSUB 580
-560 I=(MS) MOD 4:IF I=2 THEN CS=0 ELSE IF I=3 THEN CS=4 ELSE CS=I*2' TODO: This does not look needed anymore
+560 I=(MS) MOD 4:IF I=2 THEN CS=0 ELSE IF I=3 THEN CS=4 ELSE CS=I*2' TODO: does not look this is needed anymore
 570 CS=BS+CS
 579 RETURN
 
@@ -139,6 +137,10 @@ INCLUDE "rooms.inc"
 586 IF T1=88 THEN I2=1:GOSUB 780
 587 IF T1=90 THEN MP=1:GOSUB 780
 588 IF T1=92 THEN I4=1:GOSUB 780
+590 IF T1=74 THEN GOSUB 410:RETURN 'Up tile
+591 IF T1=76 THEN GOSUB 430:RETURN 'Right tile
+592 IF T1=78 THEN GOSUB 450:RETURN 'Up tile
+593 IF T1=80 THEN GOSUB 470:RETURN 'Right tile
 599 RETURN
 
 600 'PUSHING
@@ -158,14 +160,19 @@ INCLUDE "rooms.inc"
 
 650 MS=MS-1' TODO USE MOD instead?
 651 IF MS>0 THEN RETURN
-652 GS=1
-653 IF TL(PF-&H1800)>=12 AND TL(PF-&H1800)<=15 AND TL(PF+1-&H1800)>=12 AND TL(PF+1-&H1800)<=15 AND TL(PF+32-&H1800)>=12 AND TL(PF+32-&H1800)<=15 AND TL(PF+33-&H1800)>=12 AND TL(PF+33-&H1800)<=15 GOSUB 675 'Icy floor
-654 PT=PF:NT=192+2*PS:GOSUB 760:PUT SPRITE 2,(0,0),0,0
-655 IF TL(PF-&H1800)=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door
-656 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door
-657 IF TL(PF-&H1800)=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door
-658 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door
-659 IF MD=1 AND TL(PF-&H1800)=39 THEN OT=39:NT=0:IT=PF+2:GOSUB 800'Laser check, remove all to the right of T2
+652 GS=1:TT=TL(PF-&H1800)' Test Tile (When the player stands now)
+653 IF TT>=12 AND TT<=15 AND TL(PF+1-&H1800)>=12 AND TL(PF+1-&H1800)<=15 AND TL(PF+32-&H1800)>=12 AND TL(PF+32-&H1800)<=15 AND TL(PF+33-&H1800)>=12 AND TL(PF+33-&H1800)<=15 GOSUB 675 'Icy floor
+
+660 PT=PF:NT=192+2*PS:GOSUB 760:PUT SPRITE 2,(0,0),0,0
+661 IF TT=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door
+662 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door
+663 IF TT=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door
+664 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door
+
+665 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF+2:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
+666 ' Lasers are back (to the right)
+667 ' Lasers to the left disable (moving up)
+668 ' Lasers to the left re-enable - death (moving up) ' Same for going down (4 cases) ' We can move left on a laser that points right ' We can move right on a laser that points left' Equivalent check for moving left and right and up and down lasers
 669 RETURN
 
 
