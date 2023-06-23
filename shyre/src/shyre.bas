@@ -46,7 +46,7 @@ INCLUDE "rooms.inc"
 
 269 'proper starting place is RR=4:RC=2:RH=0
 270 RR=1:RC=4:RH=0
-271 'RR=4:RC=2:RH=0
+271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
 280 X=88:Y=160:GS=1:MD=1:ES=1:CS=21
