@@ -23,17 +23,15 @@ INCLUDE "rooms.inc"
 
 280 X=88:Y=160:GS=1:MD=1:ES=1:CS=14
 
-300 TIME=0
-301 ON GS GOSUB 400,500,600,600 ' Game States 3 and 4 are pushign and sliding, they are the same except the character doesn't move
-
-310 ' ENEMY MOVES (Disabled for now)
-311 'GOSUB 700
+300 TIME=0' BEGIN GAME LOOP
+301 ON GS GOSUB 400,500,600
 
 350 PUT SPRITE 0,(X,Y),5,CS:PUT SPRITE 1,(X,Y),15,CS+1
-390 IF TIME<4 THEN 390
-399 GOTO 300
 
-400 'IDLE
+390 IF TIME<4 THEN 390
+399 GOTO 300 ' END GAME LOOP
+
+400 'GS=1: IDLE, can transition into moving (GS=2) or pushing (GS=3)
 401 PT=&H1800+X\8+(Y\8)*32:PP=0
 402 ON STICK(0) GOTO 410,499,430,499,450,499,470,499
 403 GOTO 499
@@ -93,7 +91,8 @@ INCLUDE "rooms.inc"
 497 ' Extra checks for arrows TBD
 499 RETURN
 
-500 'MOVING
+
+500 'GS=2: MOVING, there is no user input. Check for picking up items once moving is completed
 501 ON MD GOTO 510,520,530,540
 510 Y=Y-2:GOTO 550
 520 X=X+2:GOTO 550
@@ -120,7 +119,8 @@ INCLUDE "rooms.inc"
 593 IF T1=80 THEN GOSUB 470:RETURN 'Right tile
 599 RETURN
 
-600 'PUSHING
+
+600 'GS=3: PUSHING, check for events at the end of pushing (sliding, floor switches)
 601 ON MD GOTO 610,620,630,640
 610 Y=Y-1
 611 PUT SPRITE 2,(X,Y-17)
@@ -187,7 +187,7 @@ INCLUDE "rooms.inc"
 
 750 'load room and checks
 751 PUT SPRITE 0,,0,0:PUT SPRITE 1,,0
-752 GOSUB 900 'Load room and check items (potentially enemies too)
+752 GOSUB 900 'Load room and check items
 753 GOSUB 790 'Redraw items
 759 RETURN
 
@@ -210,7 +210,7 @@ INCLUDE "rooms.inc"
 800 'Delete all OT with NT starting at IT moving right
 801 IF VPEEK(IT)<>OT THEN RETURN ELSE VPOKE IT,NT:IT=IT+1:GOTO 801
 
-900 'Explore room, remember floor type, find enemy spawn points (TILES 7-10) and remove collected items
+900 'Explore room, remember floor type and remove collected items
 901 IF RH=0 THEN CR=1+RR*5+RC ELSE IF RH=1 THEN CR=26+(RR-1)*3+RC-1 ELSE CR=35
 902 CMD WRTSCR CR
 910 FOR I=0 TO 767
