@@ -17,8 +17,8 @@ INCLUDE "rooms.inc"
 268 GOSUB 10000
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270' RR=1:RC=1:RH=1:I1=1
-271 RR=4:RC=2:RH=0
+270 RR=1:RC=4:RH=0:I1=1
+271 'RR=4:RC=2:RH=0
 272 GOSUB 900
 
 280 X=88:Y=160:GS=1:MD=1:ES=1:CS=14
@@ -137,8 +137,11 @@ INCLUDE "rooms.inc"
 
 650 MS=MS-1' TODO USE MOD instead?
 651 IF MS>0 THEN RETURN
-652 GS=1:TT=TL(PF-&H1800)' Test Tile (When the player stands now)
+652 GS=1:TT=TL(PF-&H1800)' Test Tile (Where the crate stands now)
 653 IF TT>=12 AND TT<=15 AND TL(PF+1-&H1800)>=12 AND TL(PF+1-&H1800)<=15 AND TL(PF+32-&H1800)>=12 AND TL(PF+32-&H1800)<=15 AND TL(PF+33-&H1800)>=12 AND TL(PF+33-&H1800)<=15 GOSUB 675 'Icy floor
+
+655 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
+656 IF MD=1 AND VPEEK(PF+63)=39 THEN OT=0:NT=39:IT=PF+64:GOSUB 800' Lasers are back (to the right)
 
 660 PT=PF:NT=192+2*PS:GOSUB 760:PUT SPRITE 2,(0,0),0,0
 661 IF TT=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door
@@ -146,8 +149,6 @@ INCLUDE "rooms.inc"
 663 IF TT=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door
 664 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door
 
-665 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF+2:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
-666 ' Lasers are back (to the right)
 667 ' Lasers to the left disable (moving up)
 668 ' Lasers to the left re-enable - death (moving up) ' Same for going down (4 cases) ' We can move left on a laser that points right ' We can move right on a laser that points left' Equivalent check for moving left and right and up and down lasers
 669 RETURN
@@ -208,7 +209,7 @@ INCLUDE "rooms.inc"
 799 RETURN
 
 800 'Delete all OT with NT starting at IT moving right
-801 IF VPEEK(IT)<>OT THEN RETURN ELSE VPOKE IT,NT:IT=IT+1:GOTO 801
+801 IF VPEEK(IT)<>OT THEN RETURN ELSE VPOKE IT,NT:TL(IT-&H1800)=NT:IT=IT+1:GOTO 801
 
 900 'Explore room, remember floor type and remove collected items
 901 IF RH=0 THEN CR=1+RR*5+RC ELSE IF RH=1 THEN CR=26+(RR-1)*3+RC-1 ELSE CR=35
