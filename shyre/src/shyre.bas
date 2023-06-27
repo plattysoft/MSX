@@ -143,6 +143,11 @@ INCLUDE "rooms.inc"
 655 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
 656 IF MD=1 AND VPEEK(PF+63)=39 THEN OT=0:NT=39:IT=PF+64:GOSUB 800' Lasers are back (to the right)
 
+655 IF MD=5 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
+656 IF MD=5 AND VPEEK(PF-33)=39 THEN OT=0:NT=39:IT=PF+64:GOSUB 800' Lasers are back (to the right)
+
+
+659 'If either of the tiles under the crate is a laser, we change it on the recording of the room now
 660 PT=PF:NT=192+2*PS:GOSUB 760:PUT SPRITE 2,(0,0),0,0
 661 IF TT=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door
 662 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door
