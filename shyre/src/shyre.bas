@@ -21,7 +21,7 @@ INCLUDE "rooms.inc"
 271 'RR=4:RC=2:RH=0
 272 GOSUB 900
 
-280 X=88:Y=160:GS=1:MD=1:ES=1:CS=14
+280 X=88:Y=160:GS=1:MD=1:CS=14
 
 300 TIME=0' BEGIN GAME LOOP
 301 ON GS GOSUB 400,500,600
@@ -46,6 +46,8 @@ INCLUDE "rooms.inc"
 417 IF T1=182 AND I5=1 THEN PT=PT-64:NT=70:GOSUB 760
 419 GOTO 490
 420 IF VPEEK(PT-96)<64 AND VPEEK(PT-95)<64 THEN GS=3:MS=8:PUT SPRITE 2,(X,Y-17),PC,PS:PP=PT-64:PF=PP-32:CS=2' This should exit via another route, not 490
+421 ' TODO: If we mark it here, we can remove the lasers at the end of pushing and simplify the checks??
+422 'IF VPEEK(PT-96)=39 THEN OT=39:NT=0:IT=PT-96:GOSUB 800
 429 GOTO 490
 
 430 MD=2:BS=8
@@ -70,6 +72,7 @@ INCLUDE "rooms.inc"
 457 IF T1=150 AND I5=1 THEN PT=PT+64:NT=70:GOSUB 760
 459 GOTO 490
 460 IF VPEEK(PT+128)<64 AND VPEEK(PT+129)<64 THEN GS=3:MS=8:PUT SPRITE 2,(X,Y+15),PC,PS:PP=PT+64:PF=PP+32:CS=14' This should exit via another route, not 490
+461 'IF VPEEK(PT+128)=39 THEN OT=39:NT=0:IT=PT+128:GOSUB 800
 469 GOTO 490
 
 470 MD=4:BS=20
@@ -105,7 +108,7 @@ INCLUDE "rooms.inc"
 
 580 'Stair and items checks at end of moving
 581 PT=&H1800+X\8+(Y\8)*32:PP=0
-582 T1=VPEEK(PT)
+582 T1=VPEEK(PT):T2=VPEEK(PT+1):T3=VPEEK(PT+32):T4=VPEEK(PT+33)
 583 IF T1=64 THEN RH=RH+1:GOSUB 750
 584 IF T1=66 THEN RH=RH-1:GOSUB 750
 585 IF T1=86 THEN I1=1:GOSUB 780
@@ -117,6 +120,7 @@ INCLUDE "rooms.inc"
 591 IF T1=76 THEN GOSUB 430:RETURN 'Right tile
 592 IF T1=78 THEN GOSUB 450:RETURN 'Up tile
 593 IF T1=80 THEN GOSUB 470:RETURN 'Right tile
+594 IF T1=39 OR T2=39 OR T3=39 OR T4=39 THEN GOSUB 1100 'Death by laser, reset room
 599 RETURN
 
 
@@ -140,22 +144,14 @@ INCLUDE "rooms.inc"
 652 GS=1:TT=TL(PF-&H1800)' Test Tile (Where the crate stands now)
 653 IF TT>=12 AND TT<=15 AND TL(PF+1-&H1800)>=12 AND TL(PF+1-&H1800)<=15 AND TL(PF+32-&H1800)>=12 AND TL(PF+32-&H1800)<=15 AND TL(PF+33-&H1800)>=12 AND TL(PF+33-&H1800)<=15 GOSUB 675 'Icy floor
 
-655 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
-656 IF MD=1 AND VPEEK(PF+63)=39 THEN OT=0:NT=39:IT=PF+64:GOSUB 800' Lasers are back (to the right)
+654 GOTO 700' LASER HANDLING
 
-655 IF MD=5 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800 'Laser check, remove all to the right of T2 (only to remove, only going up, only lasers to the right)
-656 IF MD=5 AND VPEEK(PF-33)=39 THEN OT=0:NT=39:IT=PF+64:GOSUB 800' Lasers are back (to the right)
-
-
-659 'If either of the tiles under the crate is a laser, we change it on the recording of the room now
 660 PT=PF:NT=192+2*PS:GOSUB 760:PUT SPRITE 2,(0,0),0,0
 661 IF TT=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door
 662 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door
 663 IF TT=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door
 664 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door
 
-667 ' Lasers to the left disable (moving up)
-668 ' Lasers to the left re-enable - death (moving up) ' Same for going down (4 cases) ' We can move left on a laser that points right ' We can move right on a laser that points left' Equivalent check for moving left and right and up and down lasers
 669 RETURN
 
 
@@ -190,6 +186,16 @@ INCLUDE "rooms.inc"
 697  IF TIME<1 GOTO 697 ELSE TIME=0
 698 NEXT
 699 GOTO 681
+
+700'TODO: WE HAVE 2 ways to remove lasers, I think it looks better here, should remove the check from start pushing, maybe mark them at the start??
+701 IF MD=4 AND TT=39 THEN VPOKE PF,0:TL(PF-&H1800)=0
+702 IF MD=4 AND TL(PF-&H1800+32)=39 THEN VPOKE PF+32,0:TL(PF-&H1800+32)=0
+703 IF MD=1 AND VPEEK(PF+63)=39 THEN OT=0:NT=39:IT=PF+64:GOSUB 800:GOSUB 1100:GOTO 669' Lasers are back (to the right) and we die
+704 IF MD=3 AND VPEEK(PF-33)=39 THEN OT=0:NT=39:IT=PF-32:GOSUB 800:GOSUB 1100:GOTO 669' Lasers are back (to the right) and we die
+705 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800
+706 IF MD=3 AND TL(PF-&H1800+32)=39 THEN OT=39:NT=0:IT=PF+32:GOSUB 800
+
+749 GOTO 660' Better to make space for this without a GOSUB
 
 750 'load room and checks
 751 PUT SPRITE 0,,0,0:PUT SPRITE 1,,0
@@ -229,6 +235,13 @@ INCLUDE "rooms.inc"
 944   IF I4=1 AND T=92 THEN PT=&H1800+I:NT=0:GOSUB 760
 950 NEXT I
 960 RETURN
+
+1100 PUT SPRITE 1,,8:PUT SPRITE 2,,0,0:TIME=0
+1110 IF TIME<20 GOTO 1110
+1111 X=88:Y=160:GS=1:MD=1:CS=14'TODO Remember starting position on a room
+1120 GOSUB 900
+1130 RETURN
+
 
 5010 DATA 00,00,00,00,80,80,80,00,00,00,1F,1F,1F,00,00,00
 5020 DATA 00,00,00,00,02,02,02,00,00,00,F0,F0,F0,00,00,00
