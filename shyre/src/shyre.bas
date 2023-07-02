@@ -316,7 +316,7 @@ INCLUDE "rooms.inc"
 2700 STRIG(0) OFF: STRIG(1) OFF:RETURN 2800
 
 2800 'Shyre new game screen
-2810 BLOAD "intro.sc2",S
+2810 BLOAD "start.sc2",S ' Should be just a map file
 2820 IF STRIG(0) THEN SS=0:RETURN 250
 2821 IF STRIG(1) THEN SS=1:RETURN 250
 2830 GOTO 2820
