@@ -1,5 +1,7 @@
 200 COLOR 15,1,1:SCREEN 2,2,0
-201 BLOAD "intro.sc2",S
+201 BLOAD "intro.sc2",S' TODO: This should load just the tiles
+
+FILE "cls.scr.plet5"
 
 INCLUDE "rooms.inc"
 
@@ -8,11 +10,11 @@ INCLUDE "rooms.inc"
 
 210 GOSUB 2000 'Platty Intro
 
-250 BLOAD "shyre.sc2",S
+250 BLOAD "shyre.sc2",S' TODO: This should load just the tiles
 251 GOSUB 10000 'Load Sprites
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270 'RR=1:RC=2:RH=1:I1=1:I5=1
+270 'RR=2:RC=3:RH=1:I1=1:I5=1
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
@@ -221,7 +223,7 @@ INCLUDE "rooms.inc"
 829 RETURN
 
 900 'Explore room, remember floor type and remove collected items
-901 IF RH=0 THEN CR=1+RR*5+RC ELSE IF RH=1 THEN CR=26+(RR-1)*3+RC-1 ELSE CR=35
+901 IF RH=0 THEN CR=2+RR*5+RC ELSE IF RH=1 THEN CR=27+(RR-1)*3+RC-1 ELSE CR=36
 902 CMD WRTSCR CR
 910 FOR I=0 TO 767
 920   T=VPEEK(&H1800+I)
