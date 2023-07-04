@@ -7,6 +7,7 @@ INCLUDE "rooms.inc"
 
 204 DEFINT A-Z
 206 DIM TL(767)
+207 DIM KT(190)
 
 210 GOSUB 2000 'Platty Intro
 
@@ -26,6 +27,7 @@ INCLUDE "rooms.inc"
 350 PUT SPRITE 0,(X,Y),5,CS:PUT SPRITE 1,(X,Y),15,CS+1
 
 390 IF TIME<4 THEN 390
+391 IF STRIG(SS) THEN GOSUB 1300
 399 GOTO 300 ' END GAME LOOP
 
 400 'GS=1: IDLE, can transition into moving (GS=2) or pushing (GS=3)
@@ -225,7 +227,7 @@ INCLUDE "rooms.inc"
 900 'Explore room, remember floor type and remove collected items
 901 IF RH=0 THEN CR=2+RR*5+RC ELSE IF RH=1 THEN CR=27+(RR-1)*3+RC-1 ELSE CR=36
 902 CMD WRTSCR CR
-910 FOR I=0 TO 767
+910 FOR I=0 TO 767 ' TODO: Can optimize by not reading the right section
 920   T=VPEEK(&H1800+I)
 930   IF T<192 THEN TL(I)=T ELSE TL(I)=T-192
 941   IF MP=1 AND T=90 THEN PT=&H1800+I:NT=0:GOSUB 760
@@ -248,6 +250,35 @@ INCLUDE "rooms.inc"
 1220 'Wait for press space
 1299 END 'GOTO BACK TO TITLE
 
+1300 ' Display a pop-up (no text yet)
+1301 ' Store current scrren info
+1302 KS=&H1905
+1303 FOR I=0 TO 9 'Rows
+1304   FOR J=0 to 16 'Columns
+1305     KT(I*17+J)=VPEEK (KS+I*32+J)
+1306   NEXT J
+1307 NEXT I
+
+1311 VPOKE KS,2:FOR J=1 to 15:VPOKE KS+J,36:NEXT J:VPOKE KS+16, 3
+1320 FOR I=1 TO 8 'Rows
+1321   VPOKE KS+I*32, 4
+1330   FOR J=1 to 15 'Columns
+1340     VPOKE KS+I*32+J, 0
+1350   NEXT J
+1351   VPOKE KS+I*32+16, 4
+1360 NEXT I
+1370 KS=&H1A05:VPOKE KS,34:FOR J=1 to 15:VPOKE KS+J,36:NEXT J:VPOKE KS+16, 35
+1399 IF NOT STRIG(SS) THEN 1399
+
+1400 ' Dismiss
+1402 KS=&H1905
+1403 FOR I=0 TO 9 'Rows
+1404   FOR J=0 to 16 'Columns
+1405     VPOKE KS+I*32+J, KT(I*17+J)
+1406   NEXT J
+1407 NEXT I
+
+1410 RETURN
 
 2000 ' Platty Soft Intro
 2001 BLOAD "intro.sc2",S
