@@ -19,7 +19,12 @@ FILE "SoundEffects.akx"
 210 GOSUB 2000 'Platty Intro
 
 250 BLOAD "shyre.sc2",S' TODO: This should load just the tiles
-251 GOSUB 10000 'Load Sprites
+251 ' REmove the color from the marker tiles
+252 FOR I=0 TO 31
+253  VPOKE &H2000+60*8+I, 0:VPOKE &H2800+60*8+I, 0:VPOKE &H3000+60*8+I, 0
+255 NEXT I
+259 GOSUB 10000 'Load Sprites
+
 
 269 'proper starting place is RR=4:RC=2:RH=0
 270 'RR=2:RC=3:RH=1:I1=1:I5=1
