@@ -259,9 +259,9 @@ FILE "SoundEffects.akx"
 1130 RETURN 300
 
 1200 ' Ending
-1210 'TODO: Load a victory screen
+1201 BLOAD "end.sc2",S
 1220 'Wait for press space
-1299 END 'GOTO BACK TO TITLE
+1299 IF NOT STRIG(SS) THEN 1299 ELSE GOTO 210
 
 1300 ' Display a pop-up (no text yet)
 1301 ' Store current scrren info
@@ -284,7 +284,7 @@ FILE "SoundEffects.akx"
 1360 NEXT I
 1370 KS=&H1A03:VPOKE KS,34:FOR J=1 to 16:VPOKE KS+J,36:NEXT J:VPOKE KS+17, 35
 1371 TX=4:TY=9:GOSUB 1900
-1379 IF NOT STRIG(SS) THEN 1371
+1379 IF NOT STRIG(SS) THEN 1379
 
 1380 ' Dismiss
 1382 KS=&H1903
