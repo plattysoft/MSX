@@ -41,9 +41,9 @@ FILE "help_6.plet5"
 
 27 CMD WRTSPRPAT 37
 
-30 lT=0
+30 LT=0:L=1
 31 FOR I=0 TO 23
-32  Ll(I)=-1
+32  LL(I)=-1
 33 NEXT I
 
 50 GOTO 5000
