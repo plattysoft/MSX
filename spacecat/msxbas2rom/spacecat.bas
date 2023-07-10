@@ -2,28 +2,25 @@
 INCLUDE "levels.inc"
 
 2 'SPLIT sc2 files into tile pattern and name table, load them separately
-FILE "levels.sc2.plet5"
-FILE "loading.plet5"
-FILE "spacecat.chr.plet5"
-FILE "spacecat.clr.plet5"
 FILE "cls.plet5"
-FILE "ending.sc2.plet5"
-
-FILE "loading.chr.plet5"
-FILE "loading.clr.plet5"
 FILE "loading.plet5"
+FILE "start.plet5"
 
-FILE "lselect.chr.plet5"
+FILE "spacecat.chr.plet5" ' IDX: 27
+FILE "spacecat.clr.plet5"
+
+FILE "loading.chr.plet5"' IDX: 29
+FILE "loading.clr.plet5"
+
+FILE "lselect.chr.plet5"' IDX: 31
 FILE "lselect.clr.plet5"
 
-FILE "ending.chr.plet5"
+FILE "ending.chr.plet5"' IDX: 33
 FILE "ending.clr.plet5"
 
 FILE "sprites.bin.plet5"
 
-FILE "start.plet5"
-
-FILE "help_1.plet5"
+FILE "help_1.plet5"' IDX: 36
 FILE "help_2.plet5"
 FILE "help_3.plet5"
 FILE "help_4.plet5"
@@ -35,11 +32,11 @@ FILE "help_6.plet5"
 21 DIM LL(24)
 23 DIM MX(3),MY(3),CS(4)
 
-24 CMD WRTCHR 30
-25 CMD WRTCLR 31
-26 CMD WRTSCR 32
+24 CMD WRTCHR 29
+25 CMD WRTCLR 30
+26 CMD WRTSCR 25
 
-27 CMD WRTSPRPAT 37
+27 CMD WRTSPRPAT 35
 
 30 LT=0:L=1
 31 FOR I=0 TO 23
@@ -49,8 +46,8 @@ FILE "help_6.plet5"
 50 GOTO 5000
 
 100 ' LOAD SCREEN AND SPRITES
-110 CMD WRTCHR 26
-111 CMD WRTCLR 27
+110 CMD WRTCHR 27
+111 CMD WRTCLR 28
 
 190 IF L=25 THEN GOSUB 3000:GOTO 6000
 191 CMD WRTSCR L
@@ -297,9 +294,9 @@ FILE "help_6.plet5"
 4999 GOTO 4100
 
 4100 ' LEVEL SELECT
-4101 CMD WRTCHR 33
-4102 CMD WRTCLR 34
-4103 CMD WRTSCR 28
+4101 CMD WRTCHR 31
+4102 CMD WRTCLR 32
+4103 CMD WRTSCR 24
 4110 X=8+((L-1) MOD 6)*40: Y=8+((L-1)\6)*40
 
 4119 LA=1
@@ -364,9 +361,9 @@ FILE "help_6.plet5"
 4525 NEXT I
 4590 GOTO 100
 
-5000 CMD WRTCHR 30
-5001 CMD WRTCLR 31
-5002 CMD WRTSCR 38
+5000 CMD WRTCHR 29
+5001 CMD WRTCLR 30
+5002 CMD WRTSCR 26
 5003 IF STRIG(0) OR STRIG(1) GOTO 5003
 
 5010 ON STRIG GOSUB 5090, 5091
@@ -389,7 +386,7 @@ FILE "help_6.plet5"
 5090 STRIG(0) OFF: STRIG(1) OFF: IF Y=0 THEN SS=0: GOTO 5100 ELSE GOTO 5300
 5091 STRIG(0) OFF: STRIG(1) OFF: IF Y=0 THEN SS=1: GOTO 5100 ELSE GOTO 5300
 5099 'Put level selection in VRAM info
-5100 PUT SPRITE 0,,0:CMD WRTSCR 32
+5100 PUT SPRITE 0,,0:CMD WRTSCR 24
 5101 PLAY "o4L8cdefefgbo5d", "o3L8cR32L4dfR16L16dR32L4e"
 5110 VPOKE 1,SS
 5111 VPOKE 0, (X-8)\40+(Y-8)*6\40+1
@@ -401,7 +398,7 @@ FILE "help_6.plet5"
 5300 'HELP
 5301 HP=1: PUT SPRITE 0, , 0
 5302 IF STRIG(0) OR STRIG(1) GOTO 5302
-5310 CMD WRTSCR HP+38
+5310 CMD WRTSCR HP+35
 5320 S=STICK(0)
 5321 IF S<>R0 THEN R0=S:GOSUB 5610 ELSE GOTO 5324
 5322 IF S=3 THEN GOSUB 5510:HP=HP+1: IF HP>6 THEN HP=1: GOTO 5310 ELSE GOTO 5310
