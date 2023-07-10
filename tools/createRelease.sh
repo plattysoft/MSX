@@ -1,5 +1,5 @@
 #!/bin/bash
-OPENMSX_PATH=/Applications/openMSX.app/Contents/MacOS
+OPENMSX_PATH=/Ausr/bin
 PROJECT_DIR=$1
 
 cd $PROJECT_DIR
