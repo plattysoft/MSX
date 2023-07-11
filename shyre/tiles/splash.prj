@@ -3,7 +3,7 @@ SCREEN
 splash.scr
 TILES
 splash.til
-ONEBANK
+ALLBANKS
 PALETTE
 splash.pal
 END

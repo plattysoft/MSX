@@ -1,8 +1,11 @@
 #!/bin/bash
-cp tiles/shyre.sc2 src/
-cp tiles/intro.sc2 src/
-cp tiles/start.sc2 src/
-cp tiles/end.sc2 src/
+cp tiles/shyre.chr.plet5 src/
+cp tiles/shyre.clr.plet5 src/
+cp tiles/start.chr.plet5 src/
+cp tiles/start.clr.plet5 src/
+cp tiles/start.plet5 src/
+cp tiles/end.plet5 src/
+cp tiles/cls.plet5 src/
 cp tiles/room*plet5 src/
 cp sound/sfx.akx src/
 cd src

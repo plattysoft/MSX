@@ -1,12 +1,22 @@
 100 COLOR 15,1,1:SCREEN 2,2,0
-101 BLOAD "intro.sc2",S' TODO: This should load just the tiles
 
+FILE "cls.plet5"
 FILE "cls.scr.plet5"
 
 INCLUDE "rooms.inc"
 
-FILE "empty.akm"
+FILE "empty.akm" '
 FILE "sfx.akx"
+
+FILE "shyre.chr.plet5"' 39
+FILE "shyre.clr.plet5"
+FILE "start.chr.plet5"' 41
+FILE "start.clr.plet5"
+
+FILE "start.plet5" '43
+FILE "end.plet5"
+
+101 CMD WRTSCR 0
 
 110 CMD PLYLOAD 37, 38
 120 'CMD PLYSONG 0
@@ -18,17 +28,17 @@ FILE "sfx.akx"
 
 210 GOSUB 2000 'Platty Intro
 
-250 BLOAD "shyre.sc2",S' TODO: This should load just the tiles
-251 ' Remove the color from the marker tiles
-252 FOR I=0 TO 31
-253  VPOKE &H2000+60*8+I, 0:VPOKE &H2800+60*8+I, 0:VPOKE &H3000+60*8+I, 0
+250 CMD WRTCHR 39 'TODO: Make them a single bank and load them 3 times to save space
+251 CMD WRTCLR 40
+252 ' Remove the color from the marker tiles
+253 FOR I=0 TO 31
+254  VPOKE &H2000+60*8+I, 0:VPOKE &H2800+60*8+I, 0:VPOKE &H3000+60*8+I, 0
 255 NEXT I
 256 ' Remove the color from the map tiles
 257 FOR I=0 TO 23
 258  VPOKE &H2028+I, 0:VPOKE &H2828+I, 0:VPOKE &H3028+I, 0
 259 NEXT I
 260 GOSUB 10000 'Load Sprites
-
 
 269 'proper starting place is RR=4:RC=2:RH=0
 270 'RR=2:RC=3:RH=1:I1=1:I5=1
@@ -278,7 +288,9 @@ FILE "sfx.akx"
 1130 RETURN 300
 
 1200 ' Ending
-1201 BLOAD "end.sc2",S
+1201 CMD WRTCHR 41
+1202 CMD WRTCLR 42
+1203 CMD WRTSCR 44
 1220 'Wait for press space
 1299 IF NOT STRIG(SS) THEN 1299 ELSE GOTO 210
 
@@ -364,8 +376,10 @@ FILE "sfx.akx"
 1990 RETURN
 
 2000 ' Platty Soft Intro
-2001 BLOAD "intro.sc2",S
-2002 'CLS
+2001 CMD WRTSCR 0
+2002 CMD WRTCHR 41
+2003 CMD WRTCLR 42
+2004 'CLS
 2010 STRIG(0) ON: STRIG(1) ON
 2020 ON STRIG GOSUB 2700, 2700
 
@@ -421,7 +435,7 @@ FILE "sfx.akx"
 2700 STRIG(0) OFF: STRIG(1) OFF:RETURN 2800
 
 2800 'Shyre new game screen
-2810 BLOAD "start.sc2",S ' Should be just a map file
+2810 CMD WRTSCR 43
 2820 IF STRIG(0) THEN SS=0:GOTO 3000
 2821 IF STRIG(1) THEN SS=1:GOTO 3000
 2830 GOTO 2820
@@ -429,6 +443,7 @@ FILE "sfx.akx"
 3000 'intro sequence (4 panels)
 3010 'BLOAD "intro-4.sc2",S
 3020 'IF NOT STRIG(SS) THEN 3020
+3098 CMD WRTSCR 0
 3999 RETURN 250
 
 5001 ' --- Basic crate
