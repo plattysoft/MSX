@@ -164,22 +164,24 @@ FILE "end.plet5"
 642 GOTO 650
 
 650 MS=MS-1' TODO USE MOD instead?
-651 IF MS>0 THEN RETURN
-652 GS=1:TT=TL(PF-&H1800)' Test Tile (Where the crate stands now)
-653 IF TT>=28 AND TT<=31 AND TL(PF+1-&H1800)>=28 AND TL(PF+1-&H1800)<=31 AND TL(PF+32-&H1800)>=28 AND TL(PF+32-&H1800)<=31 AND TL(PF+33-&H1800)>=28 AND TL(PF+33-&H1800)<=31 GOSUB 675 'Icy floor
+651 IF MS MOD 4<>0 THEN IF CS=28 THEN CS=26 ELSE CS=28' Implement common for all directions
 
-654 GOTO 700' LASER HANDLING
+652 IF MS>0 THEN RETURN
+653 GS=1:TT=TL(PF-&H1800)' Test Tile (Where the crate stands now)
+654 IF TT>=28 AND TT<=31 AND TL(PF+1-&H1800)>=28 AND TL(PF+1-&H1800)<=31 AND TL(PF+32-&H1800)>=28 AND TL(PF+32-&H1800)<=31 AND TL(PF+33-&H1800)>=28 AND TL(PF+33-&H1800)<=31 GOSUB 675 'Icy floor
 
-655 TP=VPEEK(PT):PT=PF:NT=192+2*PS:GOSUB 765:PUT SPRITE 2,(0,0),0,0
-656 IF TT=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door (with crate)
-657 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door (with crate)
-658 IF TT=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door (crate moves out)
-659 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door (crate moves out)
-660 'IF TP=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door (player is pushing out)
-661 'IF TP=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door (player is pushing out)
-662 'TF=VPEEK(PF)
-663 'IF TF=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door (player is pushing in - NOT WORKING)
-664 'IF TF=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door (player is pushing out - NOT WORKING)
+655 GOTO 700' LASER HANDLING
+
+656 TP=VPEEK(PT):PT=PF:NT=192+2*PS:GOSUB 765:PUT SPRITE 2,(0,0),0,0
+657 IF TT=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door (with crate)
+658 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door (with crate)
+659 IF TT=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door (crate moves out)
+660 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door (crate moves out)
+661 'IF TP=18 THEN CT=16:NT=144:GOSUB 670 'Close magenta door (player is pushing out)
+662 'IF TP=22 THEN CT=20:NT=148:GOSUB 670 'Close cyan door (player is pushing out)
+663 'TF=VPEEK(PF)
+664 'IF TF=18 THEN CT=144:NT=16:GOSUB 670 'Open magenta door (player is pushing in - NOT WORKING)
+665 'IF TF=22 THEN CT=148:NT=20:GOSUB 670 'Open cyan door (player is pushing out - NOT WORKING)
 669 RETURN
 
 
@@ -224,7 +226,7 @@ FILE "end.plet5"
 705 IF MD=1 AND TT=39 THEN OT=39:NT=0:IT=PF:GOSUB 800
 706 IF MD=3 AND TL(PF-&H1800+32)=39 THEN OT=39:NT=0:IT=PF+32:GOSUB 800
 
-739 GOTO 655' TODO Better to make space for this in line 660 without a GOTO
+739 GOTO 656' TODO Better to make space for this in line 660 without a GOTO
 
 740 IX=X:IY=Y:ID=MD:IG=GS:IM=MS:IS=CS:IB=BS
 750 'load room and checks
@@ -505,6 +507,23 @@ FILE "end.plet5"
 5700 DATA 00,00,00,80,4C,AC,4C,00,00,00,E0,E0,E0,00,08,08
 5710 DATA 00,3F,7F,C0,80,80,80,CC,7F,30,00,0E,30,0E,1C,00
 5720 DATA 00,F8,FC,3E,12,12,12,3E,FC,F0,00,10,08,E0,70,30
+
+
+5800 ' --- Slot 8 -pushing right
+5810 ' color 4
+5820 DATA 00,00,00,02,65,6A,64,00,00,00,07,07,07,00,10,10
+5830 DATA 00,00,00,80,00,04,08,10,00,00,F0,80,F0,00,00,70
+5840 ' color 15
+5850 DATA 00,1F,3F,78,10,10,10,78,3F,0C,00,00,00,07,0E,0C
+5860 DATA 00,F8,FC,06,02,02,02,E4,F8,18,06,78,00,C0,E0,00
+5870 '
+5880 ' --- Slot 9 -pushing right
+5900 ' color 4
+5910 DATA 00,00,00,02,65,6A,64,00,00,00,07,07,07,00,00,0F
+5920 DATA 00,00,00,80,00,04,08,10,00,00,F0,80,F0,00,00,00
+5930 ' color 15
+5940 DATA 00,1F,3F,78,10,10,10,78,3F,0C,00,00,00,03,07,00
+5950 DATA 00,F8,FC,06,02,02,02,E4,F8,18,06,78,00,C0,80,00
 
 5999 DATA *
 
