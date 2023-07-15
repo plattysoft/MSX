@@ -33,3 +33,5 @@ Some tiles
 * Icy floor
 * Rough terrain
 * Items (map, battery, compass, key)
+
+[Play the current version](https://webmsx.org/?MACHINE=MSX1E&ROM=https://github.com/plattysoft/MSX/raw/develop/shyre/src/shyre.rom) (beware it might be completely broken as a WIP): 
