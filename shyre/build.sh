@@ -9,4 +9,4 @@ cp tiles/cls.plet5 src/
 cp tiles/room*plet5 src/
 cp sound/sfx.akx src/
 cd src
-msxbas2rom -c -x shyre.bas;openmsx shyre.rom
+msxbas2rom -c -x shyre.bas;cp shyre.rom ../output;openmsx shyre.rom
