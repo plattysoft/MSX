@@ -111,7 +111,7 @@ FILE "end.plet5"
 490 ' Other checks
 491 TT=VPEEK(PT)
 495 IF T1<128 AND T2<128 THEN GS=2:MS=4:BS=MD*9-7:CMD PLYSOUND 6:GOSUB 500
-496 IF PP>0 THEN VPOKE PP,TL(PP-&H1800):VPOKE PP+1,TL(PP+1-&H1800):VPOKE PP+32,TL(PP+32-&H1800):VPOKE PP+33,TL(PP+33-&H1800)
+496 IF GS=3 THEN BS=32+MD*6:VPOKE PP,TL(PP-&H1800):VPOKE PP+1,TL(PP+1-&H1800):VPOKE PP+32,TL(PP+32-&H1800):VPOKE PP+33,TL(PP+33-&H1800)
 499 RETURN
 
 500 'GS=2: MOVING, there is no user input. Check for picking up items once moving is completed
@@ -153,7 +153,7 @@ FILE "end.plet5"
 614 X=X-1:PUT SPRITE 3,(X-16,Y-1):GOTO 620
 
 620 MS=MS-1
-621 IF MS>6 OR MS<=2 THEN CS=32+MD*6 ELSE CS=35+MD*6' Implement common for all directions
+621 IF MS>6 OR MS<=2 THEN CS=BS ELSE CS=BS+3' Implement common for all directions
 
 622 IF MS>0 THEN RETURN
 623 GS=1:TT=TL(PF-&H1800)' Test Tile (Where the crate stands now)
