@@ -35,7 +35,7 @@ FILE "end.plet5"
 251 CMD WRTCLR 40
 252 ' Remove the color from the marker tiles
 253 FOR I=0 TO 31
-254  VPOKE &H2030+I, 0:VPOKE &H2830+I, 0:VPOKE &H3030+I, 0
+254  VPOKE &H21E0+I, 0:VPOKE &H29E0+I, 0:VPOKE &H31E0+I, 0
 255 NEXT I
 256 ' Remove the color from the map tiles
 257 FOR I=0 TO 23
