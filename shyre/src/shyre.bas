@@ -26,16 +26,16 @@ FILE "end.plet5"
 206 DIM TL(767)
 207 DIM KT(190)
 
-208 'GOSUB 10000 'Load Sprites TODO: Move it to a resource file
+208 'Load Sprites
 209 CMD WRTVRAM 1, &H3800
 
 210 GOSUB 2000 'Platty Intro
 
-250 CMD WRTCHR 39 'TODO: Make them a single bank and load them 3 times to save space
+250 CMD WRTCHR 39 ' Load tileset for gameplay
 251 CMD WRTCLR 40
 252 ' Remove the color from the marker tiles
 253 FOR I=0 TO 31
-254  VPOKE &H2000+60*8+I, 0:VPOKE &H2800+60*8+I, 0:VPOKE &H3000+60*8+I, 0
+254  VPOKE &H2030+I, 0:VPOKE &H2830+I, 0:VPOKE &H3030+I, 0
 255 NEXT I
 256 ' Remove the color from the map tiles
 257 FOR I=0 TO 23
@@ -55,7 +55,7 @@ FILE "end.plet5"
 
 389 PUT SPRITE 1,(X,Y),5,CS+1:PUT SPRITE 2,(X,Y),15,CS+2:PUT SPRITE 0,(X,Y),1,CS
 
-390 IF TIME<4 THEN 390
+390 IF TIME<3 THEN 390
 
 399 GOTO 300 ' END GAME LOOP
 
