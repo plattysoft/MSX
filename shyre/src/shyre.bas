@@ -1,11 +1,11 @@
 100 COLOR 15,1,1:SCREEN 2,2,0
 
-FILE "cls.plet5"
+FILE "cls.plet5" ' 0
 FILE "sprites.bin.plet5"
 
 INCLUDE "rooms.inc"
 
-FILE "empty.akm" '
+FILE "empty.akm" '37
 FILE "sfx.akx"
 
 FILE "shyre.chr.plet5"' 39
@@ -48,7 +48,7 @@ FILE "end.plet5"
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
-280 X=88:Y=160:GS=1:MD=1:CS=14
+280 X=88:Y=144:GS=1:MD=1:CS=26
 
 300 TIME=0' BEGIN GAME LOOP
 301 ON GS GOSUB 400,500,600,700
@@ -116,13 +116,13 @@ FILE "end.plet5"
 
 
 500 'GS=2: MOVING, there is no user input. Check for picking up items once moving is completed
-501 ON MD GOTO 510,520,530,540
+509 ON MD GOTO 510,520,530,540
 510 Y=Y-2:GOTO 550
 520 X=X+2:GOTO 550
 530 Y=Y+2:GOTO 550
 540 X=X-2:GOTO 550
 550 MS=MS-1:IF MS<=0 THEN GS=1:GOSUB 570
-560 I=(MS) MOD 4:IF I=2 OR I=0 THEN CS=6 ELSE IF I=1 THEN CS=0 ELSE CS=3
+560 WS=(WS+1) MOD 8:WT=WS\2:IF WT=2 OR WT=0 THEN CS=6 ELSE IF WT=1 THEN CS=0 ELSE CS=3
 561 CS=BS+CS
 569 RETURN
 
@@ -144,10 +144,6 @@ FILE "end.plet5"
 585 IF T1=26 THEN GOTO 1200 'Game Finished!
 586 IF T1=94 AND I2=1 THEN I2=2:GOSUB 820:CMD PLYSOUND 3:GOSUB 1412 'batteries in place, swap colors
 587 IF T1=24 THEN GOSUB 1416
-588 'IF T1=18 THEN CT=144:NT=16:GOSUB 1670 'Open magenta door
-591 'IF T1=22 THEN CT=148:NT=20:GOSUB 1670 'Open cyan door
-592 'IF TT=18 THEN CT=16:NT=144:GOSUB 1670 'Close magenta door
-593 'IF TT=22 THEN CT=20:NT=148:GOSUB 1670 'Close cyan door
 599 RETURN
 
 600 'GS=3: PUSHING, check for events at the end of pushing (sliding, floor switches)
@@ -177,11 +173,6 @@ FILE "end.plet5"
 658 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 1670 'Close magenta door (with crate)
 659 IF TT=22 THEN CT=148:NT=20:GOSUB 1670 'Open cyan door (crate moves out)
 660 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 1670 'Close cyan door (crate moves out)
-661 'IF TP=18 THEN CT=16:NT=144:GOSUB 1670 'Close magenta door (player is pushing out)
-662 'IF TP=22 THEN CT=20:NT=148:GOSUB 1670 'Close cyan door (player is pushing out)
-663 'TF=VPEEK(PF)
-664 'IF TF=18 THEN CT=144:NT=16:GOSUB 1670 'Open magenta door (player is pushing in - NOT WORKING)
-665 'IF TF=22 THEN CT=148:NT=20:GOSUB 1670 'Open cyan door (player is pushing out - NOT WORKING)
 669 RETURN
 
 675 ' On icy floor, if ice in the next tiles in the current direction, continue sliding
@@ -218,7 +209,7 @@ FILE "end.plet5"
 719 RETURN
 
 
-740 IX=X:IY=Y:ID=MD:IG=GS:IM=MS:IS=CS:IB=BS
+740 IX=X:IY=Y:ID=MD:IG=GS:IM=MS:IS=CS:IB=BS 'Remember state of player when enters the room (*I*nitial state)
 750 'load room and checks
 751 PUT SPRITE 0,,0,0:PUT SPRITE 1,,0::PUT SPRITE 2,,0
 752 GOSUB 900 'Load room and check items
@@ -259,16 +250,16 @@ FILE "end.plet5"
 920   T=VPEEK(&H1800+I+J)
 930   IF T<192 THEN TL(I+J)=T ELSE TL(I+J)=0
 931   IF T>=84 AND T<=94 GOSUB 970
-946   IF I2=2 AND T=24 THEN PT=&H1800+I+J:NT=26:GOSUB 760
+946   IF I2=2 AND T=24 THEN PT=&H1800+I+J:NT=26:GOSUB 760 ' Enable teleport if batteries are in
 949  NEXT J
 950 NEXT I
 960 RETURN
 
-970 IF MP=1 AND T=90 THEN PT=&H1800+I+J:NT=0:GOSUB 760
+970 IF MP=1 AND T=90 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete map item from screen space
 971 IF I1=1 AND T=86 THEN PT=&H1800+I+J:NT=0:GOSUB 760
-973 IF I2>0 AND T=88 THEN PT=&H1800+I+J:NT=0:GOSUB 760
+973 IF I2>0 AND T=88 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete batteries from screen space
 974 IF I4=1 AND T=92 THEN PT=&H1800+I+J:NT=0:GOSUB 760
-975 IF I2=2 AND T=94 THEN PT=&H1800+I+J:NT=88:GOSUB 760
+975 IF I2=2 AND T=94 THEN PT=&H1800+I+J:NT=88:GOSUB 760 ' Show batteries as plugged if they are plugged
 977 IF I5=1 AND T=84 THEN PT=&H1800+I+J:NT=0:GOSUB 760
 979 RETURN
 
@@ -348,7 +339,7 @@ FILE "end.plet5"
 1460 T$="FOUND A MAP[#NOW I CAN SEE#WHERE I AM["
 1461 GOSUB 1300:RETURN
 
-1500 'Re-display the map (enable colors in the 3 tiles)
+1500 'Activate map the map (enable colors in the 3 tiles)
 1501 FOR I=0 TO 7
 1502  VPOKE &H2028+I,&H40:VPOKE &H2828+I,&H40:VPOKE &H3028+I,&H40
 1503  VPOKE &H2030+I,&HA0:VPOKE &H2830+I,&HA0:VPOKE &H3030+I,&HA0
@@ -362,7 +353,7 @@ FILE "end.plet5"
 1673  NEXT J:NEXT I
 1674 RETURN
 
-1900 'Writing text on Screen
+1900 'Write text T$ on Screen at position TX, TY (in row/column)
 1901 TF=0
 1910 FOR I=1 TO LEN(T$)
 1911   TF=TF+1
@@ -373,10 +364,10 @@ FILE "end.plet5"
 1990 RETURN
 
 2000 ' Platty Soft Intro
-2001 CMD WRTSCR 0
-2002 CMD WRTCHR 41
+2001 CMD WRTSCR 0 'CLS
+2002 CMD WRTCHR 41 ' Load tiles for home screen and platty intro
 2003 CMD WRTCLR 42
-2004 'CLS
+
 2010 STRIG(0) ON: STRIG(1) ON
 2020 ON STRIG GOSUB 2700, 2700
 
@@ -431,9 +422,9 @@ FILE "end.plet5"
 
 2700 STRIG(0) OFF: STRIG(1) OFF:RETURN 2800
 
-2800 'Shyre new game screen
+2800 'Shyre START GAME screen
 2810 CMD WRTSCR 43
-2811 IF STRIG(0) OR STRIG(1) GOTO 2811 'Debouncing
+2811 IF STRIG(0) OR STRIG(1) GOTO 2811 'Debouncing space press
 2820 IF STRIG(0) THEN SS=0:GOTO 3000
 2821 IF STRIG(1) THEN SS=1:GOTO 3000
 2830 GOTO 2820

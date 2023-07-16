@@ -8,5 +8,7 @@ cp tiles/end.plet5 src/
 cp tiles/cls.plet5 src/
 cp tiles/room*plet5 src/
 cp sound/sfx.akx src/
+pletter sprites.bin
+cp sprites.bin.pletter src/
 cd src
-msxbas2rom -c -x shyre.bas;cp shyre.rom ../output;openmsx shyre.rom
+msxbas2rom -c -x shyre.bas;mv shyre.rom ../output;cd ..;openmsx output/shyre.rom
