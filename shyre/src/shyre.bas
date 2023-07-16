@@ -48,7 +48,7 @@ FILE "end.plet5"
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
-280 X=88:Y=144:GS=1:MD=1:CS=26
+280 X=88:Y=144:GS=1:MD=1:CS=26:WS=0
 
 300 TIME=0' BEGIN GAME LOOP
 301 ON GS GOSUB 400,500,600,700
@@ -252,6 +252,7 @@ FILE "end.plet5"
 946   IF I2=2 AND T=24 THEN PT=&H1800+I+J:NT=26:GOSUB 760 ' Enable teleport if batteries are in
 949  NEXT J
 950 NEXT I
+959 WS=0 ' Reset the walking sprite count
 960 RETURN
 
 970 IF MP=1 AND T=90 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete map item from screen space
