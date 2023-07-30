@@ -9,6 +9,6 @@ cp tiles/cls.plet5 src/
 cp tiles/room*plet5 src/
 cp sound/sfx.akx src/
 pletter sprites.bin
-cp sprites.bin.pletter src/
+cp sprites.bin.plet5 src/
 cd src
 msxbas2rom -c -x shyre.bas;mv shyre.rom ../output;cd ..;openmsx output/shyre.rom
