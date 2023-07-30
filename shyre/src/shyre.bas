@@ -45,8 +45,8 @@ FILE "intro.plet5" '45
 
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270 RR=2:RC=1:RH=0:I1=1:I5=1
-271 'RR=4:RC=2:RH=0
+270 'RR=2:RC=1:RH=0:I1=1:I5=1
+271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
 280 X=88:Y=144:GS=1:MD=1:CS=19:WS=0
