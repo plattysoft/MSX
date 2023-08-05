@@ -31,7 +31,7 @@ FILE "intro.plet5" '45
 209 CMD WRTVRAM 1, &H3800
 
 210 GOSUB 2000 'Platty Intro
-
+f
 250 CMD WRTCHR 39 ' Load tileset for gameplay (redundant, it is done in the intro)
 251 CMD WRTCLR 40
 252 ' Remove the color from the marker tiles
@@ -132,8 +132,8 @@ FILE "intro.plet5" '45
 570 'Stair and items checks at end of moving (this should be done AFTER DRAWING)
 571 PT=&H1800+X\8+(Y\8)*32:PP=0
 572 T1=VPEEK(PT):T2=VPEEK(PT+1):T3=VPEEK(PT+32):T4=VPEEK(PT+33)
-573 IF T1=64 THEN RH=RH+1:GOSUB 740 'Stairs up
-574 IF T1=66 THEN RH=RH-1:GOSUB 740 'Stairs down
+573 IF T1=64 THEN RH=RH+1:CMD PLYSOUND 10:GOSUB 740 'Stairs up
+574 IF T1=66 THEN RH=RH-1:CMD PLYSOUND 10:GOSUB 740 'Stairs down
 575 IF T1=86 THEN I1=1:GOSUB 780:CMD PLYSOUND 3:GOSUB 1420
 576 IF T1=88 AND I2=0 THEN I2=1:GOSUB 780:CMD PLYSOUND 3:GOSUB 1430 ' Pick up the battery
 577 IF T1=90 THEN MP=1:GOSUB 780:CMD PLYSOUND 3:GOSUB 1460:GOSUB 1500 ' Pick up the map
@@ -172,10 +172,10 @@ FILE "intro.plet5" '45
 635 IF MD=3 AND TL(PF-&H1800+32)=39 THEN OT=39:NT=0:IT=PF+32:GOSUB 800
 
 656 TP=VPEEK(PT):PT=PF:NT=192+2*PS:GOSUB 765:PUT SPRITE 3,(0,0),0,0
-657 IF TT=18 THEN CT=144:NT=16:GOSUB 1670 'Open magenta door (with crate)
-658 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:GOSUB 1670 'Close magenta door (with crate)
-659 IF TT=22 THEN CT=148:NT=20:GOSUB 1670 'Open cyan door (crate moves out)
-660 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:GOSUB 1670 'Close cyan door (crate moves out)
+657 IF TT=18 THEN CT=144:NT=16:CMD PLYSOUND 8:GOSUB 1670 'Open magenta door (with crate)
+658 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:CMD PLYSOUND 8:GOSUB 1670 'Close magenta door (with crate)
+659 IF TT=22 THEN CT=148:NT=20:CMD PLYSOUND 8:GOSUB 1670 'Open cyan door (crate moves out)
+660 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:CMD PLYSOUND 8:GOSUB 1670 'Close cyan door (crate moves out)
 669 RETURN
 
 675 ' On icy floor, if ice in the next tiles in the current direction, continue sliding
