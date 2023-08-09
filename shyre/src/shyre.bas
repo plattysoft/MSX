@@ -31,7 +31,7 @@ FILE "intro.plet5" '45
 209 CMD WRTVRAM 1, &H3800
 
 210 GOSUB 2000 'Platty Intro
-f
+
 250 CMD WRTCHR 39 ' Load tileset for gameplay (redundant, it is done in the intro)
 251 CMD WRTCLR 40
 252 ' Remove the color from the marker tiles
@@ -45,8 +45,8 @@ f
 
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270 RR=3:RC=0:RH=0:I1=1:I5=1:I2=2
-271 'RR=4:RC=2:RH=0
+270 'RR=3:RC=0:RH=0:I1=1:I5=1:I2=2
+271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
 280 X=88:Y=144:GS=1:MD=1:CS=19:WS=0
