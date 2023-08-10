@@ -174,10 +174,10 @@ FILE "intro.plet5" '45
 635 IF MD=3 AND TL(PF-&H1800+32)=39 THEN OT=39:NT=0:IT=PF+32:GOSUB 800
 
 656 TP=VPEEK(PT):PT=PF:NT=192+2*PS:GOSUB 765:PUT SPRITE 3,(0,0),0,0
-657 IF TT=18 THEN CT=144:NT=16:CMD PLYSOUND 8:GOSUB 1670 'Open magenta door (with crate)
-658 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:CMD PLYSOUND 11:GOSUB 1670 'Close magenta door (with crate)
-659 IF TT=22 THEN CT=148:NT=20:CMD PLYSOUND 8:GOSUB 1670 'Open cyan door (crate moves out)
-660 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:CMD PLYSOUND 11:GOSUB 1670 'Close cyan door (crate moves out)
+657 IF TT=18 THEN CT=144:NT=16:CMD PLYSOUND 8:GS=5:MS=8:GOSUB 1670 'Open magenta door (with crate)
+658 IF TL(PP-&H1800)=18 THEN CT=16:NT=144:CMD PLYSOUND 11:GS=5:MS=8:GOSUB 1670 'Close magenta door (crate moves out)
+659 IF TT=22 THEN CT=148:NT=20:CMD PLYSOUND 8:GS=5:MS=8:GOSUB 1670 'Open cyan door (with crate)
+660 IF TL(PP-&H1800)=22 THEN CT=20:NT=148:CMD PLYSOUND 11:GS=5:MS=8:GOSUB 1670 'Close cyan door (crate moves out)
 669 RETURN
 
 675 ' On icy floor, if ice in the next tiles in the current direction, continue sliding
