@@ -45,7 +45,7 @@ FILE "intro.plet5" '45
 
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270 'RR=3:RC=0:RH=0:I1=1:I5=1:I2=2
+270 'RR=0:RC=4:RH=0:I1=1:I5=1:I2=2
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
@@ -196,7 +196,7 @@ FILE "intro.plet5" '45
 686 IF T1>=28 AND T1<=31 AND T2>=28 AND T2<=31 THEN PP=PT:GOTO 690
 689 RETURN
 
-690 FOR I=1 TO 4' Why is this 4 and not 8?? Where is the reentrant code?
+690 CMD PLYSOUND 15:FOR I=1 TO 4' Why is this 4 and not 8?? Where is the reentrant code?
 691  ON MD GOTO 692,693,694,695
 692  CY=CY-1:GOTO 696
 693  CX=CX+1:GOTO 696
