@@ -301,7 +301,7 @@ FILE "room_6_0.plet5" '46 - intro, outside
 1054 RETURN 300
 
 1100 'Death by laser animation
-1102 PUT SPRITE 0,(X,Y),13,43:GOSUB 1010
+1102 PUT SPRITE 0,(X,Y),13,43:GOSUB 1001
 1111 X=IX:Y=IY:GS=IG:MD=ID:MS=IM:CS=IS:BS=IB 'Remember starting position on a room
 1120 GOSUB 750
 1130 RETURN 300
