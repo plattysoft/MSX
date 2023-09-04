@@ -3,7 +3,7 @@
 FILE "cls.plet5" ' 0
 FILE "sprites.bin.plet5"
 
-INCLUDE "rooms_test.inc"
+INCLUDE "rooms.inc"
 
 FILE "empty.akm" '37
 FILE "sfx.akx"
@@ -555,5 +555,4 @@ FILE "room_6_0.plet5" '46 - intro, outside
 3915 IF TIME<2 THEN 3915 ELSE IF Y>FY THEN 3910
 3921 PUT SPRITE 1,,,19:PUT SPRITE 2,,,20:PUT SPRITE 3,,,2
 3922 RETURN
-
 
