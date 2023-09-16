@@ -33,8 +33,8 @@ FILE "room_6_0.plet5" '46 - intro, outside
 
 210 GOSUB 2000 'Platty Intro
 
-250 CMD WRTCHR 39 ' Load tileset for gameplay (redundant, it is done in the intro)
-251 CMD WRTCLR 40
+250 'CMD WRTCHR 39 ' Load tileset for gameplay (redundant, it is done in the intro)
+251 'CMD WRTCLR 40
 252 ' Remove the color from the marker tiles
 253 FOR I=0 TO 31
 254  VPOKE &H21E0+I, 0:VPOKE &H29E0+I, 0:VPOKE &H31E0+I, 0
