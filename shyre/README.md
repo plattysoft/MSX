@@ -35,3 +35,23 @@ Some tiles
 * Items (map, battery, compass, key)
 
 [Play the current version](https://webmsx.org/?MACHINE=MSX1E&ROM_FORMAT=KonamiSCC&ROM=https://github.com/plattysoft/MSX/raw/develop/shyre/output/shyre.rom) (beware it might be completely broken as a WIP): 
+
+# Notes on Sprites
+
+Sprites 0 and 1 are crates and heavy crates
+2 is walking  up.
+There are 9 sprites: 3 frames of 3 sprites each (blue / white / black)
+11 is walking right
+20 is walking down
+29 is walking left
+
+38 is pushing upwars: 2 frames of 2 sprites each + a common black sprite
+the common black sprite is needed so we can have enough sprites for the teleport sprites
+43 is pushing righy
+48 is pushing down
+53 is pushing left
+
+58 is teleport (4 frames)
+and we have 2 sprites to spare WOHOO
+
+Because of this organization, the backup sprite changes from being part of the walking image to be shared and the same for all frames of the animation. That part of the code is a bit obtuse, so I am leaving a note here in case I want to take this project again in the future
