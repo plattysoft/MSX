@@ -234,8 +234,7 @@ FILE "room_6_0.plet5" '46 - intro, outside
 740 IX=X:IY=Y:ID=MD:IG=GS:IM=MS:IS=CS:IB=BS 'Remember state of player when enters the room (*I*nitial state)
 750 'load room and checks
 751 PUT SPRITE 1,,0,0:PUT SPRITE 2,,0::PUT SPRITE 3,,0
-752 GOSUB 900 'Load room and check items
-753 GOSUB 790 'Redraw items
+754 GOSUB 900 'Load room and check items
 759 RETURN
 
 760 ' Replace 4 tiles starting at PT (previous tile) with tiles from NT (new tile)
@@ -267,6 +266,9 @@ FILE "room_6_0.plet5" '46 - intro, outside
 900 'Explore room, remember floor type and remove collected items
 901 IF RH=0 THEN CR=2+RR*5+RC ELSE IF RH=1 THEN CR=27+(RR-1)*3+RC-1 ELSE CR=36
 902 CMD WRTSCR CR
+
+903 GOSUB 790 'Redraw items
+
 910 FOR I=0 TO 734 STEP 32
 911  FOR J=0 TO 23
 920   T=VPEEK(&H1800+I+J)
