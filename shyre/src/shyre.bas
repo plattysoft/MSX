@@ -33,8 +33,8 @@ FILE "room_6_0.plet5" '46 - intro, outside
 
 210 GOSUB 2000 'Platty Intro
 
-250 'CMD WRTCHR 39 ' Load tileset for gameplay (redundant, it is done in the intro)
-251 'CMD WRTCLR 40
+250 'CMD WRTCHR 39:CMD WRTCLR 40' Load tileset for gameplay (redundant, it is done in the intro)
+251 IF MP=1 THEN 269 'Fully supporting New Game+
 252 ' Remove the color from the marker tiles
 253 FOR I=0 TO 31
 254  VPOKE &H21E0+I, 0:VPOKE &H29E0+I, 0:VPOKE &H31E0+I, 0
@@ -45,7 +45,7 @@ FILE "room_6_0.plet5" '46 - intro, outside
 259 NEXT I
 
 
-269 'proper starting place is RR=4:RC=2:RH=0
+269 ' Initializing new game
 270 'RR=0:RC=5:RH=1:I1=1:I5=1:I2=1:MP=1:I4=1
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
