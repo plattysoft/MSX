@@ -46,7 +46,7 @@ FILE "room_6_0.plet5" '46 - intro, outside
 
 
 269 'proper starting place is RR=4:RC=2:RH=0
-270 'RR=2:RC=1'RR=0:RC=4:RH=2:I1=1:I5=1:I2=2
+270 'RR=0:RC=5:RH=1:I1=1:I5=1:I2=1:MP=1:I4=1
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
@@ -259,7 +259,7 @@ FILE "room_6_0.plet5" '46 - intro, outside
 801 IF VPEEK(IT)<>OT THEN RETURN ELSE VPOKE IT,NT:TL(IT-&H1800)=NT:IT=IT+1:GOTO 801
 
 820 ' Putting batteries in place
-821 PT=&H187D:NT=0:GOSUB 765 'delete them from items
+821 PT=&H18DD:NT=0:GOSUB 765 'delete them from items
 822 CT=94:NT=88:GOSUB 1670 'Draw batteries in place
 823 CT=24:NT=26:GOSUB 1670 'Swap ending tile
 829 RETURN
