@@ -31,22 +31,22 @@ FILE "room_6_0.plet5" '46 - intro, outside
 208 'Load Sprites
 209 CMD WRTVRAM 1, &H3800
 
-210 GOSUB 2000 'Platty Intro
+210 'GOTO 250 'Debug straight into game
+211 GOSUB 2000 'Platty Intro
 
 250 'CMD WRTCHR 39:CMD WRTCLR 40' Load tileset for gameplay (redundant, it is done in the intro)
-251 IF MP=1 THEN 269 'Fully supporting New Game+
 252 ' Remove the color from the marker tiles
 253 FOR I=0 TO 31
 254  VPOKE &H21E0+I, 0:VPOKE &H29E0+I, 0:VPOKE &H31E0+I, 0
 255 NEXT I
 256 ' Remove the color from the map tiles
-257 FOR I=0 TO 23
-258  VPOKE &H2028+I, 0:VPOKE &H2828+I, 0:VPOKE &H3028+I, 0
-259 NEXT I
-
+257 IF MP=1 THEN 269 'Fully supporting New Game+
+258 FOR I=0 TO 23
+259  VPOKE &H2028+I, 0:VPOKE &H2828+I, 0:VPOKE &H3028+I, 0
+260 NEXT I
 
 269 ' Initializing new game
-270 'RR=0:RC=5:RH=1:I1=1:I5=1:I2=1:MP=1:I4=1
+270 'RR=2:RC=4:RH=3:I1=1:I5=1:I2=1:MP=1:I4=1
 271 RR=4:RC=2:RH=0
 272 GOSUB 900
 
@@ -66,7 +66,7 @@ FILE "room_6_0.plet5" '46 - intro, outside
 
 390 IF TIME<2 THEN 390
 
-391 IF GS<1 THEN GS=GS+1
+391 'IF GS<1 THEN GS=GS+1 'No longer needed, we have proper states
 
 399 GOTO 300 ' END GAME LOOP
 
@@ -269,24 +269,34 @@ FILE "room_6_0.plet5" '46 - intro, outside
 
 903 GOSUB 790 'Redraw items
 
+904 GOSUB 980 'Remove items from screen space
+
 910 FOR I=0 TO 734 STEP 32
 911  FOR J=0 TO 23
 920   T=VPEEK(&H1800+I+J)
 930   IF T<192 THEN TL(I+J)=T ELSE TL(I+J)=0
-931   IF T>=84 AND T<=94 GOSUB 970
-946   IF I2=2 AND T=24 THEN PT=&H1800+I+J:NT=26:GOSUB 760 ' Enable teleport if batteries are in
+931   'IF T>=84 AND T<=94 GOSUB 970 ' Dynamic removal of items, enable for debugging
+946   'IF I2=2 AND T=24 THEN PT=&H1800+I+J:NT=26:GOSUB 760 ' Enable teleport if batteries are in
 949  NEXT J
 950 NEXT I
 959 WS=0 ' Reset the walking sprite count (gets off when killed by laser)
 960 RETURN
 
-970 IF MP=1 AND T=90 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete map item from screen space
-971 IF I1=1 AND T=86 THEN PT=&H1800+I+J:NT=0:GOSUB 760
-973 IF I2>0 AND T=88 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete batteries from screen space
-974 IF I4=1 AND T=92 THEN PT=&H1800+I+J:NT=0:GOSUB 760
-975 IF I2=2 AND T=94 THEN PT=&H1800+I+J:NT=88:GOSUB 760 ' Show batteries as plugged if they are plugged
-977 IF I5=1 AND T=84 THEN PT=&H1800+I+J:NT=0:GOSUB 760
-979 RETURN
+970 'IF MP=1 AND T=90 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete map item from screen space
+971 'IF I1=1 AND T=86 THEN PT=&H1800+I+J:NT=0:GOSUB 760
+973 'IF I2>0 AND T=88 THEN PT=&H1800+I+J:NT=0:GOSUB 760 ' Delete batteries from screen space
+974 'IF I4=1 AND T=92 THEN PT=&H1800+I+J:NT=0:GOSUB 760
+975 'IF I2=2 AND T=94 THEN PT=&H1800+I+J:NT=88:GOSUB 760 ' Show batteries as plugged if they are plugged
+977 'IF I5=1 AND T=84 THEN PT=&H1800+I+J:NT=0:GOSUB 760
+979 'RETURN
+
+980 IF MP=1 AND CR=34 THEN PT=&H1A15:NT=0:GOSUB 760 ' Delete map item from screen space: (16,31)-> &H215
+981 IF I1=1 AND CR=26 THEN PT=&H1A44:NT=0:GOSUB 760 ' Machete:(18,4) -> &H244
+983 IF I2>0 AND CR=16 THEN PT=&H186B:NT=0:GOSUB 760 ' Delete batteries from screen space (3,11) -> &H6B
+984 IF I4=1 AND CR=22 THEN PT=&H1A82:NT=0:GOSUB 760 ' Magnet: (20,2) -> &H282 (MAGNET?)
+985 IF I2=2 AND CR=36 THEN PT=&H194B:NT=88:GOSUB 760:PT=&H1A2B:NT=26:GOSUB 760 ' Plugged Batteries (10,11) -> &H14B / (17,11) Teleport &h22B
+987 IF I5=1 AND CR=9  THEN PT=&H1AB5:NT=0:GOSUB 760' Hammer: (21,21) -> 21*32+21 -> &H2B5
+989 RETURN
 
 1000 PUT SPRITE 0,(X,Y),7,58
 1001 I=0:CMD PLYSOUND 12
