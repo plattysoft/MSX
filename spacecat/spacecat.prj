@@ -3,7 +3,7 @@ SCREEN
 spacecat.scr
 TILES
 spacecat.til
-ALLBANKS
+ONEBANK
 PALETTE
 spacecat.pal
 END
