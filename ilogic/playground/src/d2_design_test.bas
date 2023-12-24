@@ -169,6 +169,7 @@
 9244 TT =  &H1800+X\8
 9249 IF T0>=64 OR T1>=64 OR T2>=64 THEN VY=0:Y=Y-VY:Y=((Y+2)\8+1)*8-2:GS=3
 9250 TT = &H1800+X\8
+9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
 9254 IF VX>0 THEN T3=VPEEK(TT+(Y+32)\8*32+2):T4=VPEEK(TT+(Y+24)\8*32+2):T5=VPEEK(TT+(Y+16)\8*32+2):T6=VPEEK(TT+(Y+8)\8*32+2):T7=VPEEK(TT+(Y+2)\8*32+2)
 9255 IF VX<0 THEN T3=VPEEK(TT+(Y+32)\8*32):T4=VPEEK(TT+(Y+24)\8*32):T5=VPEEK(TT+(Y+16)\8*32):T6=VPEEK(TT+(Y+8)\8*32):T7=VPEEK(TT+(Y+2)\8*32)
 9281 IF T3>=64 OR T4>=64 OR T5>=64 OR T6>=64 OR T7>=64 THEN X=X-VX
