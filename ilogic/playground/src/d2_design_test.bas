@@ -208,7 +208,7 @@
 9355 IF VX<0 THEN T3=VPEEK(TT+(Y+32)\8*32):T4=VPEEK(TT+(Y+24)\8*32):T5=VPEEK(TT+(Y+16)\8*32):T6=VPEEK(TT+(Y+8)\8*32):T7=VPEEK(TT+(Y+2)\8*32)
 9381 IF T3>=64 OR T4>=64 OR T5>=64 OR T6>=64 OR T7>=64 THEN X=X-VX:GOSUB 9800'Wall jump check
 9385 IF T0>=64 OR T1>=64 OR T2>=64 THEN GS=1:JD=1:SA=4:ST=4:VX=0:Y=((Y+32)\8)*8-32
-9390 IF DJ=1 AND VY<12 THEN GOSUB 9820'Double Jump check
+9390 IF DJ=1 THEN GOSUB 9820'Double Jump check
 9399 RETURN
 
 9800 'Check for wall jump, need to have a substantial amount of wall to grip to
@@ -220,7 +220,7 @@
 
 9820 'Double Jump Check
 9821 IF JD=1 AND NOT(STRIG(0)) THEN JD=0:GOTO 9829
-9822 IF JD=0 AND STRIG(0) THEN GS=2:VY=-14:SA=0:ST=4:JD=1
+9822 IF JD=0 AND STRIG(0) THEN GS=2:VY=VY-14:SA=0:ST=4:JD=1
 9823 'TODO EXTRA check for ceiling? <- Not sure if it is needed
 9829 RETURN
 
