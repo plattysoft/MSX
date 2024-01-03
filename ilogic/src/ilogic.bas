@@ -350,7 +350,7 @@ FILE "../res/map.clr.plet5"
 
 9920 ' Horizontal moving enemy, upper
 9921 EX(EI)=EX(EI)+EV(EI)
-9923 IF EX(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI))\8)*32+(EX(EI)+8+4*EV(EI))\8):IF EL=107 OR EL=109 THEN EV(EI)=-EV(EI)
+9923 IF EX(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+9)\8)*32+(EX(EI)+8+4*EV(EI))\8):IF EL=107 OR EL=109 THEN EV(EI)=-EV(EI)
 9929 RETURN
 
 9930 ' Vertical moving enemy, right wall
