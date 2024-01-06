@@ -55,13 +55,14 @@ INCLUDE "map.inc"
 9144 T1 = VPEEK (TT+(X+8)/8)
 9145 T2 = VPEEK (TT+(X+15)/8)
 9146 TT = TT + X/8
-9148 'Only check for tile interaction horizontally when we transition places in the grid
-9149 IF X MOD 8 <> 0 THEN 9190
+9148 'Only check for tile interaction horizontally when we transition places in the grid (also vertically, but that is more tricky)
+9149 IF VX=0 THEN GOTO 9190' NC needed check, set to 1 when falling
 9150 IF VX>0 THEN T3=VPEEK(TT-&H80+2):T4=VPEEK(TT-&H60+2):T5=VPEEK(TT-&H40+2):T6=VPEEK(TT-&H20+2)
-9151 IF VX<0 THEN T3=VPEEK(TT-&H80-1):T4=VPEEK(TT-&H60-1):T5=VPEEK(TT-&H40-1):T6=VPEEK(TT-&H20-1)
+9151 IF VX<0 THEN T3=VPEEK(TT-&H80):T4=VPEEK(TT-&H60):T5=VPEEK(TT-&H40):T6=VPEEK(TT-&H20)
 9180 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
-9181 IT=VPEEK(TT-32)' IT: Item tile
-9182 IF IT MOD 2 = 0 AND IT>=96 AND IT<=106 THEN TI=(TT-64):GOSUB 9810 'Check for item collection
+9181 IF X MOD 8 <> 0 THEN 9190 'Only do item check when switching tiles
+9185 IT=VPEEK(TT-32)' IT: Item tile
+9186 IF IT MOD 2 = 0 AND IT>=96 AND IT<=106 THEN TI=(TT-64):GOSUB 9810 'Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800
 9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800
@@ -78,8 +79,9 @@ INCLUDE "map.inc"
 9241 T0 = VPEEK (TT+(X+2)/8)
 9242 T1 = VPEEK (TT+(X+8)/8)
 9243 T2 = VPEEK (TT+(X+15)/8)
-9244 TT = &H1800+(X+VX)/8
+9244 TT = &H1800+(X)/8
 9249 IF T0>=128 OR T1>=128 OR T2>=128 THEN VY=0:Y=Y-VY:Y=((Y+2)/8+1)*8-2:DJ=0:GS=3
+9250 IF VX=0 THEN 9290' No need for horizontal collision check if we are not moving
 9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
 9254 IF VX>0 THEN T3=VPEEK(TT+(Y+32)/8*32+2):T4=VPEEK(TT+(Y+24)/8*32+2):T5=VPEEK(TT+(Y+16)/8*32+2):T6=VPEEK(TT+(Y+8)/8*32+2):T7=VPEEK(TT+(Y+2)/8*32+2)
 9255 IF VX<0 THEN T3=VPEEK(TT+(Y+32)/8*32):T4=VPEEK(TT+(Y+24)/8*32):T5=VPEEK(TT+(Y+16)/8*32):T6=VPEEK(TT+(Y+8)/8*32):T7=VPEEK(TT+(Y+2)/8*32)
@@ -102,11 +104,12 @@ INCLUDE "map.inc"
 9341 T0 = VPEEK (TT+(X+2)/8)
 9342 T1 = VPEEK (TT+(X+8)/8)
 9343 T2 = VPEEK (TT+(X+15)/8)
-9344 TT = &H1800+(X+VX)/8
+9344 TT = &H1800+(X)/8
+9350 IF VX=0 THEN 9385' No need for horizontal collision check if we are not moving
 9354 IF VX>0 THEN T3=VPEEK(TT+(Y+32)/8*32+2):T4=VPEEK(TT+(Y+24)/8*32+2):T5=VPEEK(TT+(Y+16)/8*32+2):T6=VPEEK(TT+(Y+8)/8*32+2):T7=VPEEK(TT+(Y+2)/8*32+2)
 9355 IF VX<0 THEN T3=VPEEK(TT+(Y+32)/8*32):T4=VPEEK(TT+(Y+24)/8*32):T5=VPEEK(TT+(Y+16)/8*32):T6=VPEEK(TT+(Y+8)/8*32):T7=VPEEK(TT+(Y+2)/8*32)
 9381 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:GOSUB 9800 'Wall jump check
-9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:VX=0:Y=((Y+32)\8)*8-32
+9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
 9391 ' TODO:Check for collecting items on T1 and T5
 9392 IF T1=64 THEN GOSUB 9810 ' Temporary
