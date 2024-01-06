@@ -4,7 +4,7 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map.inc"
 
-7999 C=3:R=2
+7999 C=0:R=1
 
 8000 COLOR 15,1,1:SCREEN 2,2,0
 8001 DEFINT A-Z
