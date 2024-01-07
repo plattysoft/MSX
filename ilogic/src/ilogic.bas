@@ -29,10 +29,14 @@ INCLUDE "map.inc"
 9009 ' DRAW
 9010 PUT SPRITE 1,(X,Y+YO),15,D:PUT SPRITE 0,(X,Y+4+YO),4,9+SA+D
 9020 PUT SPRITE 2,(X,Y+14),14,1+ST+D
-9030 IF EC=0 THEN 9090
+9030 IF EC=0 THEN 9050
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),EA,25+ES(I)+ET(I)*3
 9039 NEXT I
+9050 TA=TA+1 ' TA: timer for animation
+9051 IF TA MOD 5 = 0 THEN GOSUB 12000
+9053 IF TA MOD 80 = 0 THEN GOSUB 11000
+
 9089 ' END GAME LOOP
 9090 IF TIME<1 GOTO 9090 ELSE 9000
 
@@ -55,19 +59,18 @@ INCLUDE "map.inc"
 9144 T1 = VPEEK (TT+(X+8)/8)
 9145 T2 = VPEEK (TT+(X+15)/8)
 9146 TT = TT + X/8
-9148 'Only check for tile interaction horizontally when we transition places in the grid (also vertically, but that is more tricky)
-9149 IF VX=0 THEN GOTO 9190' NC needed check, set to 1 when falling
-9150 IF VX>0 THEN T3=VPEEK(TT-&H80+2):T4=VPEEK(TT-&H60+2):T5=VPEEK(TT-&H40+2):T6=VPEEK(TT-&H20+2)
-9151 IF VX<0 THEN T3=VPEEK(TT-&H80):T4=VPEEK(TT-&H60):T5=VPEEK(TT-&H40):T6=VPEEK(TT-&H20)
+9150 IF X MOD 8 <> 0 THEN 9160 'Only do item check when switching tiles
+9151 IT=VPEEK(TT-32)' IT: Item tile
+9152 IF IT MOD 2 = 0 AND IT>=96 AND IT<=106 THEN TI=(TT-64):GOSUB 9810 'Check for item collection
+9160 'Only check for tile interaction horizontally when we transition places in the grid (also vertically, but that is more tricky)
+9161 IF VX=0 THEN GOTO 9190' NC needed check, set to 1 when falling
+9162 IF VX>0 THEN T3=VPEEK(TT-&H80+2):T4=VPEEK(TT-&H60+2):T5=VPEEK(TT-&H40+2):T6=VPEEK(TT-&H20+2)
+9163 IF VX<0 THEN T3=VPEEK(TT-&H80):T4=VPEEK(TT-&H60):T5=VPEEK(TT-&H40):T6=VPEEK(TT-&H20)
 9180 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
-9181 IF X MOD 8 <> 0 THEN 9190 'Only do item check when switching tiles
-9185 IT=VPEEK(TT-32)' IT: Item tile
-9186 IF IT MOD 2 = 0 AND IT>=96 AND IT<=106 THEN TI=(TT-64):GOSUB 9810 'Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800
 9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800
 9199 RETURN
-
 
 9200 'GS=2 Jumping
 9210 VY=VY+1: IF VY>=0 THEN GS=3
@@ -89,7 +92,7 @@ INCLUDE "map.inc"
 9290 IF DJ=1 AND VY>-4 THEN GOSUB 9820'Double Jump check
 9291 ' TODO:Check for collecting items on T1 and T5
 9292 IF T1=98 THEN TI=&H1800+((Y+2)\8)*32+(X+8)\8-32:GOSUB 9810 ' TODO Improve box detection. This is temporary works fine looking right but not when looking left - we should check the other side, most likely a new tile point is needed
-9298 IF Y<=0 THEN R=R-1:Y=146:GOSUB 8800
+9298 IF Y<=0 THEN R=R-1:Y=130:GOSUB 8800
 9299 RETURN
 
 9300 'GS=3 Falling
@@ -170,10 +173,28 @@ INCLUDE "map.inc"
 9943 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+10+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=141 OR EL=173 THEN EV(EI)=-EV(EI)
 9949 RETURN
 
+11000 ' SWAP LASER STATE color at tiles 62, 63,from &H89 to 00. Color table starts at &H2000
+11200 IF LS=1 THEN LC=&H00:LS=0 ELSE LC=&H89:LS=1
+11500 FOR I=&H21F0 TO &H21FF
+11600  VPOKE I, LC:VPOKE I+&H800, LC: VPOKE I+&H1000, LC
+11700 NEXT I
+11800 ' Lasers ON enable sound on channel 3 with sound generator
+11810 'IF LC=0 THEN SOUND 8, 0 ELSE IF LP=1 THEN SOUND 8, &B11111
+11990 RETURN
+
+12000 'ANIMATE LASER, we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
+12100 LT=LT+1:IF LT=200 THEN LT=196
+12200 FOR I=0 TO 7
+12300  LR=VPEEK(LT*8+I): LM=VPEEK(LT*8+I+32)
+12400  VPOKE &H1F0+I, LR:VPOKE I+&H9F0, LR: VPOKE I+&H11F0, LR
+12410  VPOKE &H1F8+I, LM:VPOKE I+&H9F8, LM: VPOKE I+&H11F8, LM
+12500 NEXT I
+12990 RETURN
+
 8800 ' Parse new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8805 CMD WRTSCR R+C*5+3
-8806 EC=0
+8806 EC=0:LT=196
 8810 FOR I=&H1820 TO &H1B80
 8820  TT=VPEEK(I)
 8821  IF TT=192 THEN GOSUB 8910

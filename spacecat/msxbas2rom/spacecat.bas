@@ -177,7 +177,7 @@ FILE "end_common.plet5"
 1181 IF LC=0 THEN SOUND 8, 0 ELSE IF LP=1 THEN SOUND 8, &B11111
 1199 RETURN
 
-1200 'ANIMATE LASER, we have 4 patterns, they all have the same colors, tile 144-147, bae address for the copy is tile 62 -> 62*8=496 -> 0x1F0
+1200 'ANIMATE LASER, we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
 1210 LT=LT+1:IF LT=148 THEN LT=144
 1220 FOR I=0 TO 7
 1230  LR=VPEEK(LT*8+I): LM=VPEEK(LT*8+I+32)
@@ -393,7 +393,7 @@ FILE "end_common.plet5"
 4500 STRIG(0) OFF:STRIG(1) OFF
 4501 ' LS of the previous level needs to be <>-1 (Maybe play a wrong sound)
 4502 SL=(X-8)\40+(Y-8)*6\40
-4503 IF SL>1 THEN IF LL(SL-1)=-1 THEN GOTO 4200
+4503 IF SL>0 THEN IF LL(SL-1)=-1 THEN GOTO 4200
 4510 PUT SPRITE 0,,0:PUT SPRITE 1,,0:PUT SPRITE 2,,0:PUT SPRITE 3,,0
 4519 L=SL:CMD WRTSCR 24
 4590 GOTO 100
