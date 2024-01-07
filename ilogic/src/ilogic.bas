@@ -4,7 +4,7 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map.inc"
 
-7999 C=1:R=0
+7999 C=4:R=0
 
 8000 COLOR 15,1,1:SCREEN 2,2,0
 8001 DEFINT A-Z
@@ -120,11 +120,10 @@ INCLUDE "map.inc"
 9499 RETURN
 
 9700 ' fun Check for item collection
-9701 IC=&H1800+(X-4)/8+(Y+12)/8*32
+9701 IC=&H1800+(X+4)/8+(Y+12)/8*32
 9702 II=IC:GOSUB 9710 ' Check tile for item
 9703 II=IC+32:GOSUB 9710 ' Check tile for item
-9704 II=IC+1:GOSUB 9710 ' Check tile for item
-9705 II=IC+33:GOSUB 9710 ' Check tile for item
+9704 II=IC+64:GOSUB 9710 ' Check tile for item
 9709 RETURN
 
 9710 ' fun Check tile for item
@@ -220,8 +219,7 @@ INCLUDE "map.inc"
 8843 EY(EC)=((I-&H1800)\32)*8
 8849 RETURN
 
-8850 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3 'If we uncomment this line, a new enemy shows on room 3?? somehow EC++ on the ET=1
-8851 ' Makes no sense, probably a compiler error
+8850 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3
 8859 RETURN
 
 8910 GOSUB 8840' Initialize enemy
