@@ -4,7 +4,7 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map.inc"
 
-7999 C=0:R=1
+7999 C=1:R=0
 
 8000 COLOR 15,1,1:SCREEN 2,2,0
 8001 DEFINT A-Z
@@ -59,17 +59,14 @@ INCLUDE "map.inc"
 9144 T1 = VPEEK (TT+(X+8)/8)
 9145 T2 = VPEEK (TT+(X+15)/8)
 9146 TT = TT + X/8
-9150 IF X MOD 8 <> 0 THEN 9160 'Only do item check when switching tiles
-9151 IT=VPEEK(TT-32)' IT: Item tile
-9152 IF IT MOD 2 = 0 AND IT>=96 AND IT<=106 THEN TI=(TT-64):GOSUB 9810 'Check for item collection
-9160 'Only check for tile interaction horizontally when we transition places in the grid (also vertically, but that is more tricky)
-9161 IF VX=0 THEN GOTO 9190' NC needed check, set to 1 when falling
+9161 IF VX=0 THEN GOTO 9190' Skip tile colision check if we are not moving
 9162 IF VX>0 THEN T3=VPEEK(TT-&H80+2):T4=VPEEK(TT-&H60+2):T5=VPEEK(TT-&H40+2):T6=VPEEK(TT-&H20+2)
 9163 IF VX<0 THEN T3=VPEEK(TT-&H80):T4=VPEEK(TT-&H60):T5=VPEEK(TT-&H40):T6=VPEEK(TT-&H20)
 9180 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
+9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
-9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800
-9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800
+9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
+9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9199 RETURN
 
 9200 'GS=2 Jumping
@@ -84,15 +81,14 @@ INCLUDE "map.inc"
 9243 T2 = VPEEK (TT+(X+15)/8)
 9244 TT = &H1800+(X)/8
 9249 IF T0>=128 OR T1>=128 OR T2>=128 THEN VY=0:Y=Y-VY:Y=((Y+2)/8+1)*8-2:DJ=0:GS=3
-9250 IF VX=0 THEN 9290' No need for horizontal collision check if we are not moving
+9250 IF VX=0 THEN 9270' No need for horizontal collision check if we are not moving
 9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
 9254 IF VX>0 THEN T3=VPEEK(TT+(Y+32)/8*32+2):T4=VPEEK(TT+(Y+24)/8*32+2):T5=VPEEK(TT+(Y+16)/8*32+2):T6=VPEEK(TT+(Y+8)/8*32+2):T7=VPEEK(TT+(Y+2)/8*32+2)
 9255 IF VX<0 THEN T3=VPEEK(TT+(Y+32)/8*32):T4=VPEEK(TT+(Y+24)/8*32):T5=VPEEK(TT+(Y+16)/8*32):T6=VPEEK(TT+(Y+8)/8*32):T7=VPEEK(TT+(Y+2)/8*32)
-9281 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
-9290 IF DJ=1 AND VY>-4 THEN GOSUB 9820'Double Jump check
-9291 ' TODO:Check for collecting items on T1 and T5
-9292 IF T1=98 THEN TI=&H1800+((Y+2)\8)*32+(X+8)\8-32:GOSUB 9810 ' TODO Improve box detection. This is temporary works fine looking right but not when looking left - we should check the other side, most likely a new tile point is needed
-9298 IF Y<=0 THEN R=R-1:Y=130:GOSUB 8800
+9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
+9270 IF DJ=1 AND VY>-4 THEN GOSUB 9820'Double Jump check
+9273 GOSUB 9700' Check for item collection
+9298 IF Y<=0 THEN R=R-1:Y=130:GOSUB 8800' Load new room
 9299 RETURN
 
 9300 'GS=3 Falling
@@ -114,9 +110,8 @@ INCLUDE "map.inc"
 9381 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:GOSUB 9800 'Wall jump check
 9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
-9391 ' TODO:Check for collecting items on T1 and T5
-9392 IF T1=64 THEN GOSUB 9810 ' Temporary
-9398 IF Y>=146 THEN R=R+1:Y=0:GOSUB 8800
+9391 GOSUB 9700' Check for item collection
+9398 IF Y>=146 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9399 RETURN
 
 9400 'GS=4 Initial hold onto wall
@@ -124,6 +119,22 @@ INCLUDE "map.inc"
 9402 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9499 RETURN
 
+9700 ' fun Check for item collection
+9701 IC=&H1800+(X-4)/8+(Y+12)/8*32
+9702 II=IC:GOSUB 9710 ' Check tile for item
+9703 II=IC+32:GOSUB 9710 ' Check tile for item
+9704 II=IC+1:GOSUB 9710 ' Check tile for item
+9705 II=IC+33:GOSUB 9710 ' Check tile for item
+9709 RETURN
+
+9710 ' fun Check tile for item
+9711 I0=VPEEK(II):IF (I0 MOD 2 = 0 AND I0>=96 AND I0<=106) THEN TI=(II-32):GOSUB 9720' Pick up item
+9719 RETURN
+
+9720 ' fun Pick up item
+9721 VPOKE TI,0:VPOKE TI+1,0
+9722 VPOKE TI+32,0:VPOKE TI+33,0
+9729 RETURN
 
 9800 'Check for wall jump, need to have a substantial amount of wall to grip to
 9801 IF T5>=64 AND (T4>=64 OR T6>=64) THEN IF WT>0 THEN GS=4:GOTO 9809 ELSE 9802 ELSE 9809
@@ -131,12 +142,6 @@ INCLUDE "map.inc"
 9803 IF VY>7 THEN VY=7 ELSE IF VY<-9 THEN VY=-9
 9808 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9809 RETURN
-
-9810 ' Pick up item
-9811 'TI=(TT-64+1)
-9812 VPOKE TI,0:VPOKE TI+1,0
-9813 VPOKE TI+32,0:VPOKE TI+33,0
-9815 RETURN
 
 9820 'Double Jump Check
 9821 IF JD=1 AND NOT(STRIG(0)) THEN JD=0:GOTO 9829
@@ -173,6 +178,11 @@ INCLUDE "map.inc"
 9943 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+10+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=141 OR EL=173 THEN EV(EI)=-EV(EI)
 9949 RETURN
 
+9990 ' Visual debug
+9991 VPOKE &H1AA0,I0:VPOKE &H1AC0,I1:VPOKE &H1AE0,I2
+9992 VPOKE &H1AA1,I3:VPOKE &H1AC1,I4:VPOKE &H1AE1,I5
+9999 RETURN
+
 11000 ' SWAP LASER STATE color at tiles 62, 63,from &H89 to 00. Color table starts at &H2000
 11200 IF LS=1 THEN LC=&H00:LS=0 ELSE LC=&H89:LS=1
 11500 FOR I=&H21F0 TO &H21FF
@@ -191,43 +201,44 @@ INCLUDE "map.inc"
 12500 NEXT I
 12990 RETURN
 
-8800 ' Parse new room
+8800 ' fun Load new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8805 CMD WRTSCR R+C*5+3
 8806 EC=0:LT=196
-8810 FOR I=&H1820 TO &H1B80
+8810 FOR I=&H1820 TO &H1AA0
 8820  TT=VPEEK(I)
-8821  IF TT=192 THEN GOSUB 8910
-8822  IF TT=160 THEN GOSUB 8920
-8823  IF TT=163 THEN GOSUB 8930
-8824  IF TT=162 THEN GOSUB 8940
+8821  IF TT=192 THEN GOSUB 8910 ' Parse enemy type 1
+8822  IF TT=160 THEN GOSUB 8920 ' Parse enemy type 2
+8823  IF TT=163 THEN GOSUB 8930 ' Parse enemy type 3
+8824  IF TT=162 THEN GOSUB 8940 ' Parse enemy type 4
 8829 NEXT I
 8830 RETURN
 
-8840 EC=EC+1
-8841 EX(EC)=(I MOD 32)*8
-8842 EY(EC)=((I-&H1800)\32)*8
+8840 ' fun Initialize enemy
+8841 EC=EC+1
+8842 EX(EC)=(I MOD 32)*8
+8843 EY(EC)=((I-&H1800)\32)*8
 8849 RETURN
 
-8850 'PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3 'If we uncomment this line, a new enemy shows on room 3?? somehow EC++ on the ET=1
+8850 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3 'If we uncomment this line, a new enemy shows on room 3?? somehow EC++ on the ET=1
 8851 ' Makes no sense, probably a compiler error
 8859 RETURN
 
-8910 GOSUB 8840
+8910 GOSUB 8840' Initialize enemy
 8911 ET(EC)=1:EV(EC)=1
 8912 EY(EC)=EY(EC)+1
 8913 GOSUB 8850
 8914 VPOKE I,0:VPOKE I+1,0
 8919 RETURN
 
-8920 GOSUB 8840
+8920 GOSUB 8840' Initialize enemy
 8921 ET(EC)=2:EV(EC)=1
 8922 EY(EC)=EY(EC)-12
 8923 GOSUB 8850
 8924 VPOKE I,0:VPOKE  I+1,0
 8929 RETURN
 
-8930 GOSUB 8840
+8930 GOSUB 8840' Initialize enemy
 8931 ET(EC)=3:EV(EC)=1
 8932 EY(EC)=EY(EC)-2
 8933 EX(EC)=EX(EC)+2
@@ -235,7 +246,7 @@ INCLUDE "map.inc"
 8938 VPOKE I,0:VPOKE I+32,0
 8939 RETURN
 
-8940 GOSUB 8840
+8940 GOSUB 8840' Initialize enemy
 8941 ET(EC)=4:EV(EC)=1
 8942 EY(EC)=EY(EC)-2
 8943 EX(EC)=EX(EC)-10
