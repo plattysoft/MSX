@@ -4,7 +4,7 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map.inc"
 
-7999 C=4:R=0
+7999 C=0:R=1
 
 8000 COLOR 15,1,1:SCREEN 2,2,0
 8001 DEFINT A-Z
@@ -13,18 +13,19 @@ INCLUDE "map.inc"
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
 8012 CMD WRTVRAM 1, &H1000:CMD WRTVRAM 2, &H3000
 
-8020 CMD WRTVRAM 0, &H3800
+8020 CMD WRTVRAM 0, &H3800 ' Load sprites
 
 8100 'New game initialization
 8101 AD=1:X=8:Y=120:GS=1
 8102 Y=20
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
-8104 GOSUB 8800:GOSUB 9000
+8104 GOSUB 8800 ' Load initial room
+8105 GOTO 9000 ' Start game loop
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0
 9002 ' UPDATE
-9003 ON GS GOSUB 9100, 9200, 9300, 9400
+9003 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
 9009 ' DRAW
 9010 PUT SPRITE 1,(X,Y+YO),15,D:PUT SPRITE 0,(X,Y+4+YO),4,9+SA+D
@@ -44,12 +45,12 @@ INCLUDE "map.inc"
 9100 'GS=1 Standing
 9101 S=STICK(0)
 9102 VX=0
-9112 IF S=3 THEN VX=1:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0 ELSE GOTO 9118
-9113 IF S=7 THEN VX=-1:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0 ELSE GOTO 9118
+9112 IF S=3 THEN VX=1:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0 ELSE GOTO 9118 ' Animate Walk
+9113 IF S=7 THEN VX=-1:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0 ELSE GOTO 9118 ' Animate Walk
 9114 IF S=0 THEN SA=4:ST=3:YO=0' SA=4 marks a resting position
 9115 IF S=5 THEN YO=3:ST=4:SA=4
-9117 GOTO 9140
-9118 IF S0=4 THEN S0=0 ELSE S0=S0+1:GOTO 9140
+9117 GOTO 9140 ' Skip walk animation (no input)
+9118 IF S0=4 THEN S0=0 ELSE S0=S0+1:GOTO 9140 ' No animation this frame
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
 9121 ST=ST+1:IF ST=3 THEN ST=0
 9122 IF ST=1 THEN YO=1 ELSE YO=0
@@ -82,12 +83,12 @@ INCLUDE "map.inc"
 9243 T2 = VPEEK (TT+(X+15)/8)
 9244 TT = &H1800+(X)/8
 9249 IF T0>=128 OR T1>=128 OR T2>=128 THEN VY=0:Y=Y-VY:Y=((Y+2)/8+1)*8-2:DJ=0:GS=3
-9250 IF VX=0 THEN 9270' No need for horizontal collision check if we are not moving
+9250 IF VX=0 THEN 9270' Skip horizontal collision check if we are not moving
 9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
 9254 IF VX>0 THEN T3=VPEEK(TT+(Y+32)/8*32+2):T4=VPEEK(TT+(Y+24)/8*32+2):T5=VPEEK(TT+(Y+16)/8*32+2):T6=VPEEK(TT+(Y+8)/8*32+2):T7=VPEEK(TT+(Y+2)/8*32+2)
 9255 IF VX<0 THEN T3=VPEEK(TT+(Y+32)/8*32):T4=VPEEK(TT+(Y+24)/8*32):T5=VPEEK(TT+(Y+16)/8*32):T6=VPEEK(TT+(Y+8)/8*32):T7=VPEEK(TT+(Y+2)/8*32)
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
-9270 IF DJ=1 AND VY>-4 THEN GOSUB 9820'Double Jump check
+9270 IF DJ=1 AND VY>-4 THEN GOSUB 9820 'Double Jump check
 9273 GOSUB 9700' Check for item collection
 9298 IF Y<=0 THEN R=R-1:Y=130:GOSUB 8800' Load new room
 9299 RETURN
@@ -105,7 +106,7 @@ INCLUDE "map.inc"
 9342 T1 = VPEEK (TT+(X+8)/8)
 9343 T2 = VPEEK (TT+(X+15)/8)
 9344 TT = &H1800+(X)/8
-9350 IF VX=0 THEN 9385' No need for horizontal collision check if we are not moving
+9350 IF VX=0 THEN 9385' Skip horizontal collision check if we are not moving
 9354 IF VX>0 THEN T3=VPEEK(TT+(Y+32)/8*32+2):T4=VPEEK(TT+(Y+24)/8*32+2):T5=VPEEK(TT+(Y+16)/8*32+2):T6=VPEEK(TT+(Y+8)/8*32+2):T7=VPEEK(TT+(Y+2)/8*32+2)
 9355 IF VX<0 THEN T3=VPEEK(TT+(Y+32)/8*32):T4=VPEEK(TT+(Y+24)/8*32):T5=VPEEK(TT+(Y+16)/8*32):T6=VPEEK(TT+(Y+8)/8*32):T7=VPEEK(TT+(Y+2)/8*32)
 9381 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:GOSUB 9800 'Wall jump check
@@ -136,44 +137,44 @@ INCLUDE "map.inc"
 9722 VPOKE TI+32,0:VPOKE TI+33,0
 9729 RETURN
 
-9800 'Check for wall jump, need to have a substantial amount of wall to grip to
+9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF T5>=64 AND (T4>=64 OR T6>=64) THEN IF WT>0 THEN GS=4:GOTO 9809 ELSE 9802 ELSE 9809
 9802 SA=3:ST=7
 9803 IF VY>7 THEN VY=7 ELSE IF VY<-9 THEN VY=-9
 9808 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9809 RETURN
 
-9820 'Double Jump Check
+9820 'fun Double Jump Check
 9821 IF JD=1 AND NOT(STRIG(0)) THEN JD=0:GOTO 9829
 9822 IF JD=0 AND STRIG(0) THEN GS=2:SA=0:ST=4:JD=1:DJ=0:VY=VY-14:IF VY<-14 THEN VY=-14 ELSE IF VY>-6 THEN VY=-6
 9829 RETURN
 
-9900 'MOVE ENEMIES
+9900 'fun Update enemies
 9901 EA=14:IF EC=0 THEN RETURN ' Skip enemy updates if no enemies
 9902 FOR EI=1 TO EC
 9903  EW(EI)=EW(EI)+1:IF EW(EI)=3 THEN EW(EI)=0:ES(EI)=ES(EI)+EV(EI):IF ES(EI)=3 THEN ES(EI)=0 ELSE IF ES(EI)=-1 THEN ES(EI)=2
-9904  ON ET(EI) GOSUB 9910,9920,9930,9940
+9904  ON ET(EI) GOSUB 9910,9920,9930,9940 ' Update enemy based on type
 9905  ' Colision box detection
 9906  IF ABS(X-EX(EI))<16 AND Y-EY(EI)>-32 AND Y-EY(EI)<16 THEN EA=8
 9908 NEXT I
 9909 RETURN
 
-9910 'Enemy type 1: Horizontal, lower
+9910 'fun Update enemy type 1: Horizontal, lower
 9911 EX(EI)=EX(EI)+EV(EI)
 9913 IF EX(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+9)\8)*32+(EX(EI)+8+4*EV(EI))\8):IF EL=138 OR EL=140 THEN EV(EI)=-EV(EI)
 9919 RETURN
 
-9920 'Enemy type 2: Horizontal, upper
+9920 'fun Update enemy type 2: Horizontal, upper
 9921 EX(EI)=EX(EI)+EV(EI)
 9923 IF EX(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+9)\8)*32+(EX(EI)+8+4*EV(EI))\8):IF EL=170 OR EL=172 THEN EV(EI)=-EV(EI)
 9929 RETURN
 
-9930 'Enemy type 3: Vertical, right wall
+9930 'fun Update enemy type 3: Vertical, right wall
 9931 EY(EI)=EY(EI)+EV(EI)
 9933 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+10+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=142 OR EL=174 THEN EV(EI)=-EV(EI)
 9939 RETURN
 
-9940 'Enemy type 4: Vertical, left wall
+9940 'fun Update enemy type 4: Vertical, left wall
 9941 EY(EI)=EY(EI)+EV(EI)
 9943 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+10+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=141 OR EL=173 THEN EV(EI)=-EV(EI)
 9949 RETURN
