@@ -170,17 +170,17 @@ INCLUDE "map.inc"
 
 9920 'fun Update enemy type 2: Horizontal, upper
 9921 EX(EI)=EX(EI)+EV(EI)
-9923 IF EX(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+9)\8)*32+(EX(EI)+8+4*EV(EI))\8):IF EL=170 OR EL=172 THEN EV(EI)=-EV(EI)
+9923 IF EX(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+8)\8)*32+(EX(EI)+8+4*EV(EI))\8):IF EL=170 OR EL=172 THEN EV(EI)=-EV(EI)
 9929 RETURN
 
 9930 'fun Update enemy type 3: Vertical, right wall
 9931 EY(EI)=EY(EI)+EV(EI)
-9933 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+10+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=142 OR EL=174 THEN EV(EI)=-EV(EI)
+9933 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+8+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=142 OR EL=174 THEN EV(EI)=-EV(EI)
 9939 RETURN
 
 9940 'fun Update enemy type 4: Vertical, left wall
 9941 EY(EI)=EY(EI)+EV(EI)
-9943 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+10+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=141 OR EL=173 THEN EV(EI)=-EV(EI)
+9943 IF EY(EI) MOD 8=0 THEN EL=VPEEK(&H1800+((EY(EI)+8+4*EV(EI))\8)*32+(EX(EI)+8)\8):IF EL=141 OR EL=173 THEN EV(EI)=-EV(EI)
 9949 RETURN
 
 9990 ' Visual debug
@@ -223,43 +223,39 @@ INCLUDE "map.inc"
 8840 ' fun Initialize enemy
 8841 EC=EC+1
 8842 EX(EC)=(I MOD 32)*8
-8843 EY(EC)=((I-&H1800)\32)*8
+8843 EY(EC)=((I-&H1800)\32)*8-1
 8849 RETURN
 
 8850 ' fun Preload sprite where the enemy is located
 8851 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3
 8859 RETURN
 
-8910 ' fun Parse enemy type 1
+8910 ' fun Parse enemy type 1 (horizontal, bottom)
 8911 GOSUB 8840' Initialize enemy
 8912 ET(EC)=1:EV(EC)=1
-8913 EY(EC)=EY(EC)+1
 8914 GOSUB 8850 ' Preload sprite
 8918 VPOKE I,0:VPOKE I+1,0
 8919 RETURN
 
-8920 ' fun Parse enemy type 2
+8920 ' fun Parse enemy type 2 (horizontal, top)
 8921 GOSUB 8840' Initialize enemy
 8922 ET(EC)=2:EV(EC)=1
-8923 EY(EC)=EY(EC)-12
+8923 EY(EC)=EY(EC)-9
 8924 GOSUB 8850' Preload sprite
 8928 VPOKE I,0:VPOKE  I+1,0
 8929 RETURN
 
-8930 ' fun Parse enemy type 3
+8930 ' fun Parse enemy type 3 (vertical, right)
 8931 GOSUB 8840' Initialize enemy
 8932 ET(EC)=3:EV(EC)=1
-8933 EY(EC)=EY(EC)-2
-8934 EX(EC)=EX(EC)+2
 8935 GOSUB 8850' Preload sprite
 8938 VPOKE I,0:VPOKE I+32,0
 8939 RETURN
 
-8940 ' fun Parse enemy type 4
+8940 ' fun Parse enemy type 4 (vertical, left)
 8941 GOSUB 8840' Initialize enemy
 8942 ET(EC)=4:EV(EC)=1
-8943 EY(EC)=EY(EC)-2
-8944 EX(EC)=EX(EC)-10
+8944 EX(EC)=EX(EC)-9
 8945 GOSUB 8850' Preload sprite
 8948 VPOKE I,0:VPOKE I+32,0
 8949 RETURN
