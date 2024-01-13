@@ -4,6 +4,9 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map.inc"
 
+FILE "../res/map_3_6.plet5"
+
+
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
@@ -13,12 +16,13 @@ INCLUDE "map.inc"
 1003 DATA 18,19,20,21,22,23,24
 1004 DATA 25,26, 0,27, 0,28,29
 1005 DATA 30,31, 0, 0, 0,32,33
-1006 DATA 34,35, 0, 0, 0,36,37
+1006 DATA 34,35, 0,38, 0,36,37'38 is a test room located on C=3:R=6
 
 1010 DIM RR(49), VP(640) 'RR - Room Resource, VP - VPeek replacement
 1011 FOR I=1 TO 49:READ R:RR(I)=R:NEXT I
 
-7999 C=0:R=0
+7990 C=3:R=3' Actual initial room of the game
+7999 'C=3:R=6' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -145,8 +149,10 @@ INCLUDE "map.inc"
 9719 RETURN
 
 9720 ' fun Pick up item
-9721 VPOKE TI,0:VPOKE TI+1,0
-9722 VPOKE TI+32,0:VPOKE TI+33,0
+9721 VPOKE &H1800+TI,0:VPOKE &H1800+TI+1,0
+9722 VPOKE &H1800+TI+32,0:VPOKE &H1800+TI+33,0
+9723 VP(TI)=0:VP(TI+1)=0
+9724 VP(TI+32)=0:VP(TI+33)=0
 9729 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
