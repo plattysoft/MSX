@@ -18,11 +18,11 @@ FILE "../res/map_3_6.plet5"
 1005 DATA 30,31, 0, 0, 0,32,33
 1006 DATA 34,35, 0,38, 0,36,37'38 is a test room located on C=3:R=6
 
-1010 DIM RR(49), VP(640) 'RR - Room Resource, VP - VPeek replacement
+1010 DIM RR(49), VP(672) 'RR - Room Resource, VP - VPeek replacement
 1011 FOR I=1 TO 49:READ R:RR(I)=R:NEXT I
 
 7990 C=3:R=3' Actual initial room of the game
-7999 'C=3:R=6' Override for testing
+7999 'C=1:R=2' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -106,7 +106,7 @@ FILE "../res/map_3_6.plet5"
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
 9270 IF DJ=1 AND VY>-4 THEN GOSUB 9820 'Double Jump check
 9273 GOSUB 9700' Check for item collection
-9298 IF Y<=0 THEN R=R-1:Y=130:GOSUB 8800' Load new room
+9298 IF Y<=0 THEN R=R-1:Y=124:GOSUB 8800' Load new room
 9299 RETURN
 
 9300 'GS=3 Falling
@@ -129,7 +129,7 @@ FILE "../res/map_3_6.plet5"
 9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
 9391 GOSUB 9700' Check for item collection
-9398 IF Y>=146 THEN R=R+1:Y=0:GOSUB 8800' Load new room
+9398 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9399 RETURN
 
 9400 'GS=4 Initial hold onto wall
@@ -238,7 +238,7 @@ FILE "../res/map_3_6.plet5"
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8805 CMD WRTSCR RR(R*7+C+1)+2
 8806 EC=0:LT=196:NL=0
-8810 FOR I=0 TO 640
+8810 FOR I=0 TO 672
 8820  TT=VPEEK(&H1800+I)
 8821  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
 8822  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
