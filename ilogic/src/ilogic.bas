@@ -106,7 +106,7 @@ FILE "../res/map_3_6.plet5"
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
 9270 IF DJ=1 AND VY>-4 THEN GOSUB 9820 'Double Jump check
 9273 GOSUB 9700' Check for item collection
-9298 IF Y<=0 THEN R=R-1:Y=124:GOSUB 8800' Load new room
+9298 IF Y<=0 THEN R=R-1:Y=124   :GOSUB 8800' Load new room
 9299 RETURN
 
 9300 'GS=3 Falling
@@ -153,6 +153,7 @@ FILE "../res/map_3_6.plet5"
 9722 VPOKE &H1800+TI+32,0:VPOKE &H1800+TI+33,0
 9723 VP(TI)=0:VP(TI+1)=0
 9724 VP(TI+32)=0:VP(TI+33)=0
+9725 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=RR(R*7+C+1) + TI*64 ' Set the item collected position on room details
 9729 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
@@ -236,8 +237,10 @@ FILE "../res/map_3_6.plet5"
 
 8800 ' fun Load new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
-8805 CMD WRTSCR RR(R*7+C+1)+2
-8806 EC=0:LT=196:NL=0
+8805 CMD WRTSCR (RR(R*7+C+1) AND &B0111111 )+2
+8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
+8807 IF RI>0 THEN TI=RI:GOSUB 9720
+8809 EC=0:LT=196:NL=0
 8810 FOR I=0 TO 672
 8820  TT=VPEEK(&H1800+I)
 8821  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
@@ -245,7 +248,7 @@ FILE "../res/map_3_6.plet5"
 8823  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
 8824  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
 8825  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
-8826  VP(I)=TT
+8828  VP(I)=TT
 8829 NEXT I
 8830 RETURN
 
