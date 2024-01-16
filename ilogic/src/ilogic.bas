@@ -18,7 +18,7 @@ FILE "../res/map_3_6.plet5"
 1005 DATA 30,31, 0, 0, 0,32,33
 1006 DATA 34,35, 0,38, 0,36,37'38 is a test room located on C=3:R=6
 
-1010 DIM RR(49), VP(672) 'RR - Room Resource, VP - VPeek replacement
+1010 DIM RR(49), VP(672), CI(5) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items
 1011 FOR I=1 TO 49:READ R:RR(I)=R:NEXT I
 
 7990 C=3:R=3' Actual initial room of the game
@@ -36,8 +36,9 @@ FILE "../res/map_3_6.plet5"
 8101 AD=1:X=8:Y=120:GS=1
 8102 Y=20
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
-8104 GOSUB 8800 ' Load initial room
-8105 GOTO 9000 ' Start game loop
+8110 FOR I=0 TO 5:CI(I)=0:NEXT I:NI=0' NI: Number of items collected
+8190 GOSUB 8800 ' Load initial room
+8199 GOTO 9000 ' Start game loop
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0
@@ -138,10 +139,11 @@ FILE "../res/map_3_6.plet5"
 9499 RETURN
 
 9700 ' fun Check for item collection
-9701 IC=(X+4)/8+(Y+12)/8*32
-9702 II=IC:GOSUB 9710 ' Check tile for item
-9703 II=IC+32:GOSUB 9710 ' Check tile for item
-9704 II=IC+64:GOSUB 9710 ' Check tile for item
+9701 IF IR=0 THEN RETURN
+9702 IC=(X+4)/8+(Y+12)/8*32
+9703 II=IC:GOSUB 9710 ' Check tile for item
+9704 II=IC+32:GOSUB 9710 ' Check tile for item
+9705 II=IC+64:GOSUB 9710 ' Check tile for item
 9709 RETURN
 
 9710 ' fun Check tile for item
@@ -151,9 +153,11 @@ FILE "../res/map_3_6.plet5"
 9720 ' fun Pick up item
 9721 VPOKE &H1800+TI,0:VPOKE &H1800+TI+1,0
 9722 VPOKE &H1800+TI+32,0:VPOKE &H1800+TI+33,0
-9723 VP(TI)=0:VP(TI+1)=0
-9724 VP(TI+32)=0:VP(TI+33)=0
-9725 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=RR(R*7+C+1) + TI*64 ' Set the item collected position on room details
+9723 NI=NI+1:CI(NI)=VP(TI)
+9724 TV=VP(TI):TP=&H1AA0+NI*3:GOSUB 12220
+9725 VP(TI)=0:VP(TI+1)=0
+9726 VP(TI+32)=0:VP(TI+33)=0
+9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=RR(R*7+C+1) + TI*64' Set the item collected position on room details
 9729 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
@@ -235,20 +239,28 @@ FILE "../res/map_3_6.plet5"
 12106 NEXT I
 12199 RETURN
 
+12220 ' fun set TV (tile value) into TP (tile position) 16x16 tiles
+12221 VPOKE TP,TV:VPOKE TP+1,TV+1:VPOKE TP+&H20,TV+&H20:VPOKE TP+&H21,TV+&H21
+12222 RETURN
+
 8800 ' fun Load new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8805 CMD WRTSCR (RR(R*7+C+1) AND &B0111111 )+2
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
-8807 IF RI>0 THEN TI=RI:GOSUB 9720
-8809 EC=0:LT=196:NL=0
+8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
+8809 EC=0:LT=196:NL=0:IR=0
 8810 FOR I=0 TO 672
-8820  TT=VPEEK(&H1800+I)
-8821  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
-8822  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
-8823  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
-8824  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
-8825  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
-8828  VP(I)=TT
+8811  TT=VPEEK(&H1800+I)
+8812  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
+8813  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
+8814  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
+8815  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
+8816  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
+8817  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
+8818  VP(I)=TT
+8819 NEXT I
+8827 FOR I=1 TO 5
+8828  IF CI(I)>0 THEN TP=&H1AA0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8829 NEXT I
 8830 RETURN
 
