@@ -22,7 +22,7 @@ FILE "../res/map_3_6.plet5"
 1011 FOR I=1 TO 49:READ R:RR(I)=R:NEXT I
 
 7990 C=3:R=3' Actual initial room of the game
-7999 'C=1:R=2' Override for testing
+7999 'C=6:R=6' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -243,8 +243,20 @@ FILE "../res/map_3_6.plet5"
 12221 VPOKE TP,TV:VPOKE TP+1,TV+1:VPOKE TP+&H20,TV+&H20:VPOKE TP+&H21,TV+&H21
 12222 RETURN
 
+12300 AR=RESOURCE((RR(R*7+C+1) AND &B0111111 )+2)
+12310 FOR I=0 TO 20
+12320  FOR J=19 TO 0 STEP -1
+12330   FOR K=0 TO 3
+12340    T=VPEEK(&H1800+J*32+K):VPOKE &H1800+(J+1)*32+K, T
+12350    CMD RAMTOVRAM AR+&H20*I, &H1800, &H20
+12360   NEXT K
+12370  NEXT J
+12380 NEXT I
+12390 RETURN
+
 8800 ' fun Load new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
+8802 'GOSUB 12300
 8805 CMD WRTSCR (RR(R*7+C+1) AND &B0111111 )+2
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
@@ -259,6 +271,7 @@ FILE "../res/map_3_6.plet5"
 8817  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
 8818  VP(I)=TT
 8819 NEXT I
+8836 ' TODO: This part will not be needed once the screens only load 18 rows of data
 8827 FOR I=1 TO 5
 8828  IF CI(I)>0 THEN TP=&H1AA0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8829 NEXT I
