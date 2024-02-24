@@ -1,0 +1,27 @@
+Design decisions:
+
+Given color clash, I had the choice:
+* Allow free grid, allow color clash, which looked really bad
+* Allow free grid, both players use the same color, which looked boring
+* Restric the grid to 8 pixels
+
+With a restricted grid, I felt like it needed guiding lines, which took almost 2 entire lines to draw
+
+Next decision was to start from the same place or randomize it.
+
+The actual decision was what to use the code for, it was grid, random start, and sound effects
+And I could only setup 2 of the 3, so I decided the random start was giving the game a bit more fun into making games different
+Also, the grid was necessary to allow good gameplay
+
+Finally, debouncing.
+
+Things I wanted but didn't have space for
+* Crash "animation"
+* Sounds
+
+
+Move with turns Vs move with stick directions, it is a lot easier with stick directions, no need to debouce
+
+S=STICK(0):IFSMOD2=1ANDS+D<>6ANDS+D<>10THEND=S
+
+to prevent U turns, from Stick 1 to 5 and 3 to 7, and the other way around, we can just add the values and check
