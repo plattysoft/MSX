@@ -7,6 +7,8 @@ Player moves in a restricted grid using cursors. AI will try to take them on.
 
 # How to load the game
 
+[Play it online in WebMSX](http://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/develop/XLN-Bikes/XLN-Bikes.dsk)
+
 Download XLN_bikes.dsk
 
 With openmsx: Type "openmsx XLN-Bikes.dsk", the game will start automaticall
