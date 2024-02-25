@@ -1,0 +1,100 @@
+# XLN Bikes
+
+XLN Bikes is a single player game inspired by the classic Tron Lightcycles.
+Player moves in a restricted grid using cursors. AI will try to take them on.
+
+# How to load the game
+
+Download XLN_bikes.dsk
+
+With openmsx: Type "openmsx XLN-Bikes.dsk", the game will start automaticall
+With WebMSX: Click on the disk icon, "load disk image" and select XLN-Bikes.dsk. Click the power icon, then "Reset", the game will auto start
+
+# How to see the code
+
+Press CTRL+STOP and the game will stop, then you can LIST.
+If you insert the disk after the emulator has booted, you can do: LOAD "autoexec.bas", and then LIST
+
+
+# Design decisions
+
+The MSX only allows for 2 colors in each line of 8x1 pixels. This limitation makes it so if 2 bikes are too close, the colors clash (know as color spill)
+
+Given color clash, I had the choice:
+* Free grid, allow color clash, which felt really distracting
+* Free grid, both players use the same color, which looked boring
+* Restric the grid to 8 pixels, which is what I did
+
+With a restricted grid, I felt like it needed guiding lines, which took almost 2 entire lines to draw
+
+With the remaining lines of code I had to choose what to prioritize:
+* AI player
+* Sound effects
+* Random start position
+* Crash animations
+
+There was only enough space for 2 of those, so I decided the random start was giving the game a bit more fun into making games different.
+
+2 Players was fun, but a bit too obvious, so I went for an AI to be able to play onmy own
+
+While making the game, I had to decide on the control scheme for the player:
+* Cursor direction
+* Turn left or right
+
+If using cursor direction, you need to prevent U-Turns, with turning, we need to implement debouncing.
+I tried both control schemes and cursor direction felt a lot more intuitive, preventing U-Turns and converting the stick direction into speed on both axis is some of the weirdest code in the example.
+
+
+# Code explanation
+
+## Variables
+
+For obvious reasons they are 1 letter long, so not as descriptive as they should)
+
+* X, Y: Position of Player (X,Y)
+* V, W: Speed of Player in X and Y axis
+* C, D: Position of AI (X,Y)
+* A, B: Speed of AI in X and Y axis
+* T: Time interval, we allow turning each 8 steps, to make sure we are in the grid
+* Z: Current direction of the player (in the same format as read from STICK)
+* S: Stick reading
+* R: The AI player is trying to tuRn. Used to verify it does not turn into a wall
+
+## Line desciption
+
+1-2 - One-off initialization of color, screen, open "GRP:" screen for printing text and defining funcions to randomize the starting position of the players and check for collisions, also constants for strings
+
+3:   Draw "XLN-Bikes" and "PUSH SPACE KEY", initialize most variables for the game
+
+4-5: Check for push space key, upon pressing, initialize the random generator, clear the screen and draw the grid
+
+6:   Main loop, update X,Y values and draw a new point, after 8 times it moves on for checking turns
+
+7-8: When in an intersection, we can turn. AI will turn if it sees a wall or "at random", when turning it tries to get towards the players, if the turn leads to a wall, it will turn the other way
+9:   Check the stick and set the speeds on X and Y based on that
+
+10:  Check for collisions and if so, display a game over screen and get back to line 3, otherwise, back to line 6
+
+
+## Explanation of some weird code
+
+We want to check that we do no go backwards (instant U-Turns will result in death)
+The stick positions are 1 (up), 3 (right), 5 (down), and 7 (left) (2, 4, 6, and 8) are diagonals, which are ignored.
+
+This is done with the code:
+
+S=STICK(0)
+IFSMOD2=1ANDS+Z<>6ANDS+Z<>10THENZ=S
+
+First we only look at odd numbers of S (S Mod 2=1), then we know that the current direction (Z) + new direction (S) can not be 6 or 10.
+
+We assign speed on X and Y (V and W), this is based on the current direction, it is a lot shorter than checking for each position and assigning it, unfortunately, it ia a lot less obvious, but it does follow this table:
+* Z=1 -> V=0,  W=-1
+* Z=3 -> V=1,  W=0
+* Z=5 -> V=0,  W=1
+* Z=7 -> V=-1, W=0
+
+Which can be compressed to just this code:
+
+V=SGN(5-Z)ANDZ<>1
+W=SGN(Z-3)ANDZ<>7
