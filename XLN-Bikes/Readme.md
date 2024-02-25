@@ -3,6 +3,8 @@
 XLN Bikes is a single player game inspired by the classic Tron Lightcycles.
 Player moves in a restricted grid using cursors. AI will try to take them on.
 
+![XLN Bikes Cover Art](https://github.com/plattysoft/MSX/blob/develop/XLN-Bikes/XLN-Bikes.png?raw=true)
+
 # How to load the game
 
 Download XLN_bikes.dsk
