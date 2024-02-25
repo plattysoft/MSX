@@ -5,22 +5,22 @@ Player moves in a restricted grid using cursors. AI will try to take them on.
 
 ![XLN Bikes Cover Art](https://github.com/plattysoft/MSX/blob/develop/XLN-Bikes/XLN-Bikes.png?raw=true)
 
-# How to load the game
+## How to load the game
 
 [Play it online in WebMSX](http://webmsx.org/?DISK=https://github.com/plattysoft/MSX/raw/develop/XLN-Bikes/XLN-Bikes.dsk)
 
 Download XLN_bikes.dsk
 
-With openmsx: Type "openmsx XLN-Bikes.dsk", the game will start automaticall
-With WebMSX: Click on the disk icon, "load disk image" and select XLN-Bikes.dsk. Click the power icon, then "Reset", the game will auto start
+* With openmsx: Type "openmsx XLN-Bikes.dsk", the game will start automaticall
+* With WebMSX: Click on the disk icon, "load disk image" and select XLN-Bikes.dsk. Click the power icon, then "Reset", the game will auto start
 
-# How to see the code
+## How to see the code
 
 Press CTRL+STOP and the game will stop, then you can LIST.
+
 If you insert the disk after the emulator has booted, you can do: LOAD "autoexec.bas", and then LIST
 
-
-# Design decisions
+## Design decisions
 
 The MSX only allows for 2 colors in each line of 8x1 pixels. This limitation makes it so if 2 bikes are too close, the colors clash (know as color spill)
 
@@ -45,13 +45,16 @@ While making the game, I had to decide on the control scheme for the player:
 * Cursor direction
 * Turn left or right
 
-If using cursor direction, you need to prevent U-Turns, with turning, we need to implement debouncing.
+If using cursor direction, you need to prevent U-Turns
+
+If we use turning, we need to implement debouncing
+
 I tried both control schemes and cursor direction felt a lot more intuitive, preventing U-Turns and converting the stick direction into speed on both axis is some of the weirdest code in the example.
 
 
-# Code explanation
+## Code explanation
 
-## Variables
+### Variables
 
 For obvious reasons they are 1 letter long, so not as descriptive as they should)
 
@@ -64,7 +67,7 @@ For obvious reasons they are 1 letter long, so not as descriptive as they should
 * S: Stick reading
 * R: The AI player is trying to tuRn. Used to verify it does not turn into a wall
 
-## Line desciption
+### Line desciption
 
 1-2 - One-off initialization of color, screen, open "GRP:" screen for printing text and defining funcions to randomize the starting position of the players and check for collisions, also constants for strings
 
@@ -75,21 +78,22 @@ For obvious reasons they are 1 letter long, so not as descriptive as they should
 6:   Main loop, update X,Y values and draw a new point, after 8 times it moves on for checking turns
 
 7-8: When in an intersection, we can turn. AI will turn if it sees a wall or "at random", when turning it tries to get towards the players, if the turn leads to a wall, it will turn the other way
+
 9:   Check the stick and set the speeds on X and Y based on that
 
 10:  Check for collisions and if so, display a game over screen and get back to line 3, otherwise, back to line 6
 
 
-## Explanation of some weird code
+### Explanation of some weird code
 
 We want to check that we do no go backwards (instant U-Turns will result in death)
 The stick positions are 1 (up), 3 (right), 5 (down), and 7 (left) (2, 4, 6, and 8) are diagonals, which are ignored.
 
 This is done with the code:
-
+```
 S=STICK(0)
 IFSMOD2=1ANDS+Z<>6ANDS+Z<>10THENZ=S
-
+```
 First we only look at odd numbers of S (S Mod 2=1), then we know that the current direction (Z) + new direction (S) can not be 6 or 10.
 
 We assign speed on X and Y (V and W), this is based on the current direction, it is a lot shorter than checking for each position and assigning it, unfortunately, it ia a lot less obvious, but it does follow this table:
@@ -100,5 +104,6 @@ We assign speed on X and Y (V and W), this is based on the current direction, it
 
 Which can be compressed to just this code:
 
-V=SGN(5-Z)ANDZ<>1
-W=SGN(Z-3)ANDZ<>7
+`V=SGN(5-Z)ANDZ<>1`
+
+`W=SGN(Z-3)ANDZ<>7`
