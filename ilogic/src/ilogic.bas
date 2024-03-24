@@ -5,7 +5,11 @@ FILE "../res/map.clr.plet5"
 INCLUDE "map.inc"
 
 FILE "../res/map_3_6.plet5"
+FILE "../res/ilogic.akm"
 
+20 CMD PLYLOAD 41, 1
+21 CMD PLYSONG 0
+22 CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z

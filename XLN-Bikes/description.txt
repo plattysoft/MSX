@@ -7,7 +7,7 @@ Player moves in a restricted grid using cursors. AI will try to take them on.
 
 Download XLN_bikes.dsk
 
-With openmsx: Type "openmsx XLN-Bikes.dsk", the game will start automaticall
+With openmsx: Type "openmsx XLN-Bikes.dsk", the game will start automatically
 With WebMSX: Click on the disk icon, "load disk image" and select XLN-Bikes.dsk. Click the power icon, then "Reset", the game will auto start
 
 # How to see the code
