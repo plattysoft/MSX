@@ -14,7 +14,6 @@ FILE "../res/ilogic.akm"
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
-
 1010 DIM RR(49), VP(672), CI(5) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items
 
 7990 C=3:R=3' Actual initial room of the game
