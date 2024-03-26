@@ -2,28 +2,20 @@ FILE "../res/sprites.bin.plet5"
 FILE "../res/map.chr.plet5"
 FILE "../res/map.clr.plet5"
 
-INCLUDE "map.inc"
+INCLUDE "map_2.inc"
 
 FILE "../res/map_3_6.plet5"
 FILE "../res/ilogic.akm"
 
-20 CMD PLYLOAD 41, 1
+20 CMD PLYLOAD 39, 1
 21 CMD PLYSONG 0
 22 CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
-1000 DATA  1, 2, 0, 0, 0, 3, 4
-1001 DATA  5, 6, 7, 0, 8, 9,10
-1002 DATA 11,12,13,14,15,16,17
-1003 DATA 18,19,20,21,22,23,24
-1004 DATA 25,26, 0,27, 0,28,29
-1005 DATA 30,31, 0, 0, 0,32,33
-1006 DATA 34,35, 0,38, 0,36,37'38 is a test room located on C=3:R=6
 
 1010 DIM RR(49), VP(672), CI(5) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items
-1011 FOR I=1 TO 49:READ R:RR(I)=R:NEXT I
 
 7990 C=3:R=3' Actual initial room of the game
 7999 'C=6:R=6' Override for testing
@@ -161,7 +153,7 @@ FILE "../res/ilogic.akm"
 9724 TV=VP(TI):TP=&H1AA0+NI*3:GOSUB 12220
 9725 VP(TI)=0:VP(TI+1)=0
 9726 VP(TI+32)=0:VP(TI+33)=0
-9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=RR(R*7+C+1) + TI*64' Set the item collected position on room details
+9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=TI*64' Set the item collected position on room details
 9729 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
@@ -247,11 +239,11 @@ FILE "../res/ilogic.akm"
 12221 VPOKE TP,TV:VPOKE TP+1,TV+1:VPOKE TP+&H20,TV+&H20:VPOKE TP+&H21,TV+&H21
 12222 RETURN
 
-12300 AR=RESOURCE((RR(R*7+C+1) AND &B0111111 )+2)
+12300 AR=RESOURCE(R*16+C+3)
 12310 FOR I=0 TO 20
 12320  FOR J=19 TO 0 STEP -1
 12330   FOR K=0 TO 3
-12340    T=VPEEK(&H1800+J*32+K):VPOKE &H1800+(J+1)*32+K, T
+12340    T=VPEEK(&H1800+J*32+K):VPOKE &H1800+(J+1)*32+K,    T
 12350    CMD RAMTOVRAM AR+&H20*I, &H1800, &H20
 12360   NEXT K
 12370  NEXT J
@@ -261,7 +253,7 @@ FILE "../res/ilogic.akm"
 8800 ' fun Load new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8802 'GOSUB 12300
-8805 CMD WRTSCR (RR(R*7+C+1) AND &B0111111 )+2
+8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
 8809 EC=0:LT=196:NL=0:IR=0
