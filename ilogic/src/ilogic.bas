@@ -17,7 +17,7 @@ FILE "../res/ilogic.akm"
 1010 DIM RR(49), VP(672), CI(5) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items
 
 7990 C=3:R=3' Actual initial room of the game
-7999 'C=6:R=6' Override for testing
+7999 C=0:R=0' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
