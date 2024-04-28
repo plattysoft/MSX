@@ -29,7 +29,7 @@ FILE "../res/ilogic.akm"
 8050 FD=2:PUT SPRITE 31,(0,174),FD,0
 
 8100 'New game initialization
-8101 AD=1:X=8:Y=120:GS=1:IB=129
+8101 AD=1:X=8:Y=120:GS=1
 8102 Y=20
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
 8110 FOR I=0 TO 5:CI(I)=0:NEXT I:NI=0' NI: Number of items collected
@@ -77,7 +77,7 @@ FILE "../res/ilogic.akm"
 9161 IF VX=0 THEN GOTO 9190' Skip tile colision check if we are not moving
 9162 IF VX>0 THEN T3=VP(TT-&H80+2):T4=VP(TT-&H60+2):T5=VP(TT-&H40+2):T6=VP(TT-&H20+2)
 9163 IF VX<0 THEN T3=VP(TT-&H80):T4=VP(TT-&H60):T5=VP(TT-&H40):T6=VP(TT-&H20)
-9180 IF T3>=IB OR T4>=IB OR T5>=IB OR T6>=IB THEN X=X-VX
+9180 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
@@ -134,13 +134,18 @@ FILE "../res/ilogic.akm"
 9402 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9499 RETURN
 
-9500 ' Fun swap bricks
+9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
 9510 IF BS=1 THEN BS=0 ELSE BS=1
 9520 FOR I=0 TO 7
-9530   A=VPEEK(208*8+I+BS*8):VPOKE 128*8+I,A:VPOKE &H800+128*8+I,A:VPOKE &H1000+128*8+I,A
-9540   A=VPEEK(208*8+8+I-BS*8):VPOKE 191*8+I,A:VPOKE &H800+191*8+I,A:VPOKE &H1000+191*8+I,A
+9530   A=VPEEK(208*8+I+BS*8):VPOKE 120*8+I,A:VPOKE &H800+120*8+I,A:VPOKE &H1000+120*8+I,A
+9540   A=VPEEK(208*8+8+I-BS*8):VPOKE 121*8+I,A:VPOKE &H800+121*8+I,A:VPOKE &H1000+121*8+I,A
 9550 NEXT
-9560 IF STICK(0)<>0 THEN 9560 ELSE IB=129-BS
+9551 ' Also swap the screen reading, change them for empty and solid
+9560 FOR I=0 TO 672
+9570   IF VP(I)=120 THEN VP(I)=152 ELSE IF VP(I)=152 THEN VP(I)=120
+9580   IF VP(I)=121 THEN VP(I)=153 ELSE IF VP(I)=153 THEN VP(I)=121
+9581 NEXT
+9590 IF STICK(0)<>0 THEN 9590 ELSE IB=129-BS ' IB- initial brick for checking solid obstables
 9599 RETURN
 
 9700 ' fun Check for item collection
@@ -278,9 +283,11 @@ FILE "../res/ilogic.akm"
 8815  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
 8816  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
 8817  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
-8818  VP(I)=TT
-8819 NEXT I
-8836 ' TODO: This part will not be needed once the screens only load 18 rows of data
+8820  IF IF TT=120 THEN IF BS=1 THEN TT=152
+8821  IF IF TT=121 THEN IF BS=0 THEN TT=153
+8822  VP(I)=TT
+8823 NEXT I
+8824 ' TODO: This part will not be needed once the screens only load 18 rows of data
 8827 FOR I=1 TO 5
 8828  IF CI(I)>0 THEN TP=&H1AA0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8829 NEXT I
