@@ -8,8 +8,8 @@ FILE "../res/map_3_6.plet5"
 FILE "../res/ilogic.akm"
 
 20 CMD PLYLOAD 39, 1
-21 CMD PLYSONG 0
-22 CMD PLYPLAY
+21 'CMD PLYSONG 0
+22 'CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0
-7999 i1=1:I2=1:C=3:R=2' Override for testing
+7999 i1=1:I2=1':C=3:R=2' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -145,6 +145,7 @@ FILE "../res/ilogic.akm"
 9570   IF VP(I)=120 THEN VP(I)=152 ELSE IF VP(I)=152 THEN VP(I)=120
 9580   IF VP(I)=121 THEN VP(I)=153 ELSE IF VP(I)=153 THEN VP(I)=121
 9581 NEXT
+9582 ' And swap the indicator on the console
 9590 IF STICK(0)<>0 THEN 9590 ELSE IB=129-BS ' IB- initial brick for checking solid obstables
 9599 RETURN
 
