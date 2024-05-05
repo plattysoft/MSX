@@ -14,7 +14,7 @@ FILE "../res/ilogic.akm"
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
-1010 DIM RR(49), VP(672), CI(5) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items
+1010 DIM RR(49), VP(672), CI(5), KT(190) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0
@@ -147,6 +147,7 @@ FILE "../res/ilogic.akm"
 9581 NEXT
 9582 ' And swap the indicator on the console
 9590 IF STICK(0)<>0 THEN 9590 ELSE IB=129-BS ' IB- initial brick for checking solid obstables
+9591 T$="GOT THE GRAVITY BOOTS#I CAN JUMP AGAIN#IN THE AIR":GOSUB 10300
 9599 RETURN
 
 9700 ' fun Check for item collection
@@ -221,6 +222,52 @@ FILE "../res/ilogic.akm"
 9991 VPOKE &H1AA0,I0:VPOKE &H1AC0,I1:VPOKE &H1AE0,I2
 9992 VPOKE &H1AA1,I3:VPOKE &H1AC1,I4:VPOKE &H1AE1,I5
 9999 RETURN
+
+10300 ' fun Display a pop-up
+10301 ' Store current scrren info
+10302 KS=&H1903
+10303 FOR I=0 TO 9 'Rows
+10304   FOR J=0 to 17 'Columns
+10305     KT(I*18+J)=VPEEK (KS+I*32+J)
+10306   NEXT J
+10307 NEXT I
+
+10308 IF X<16 OR X>160 OR Y<56 OR Y>128 GOTO 10311
+10309 PUT SPRITE 1,,0,0:PUT SPRITE 2,,0::PUT SPRITE 3,,0
+
+10311 VPOKE KS,2:FOR J=1 to 16:VPOKE KS+J,36:NEXT J:VPOKE KS+17, 3
+10320 FOR I=1 TO 8 'Rows
+10321   VPOKE KS+I*32, 4
+10330   FOR J=1 to 16 'Columns
+10340     VPOKE KS+I*32+J, 0
+10350   NEXT J
+10351   VPOKE KS+I*32+17, 4
+10360 NEXT I
+10370 KS=&H1A03:VPOKE KS,34:FOR J=1 to 16:VPOKE KS+J,36:NEXT J:VPOKE KS+17, 35
+10371 CMD PLYSOUND 5
+10375 TX=4:TY=9:GOSUB 10900
+10376 IF STRIG(SS) THEN 10376
+10379 IF NOT STRIG(SS) THEN 10379
+
+10380 ' Dismiss
+10382 KS=&H1903
+10383 FOR I=0 TO 9 'Rows
+10384   FOR J=0 to 17 'Columns
+10385     VPOKE KS+I*32+J, KT(I*18+J)
+10386   NEXT J
+10387 NEXT I
+
+10390 RETURN
+
+10900 'fun Write text T$ on Screen at position TX, TY (in row/column)
+10901 TF=0
+10910 FOR I=1 TO LEN(T$)
+10911   TF=TF+1
+10920   CT$=MID$(T$,i,1)
+10940   IF CT$=" " THEN TT=0 ELSE TT=ASC(CT$)+159
+10941   IF CT$="#" THEN TF=0:TY=TY+2 ELSE VPOKE &H1800+TX-1+TY*32+TF, TT
+10950 NEXT I
+10990 RETURN
 
 11000 ' fun Process laser animations
 11001 TA=TA+1 ' TA: timer for animation
