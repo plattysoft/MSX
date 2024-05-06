@@ -61,7 +61,7 @@ FILE "../res/ilogic.akm"
 9112 IF S=3 THEN VX=1:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0 ELSE GOTO 9118 ' Animate Walk
 9113 IF S=7 THEN VX=-1:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0 ELSE GOTO 9118 ' Animate Walk
 9114 IF S=0 THEN SA=4:ST=3:YO=0' SA=4 marks a resting position
-9115 IF S=5 THEN YO=3:ST=4:SA=4:GOSUB 9500 ' Swap bricks
+9115 'IF S=5 THEN YO=3:ST=4:SA=4:GOSUB 9500 ' Swap bricks
 9117 GOTO 9140 ' Skip walk animation (no input)
 9118 IF S0=4 THEN S0=0 ELSE S0=S0+1:GOTO 9140 ' No animation this frame
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
@@ -80,6 +80,7 @@ FILE "../res/ilogic.akm"
 9180 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
+9191 IF S=5 THEN GOSUB 9500
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
 9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9199 RETURN
@@ -135,6 +136,8 @@ FILE "../res/ilogic.akm"
 9499 RETURN
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
+9501 IC=(Y+2)\8*32+(X+2)\8+32:VPOKE &H1AAA,VP(IC)
+9502 IF VP(IC)=80 OR VP(IC+1)=81 THEN 9510 ELSE RETURN
 9510 IF BS=1 THEN BS=0 ELSE BS=1
 9520 FOR I=0 TO 7
 9530   A=VPEEK(208*8+I+BS*8):VPOKE 120*8+I,A:VPOKE &H800+120*8+I,A:VPOKE &H1000+120*8+I,A
@@ -147,7 +150,7 @@ FILE "../res/ilogic.akm"
 9581 NEXT
 9582 ' And swap the indicator on the console
 9590 IF STICK(0)<>0 THEN 9590 ELSE IB=129-BS ' IB- initial brick for checking solid obstables
-9591 T$="GOT THE GRAVITY BOOTS#I CAN JUMP AGAIN#IN THE AIR":GOSUB 10300
+9591 'T$="GOT THE GRAVITY BOOTS#I CAN JUMP AGAIN#IN THE AIR":GOSUB 10300
 9599 RETURN
 
 9700 ' fun Check for item collection
@@ -224,7 +227,7 @@ FILE "../res/ilogic.akm"
 9999 RETURN
 
 10300 ' fun Display a pop-up
-10301 ' Store current scrren info
+10301 ' Store current scrren info TODO: the center is not the same, we can also make it wider
 10302 KS=&H1903
 10303 FOR I=0 TO 9 'Rows
 10304   FOR J=0 to 17 'Columns
