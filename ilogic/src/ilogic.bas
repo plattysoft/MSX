@@ -155,7 +155,7 @@ FILE "../res/ilogic.akm"
 9599 RETURN
 
 9700 ' fun Check for item collection
-9701 IF IR=0 THEN RETURN
+9701 IF IR=0 THEN T$="I NEED AN ID CARD#TO OPERATE THE#CONF SWITCHES":GOSUB 10300:RETURN
 9702 IC=(X+4)/8+(Y+12)/8*32
 9703 II=IC:GOSUB 9710 ' Check tile for item
 9704 II=IC+32:GOSUB 9710 ' Check tile for item
