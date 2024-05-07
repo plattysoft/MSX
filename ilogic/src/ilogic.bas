@@ -14,7 +14,7 @@ FILE "../res/ilogic.akm"
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
-1010 DIM RR(49), VP(672), CI(5), KT(190) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
+1010 DIM RR(49), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
@@ -137,7 +137,7 @@ FILE "../res/ilogic.akm"
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
 9501 IC=(Y+2)\8*32+(X+2)\8+32:VPOKE &H1AAA,VP(IC)
-9502 IF I3=0 THEN RETURN
+9502 IF I3=0 THEN T$="I NEED AN ID CARD#TO OPERATE THE#CONF SWITCHES":GOSUB 10300:RETURN
 9503 IF VP(IC)=80 OR VP(IC+1)=81 THEN 9510 ELSE RETURN
 9510 IF BS=1 THEN BS=0 ELSE BS=1
 9520 FOR I=0 TO 7
@@ -155,7 +155,7 @@ FILE "../res/ilogic.akm"
 9599 RETURN
 
 9700 ' fun Check for item collection
-9701 IF IR=0 THEN T$="I NEED AN ID CARD#TO OPERATE THE#CONF SWITCHES":GOSUB 10300:RETURN
+9701 IF IR=0 THEN RETURN
 9702 IC=(X+4)/8+(Y+12)/8*32
 9703 II=IC:GOSUB 9710 ' Check tile for item
 9704 II=IC+32:GOSUB 9710 ' Check tile for item
@@ -230,35 +230,35 @@ FILE "../res/ilogic.akm"
 
 10300 ' fun Display a pop-up
 10301 ' Store current scrren info TODO: the center is not the same, we can also make it wider
-10302 KS=&H1903
+10302 KS=&H1905
 10303 FOR I=0 TO 9 'Rows
-10304   FOR J=0 to 17 'Columns
-10305     KT(I*18+J)=VPEEK (KS+I*32+J)
+10304   FOR J=0 to 21 'Columns
+10305     KT(I*22+J)=VPEEK (KS+I*32+J)
 10306   NEXT J
 10307 NEXT I
 
 10308 IF X<16 OR X>160 OR Y<56 OR Y>128 GOTO 10311
 10309 PUT SPRITE 1,,0,0:PUT SPRITE 2,,0::PUT SPRITE 3,,0
 
-10311 VPOKE KS,2:FOR J=1 to 16:VPOKE KS+J,36:NEXT J:VPOKE KS+17, 3
+10311 VPOKE KS,2:FOR J=1 to 20:VPOKE KS+J,36:NEXT J:VPOKE KS+21, 3
 10320 FOR I=1 TO 8 'Rows
 10321   VPOKE KS+I*32, 4
-10330   FOR J=1 to 16 'Columns
+10330   FOR J=1 to 20 'Columns
 10340     VPOKE KS+I*32+J, 0
 10350   NEXT J
-10351   VPOKE KS+I*32+17, 4
+10351   VPOKE KS+I*32+21, 4
 10360 NEXT I
-10370 KS=&H1A03:VPOKE KS,34:FOR J=1 to 16:VPOKE KS+J,36:NEXT J:VPOKE KS+17, 35
+10370 KS=&H1A05:VPOKE KS,34:FOR J=1 to 20:VPOKE KS+J,36:NEXT J:VPOKE KS+21, 35
 10371 CMD PLYSOUND 5
-10375 TX=4:TY=9:GOSUB 10900
+10375 TX=6:TY=9:GOSUB 10900
 10376 IF STRIG(SS) THEN 10376
 10379 IF NOT STRIG(SS) THEN 10379
 
 10380 ' Dismiss
-10382 KS=&H1903
+10382 KS=&H1905
 10383 FOR I=0 TO 9 'Rows
-10384   FOR J=0 to 17 'Columns
-10385     VPOKE KS+I*32+J, KT(I*18+J)
+10384   FOR J=0 to 21 'Columns
+10385     VPOKE KS+I*32+J, KT(I*22+J)
 10386   NEXT J
 10387 NEXT I
 
