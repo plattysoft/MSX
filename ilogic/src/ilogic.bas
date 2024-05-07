@@ -17,8 +17,8 @@ FILE "../res/ilogic.akm"
 1010 DIM RR(49), VP(672), CI(5), KT(190) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 7990 C=3:R=3' Actual initial room of the game
-7991 I1=0:I2=0
-7999 i1=1:I2=1':C=3:R=2' Override for testing
+7991 I1=0:I2=0:I3=0
+7999 I1=1:I2=1':C=3:R=2' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -137,7 +137,8 @@ FILE "../res/ilogic.akm"
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
 9501 IC=(Y+2)\8*32+(X+2)\8+32:VPOKE &H1AAA,VP(IC)
-9502 IF VP(IC)=80 OR VP(IC+1)=81 THEN 9510 ELSE RETURN
+9502 IF I3=0 THEN RETURN
+9503 IF VP(IC)=80 OR VP(IC+1)=81 THEN 9510 ELSE RETURN
 9510 IF BS=1 THEN BS=0 ELSE BS=1
 9520 FOR I=0 TO 7
 9530   A=VPEEK(208*8+I+BS*8):VPOKE 120*8+I,A:VPOKE &H800+120*8+I,A:VPOKE &H1000+120*8+I,A
@@ -173,8 +174,9 @@ FILE "../res/ilogic.akm"
 9725 VP(TI)=0:VP(TI+1)=0
 9726 VP(TI+32)=0:VP(TI+33)=0
 9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=TI*64' Set the item collected position on room details
-9728 IF TV=64 THEN I1=1'Double Jump item
-9729 IF TV=66 THEN I2=1'Wall jump item
+9728 IF TV=64 THEN I1=1:T$="GOT THE NG BOOTS#I CAN JUMP AGAIN#IN THE AIR":GOSUB 10300 'Double Jump item
+9729 IF TV=66 THEN I2=1:T$="GOT THE GLOVES#I CAN HOLD TO#WALLS AND JUMP#FROM THEM":GOSUB 10300 'Wall jump item
+9730 IF TV=70 THEN I3=1:T$="GOT THE ID CARD#I CAN USE CONF#SWITCHES":GOSUB 10300'ID Card - Brick Swap item
 9739 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to

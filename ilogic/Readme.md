@@ -30,6 +30,11 @@
 
 * TC: Tile central, to check if we are on top of something (maybe unnecessary now)
 
+
+* I1: Item #1 collected: N-G Boots
+* I2: Item #2 collected: Wall gloves
+* I3: Item #3 collected: ID Card for swapping bricks
+
 ## Tile values
 
 * 0-31 Background tiles we can walk over
