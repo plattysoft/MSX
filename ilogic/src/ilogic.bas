@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 'I1=1:I2=1':C=3:R=2' Override for testing
+7999 I1=1:I2=1':C=3:R=2' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -136,7 +136,7 @@ FILE "../res/ilogic.akm"
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
 9501 IC=(Y+2)\8*32+(X+2)\8+32
-9503 IF VP(IC)=80 OR VP(IC+1)=81 THEN 9510 ELSE RETURN
+9503 IF VP(IC)<>80 AND VP(IC+1)<>81 THEN RETURN
 9504 IF I3=0 THEN T$="I NEED AN ID CARD#TO OPERATE THE#CONF SWITCHES":GOSUB 10300:RETURN
 9510 IF BS=1 THEN BS=0 ELSE BS=1
 9520 FOR I=0 TO 7
