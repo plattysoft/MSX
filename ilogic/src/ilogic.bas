@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1':C=1:R=0' Override for testing
+7999 I1=1:I2=1:I3=1:C=0:R=0' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -174,7 +174,11 @@ FILE "../res/ilogic.akm"
 9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=TI*64' Set the item collected position on room details
 9728 IF TV=64 THEN I1=1:T$="GOT THE NG BOOTS#I CAN JUMP AGAIN#IN THE AIR":GOSUB 10300 'Double Jump item
 9729 IF TV=66 THEN I2=1:T$="GOT THE GLOVES#I CAN HOLD TO#WALLS AND JUMP#FROM THEM":GOSUB 10300 'Wall jump item
-9730 IF TV=70 THEN I3=1:T$="GOT THE ID CARD#I CAN USE CONF#SWITCHES":GOSUB 10300'ID Card - Brick Swap item
+9730 IF TV=68 THEN I3=1:T$="GOT THE ID CARD#I CAN USE CONF#SWITCHES":GOSUB 10300'ID Card - Brick Swap item
+9731 IF TV=70 THEN I4=1:T$="GOT THE ID WRENCH#I CAN OPEN THE#FUSE BOX":GOSUB 10300
+9732 IF TV=72 THEN I5=1:T$="GOT THE ID BOOT DISK#I CAN USE RESTORE#THE SYSTEM":GOSUB 10300'ID Card - Brick Swap item
+9733 IF TV=74 THEN I6=1:T$="GOT THE ID FUSE#I CAN USE RESTORE#MAIN POWER":GOSUB 10300'ID Card - Brick Swap item
+
 9739 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
