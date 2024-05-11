@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1:C=3:R=2' Override for testing
+7999 I1=1:I2=1:I3=1:C=4:R=0' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -48,7 +48,7 @@ FILE "../res/ilogic.akm"
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),EA,25+ES(I)+ET(I)*3
 9039 NEXT I
-9050 IF NL>0 GOSUB 11000 'process laser animations if there are lasers
+9050 IF NL>0 GOSUB 11000 'process laser animations only if there are lasers
 
 9080 ' END GAME LOOP
 9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10
@@ -80,6 +80,7 @@ FILE "../res/ilogic.akm"
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
 9191 IF S=5 THEN GOSUB 9500
+9192 IF T0=180 OR T1=180 OR T2=180 THEN X=X-1
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
 9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9199 RETURN
