@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1:C=4:R=0' Override for testing
+7999 I1=1:I2=1:I3=1:C=3:R=2' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -26,7 +26,7 @@ FILE "../res/ilogic.akm"
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
-8050 FD=2:PUT SPRITE 31,(0,174),FD,0
+8050 FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
 8101 AD=1:X=8:Y=120:GS=1
@@ -37,7 +37,7 @@ FILE "../res/ilogic.akm"
 8199 GOTO 9000 ' Start game loop
 
 9000 ' BEGIN GAME LOOP
-9001 TIME=0
+9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of the loop
 9002 ' UPDATE
 9003 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
@@ -46,13 +46,13 @@ FILE "../res/ilogic.akm"
 9020 PUT SPRITE 2,(X,Y+14),14,1+ST+D
 9030 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
 9031 FOR I=1 TO EC
-9035  PUT SPRITE 3+I,(EX(I),EY(I)),EA,25+ES(I)+ET(I)*3
+9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations only if there are lasers
 
 9080 ' END GAME LOOP
 9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10
-9082 PUT SPRITE 31,,FD
+9082 PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9090 IF TIME<1 GOTO 9090 ELSE 9000
 
 9100 'GS=1 Standing
@@ -197,12 +197,12 @@ FILE "../res/ilogic.akm"
 9829 RETURN
 
 9900 'fun Update enemies
-9901 EA=14:IF EC=0 THEN RETURN ' Skip enemy updates if no enemies
+9901 IF EC=0 THEN RETURN ' Skip enemy updates if no enemies
 9902 FOR EI=1 TO EC
 9903  EW(EI)=EW(EI)+1:IF EW(EI)=3 THEN EW(EI)=0:ES(EI)=ES(EI)+EV(EI):IF ES(EI)=3 THEN ES(EI)=0 ELSE IF ES(EI)=-1 THEN ES(EI)=2
 9904  ON ET(EI) GOSUB 9910,9920,9930,9940 ' Update enemy based on type
 9905  ' Colision box detection
-9906  IF ABS(X-EX(EI))<16 AND Y-EY(EI)>-31 AND Y-EY(EI)<15 THEN EA=8
+9906  IF ABS(X-EX(EI))<16 AND Y-EY(EI)>-31 AND Y-EY(EI)<15 THEN PD=8
 9908 NEXT I
 9909 RETURN
 
@@ -274,12 +274,19 @@ FILE "../res/ilogic.akm"
 10990 RETURN
 
 11000 ' fun Process laser animations
-11001 ' TODO check laser death if lasers are on
-11011 TA=TA+1 ' TA: timer for animation
-11012 IF TA MOD 5 = 1 THEN GOSUB 12000
-11013 IF TA MOD 5 = 3 THEN GOSUB 12100
-11018 IF TA MOD 80 = 0 THEN GOSUB 11100
-11019 RETURN
+11001 ' Check laser death if lasers are on
+11002 IF LS=0 THEN 11091
+11003 ' Horizontal lasers check
+11010 I0=(X+8)\8+Y\8*32
+11011 IF VP(I0)=62 OR VP(I0+32)=62 OR VP(I0+64)=62 OR VP(I0+96)=62 THEN PD=8
+11020 ' Vertical lasers check
+11021 I0=X\8+(Y+12)\8*32
+11022 IF VP(I0)=63 OR VP(I0+1)=63 OR VP(I0+2)=63 THEN PD=8
+11091 TA=TA+1 ' TA: timer for animation
+11092 IF TA MOD 5 = 1 THEN GOSUB 12000
+11093 IF TA MOD 5 = 3 THEN GOSUB 12100
+11098 IF TA MOD 80 = 0 THEN GOSUB 11100
+11099 RETURN
 
 11100 ' SWAP LASER STATE color at tiles 62, 63,from &H89 to 00. Color table starts at &H2000
 11200 IF LS=1 THEN LC=&H00:LS=0 ELSE LC=&H89:LS=1
@@ -324,8 +331,8 @@ FILE "../res/ilogic.akm"
 8815  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
 8816  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
 8817  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
-8820  IF IF TT=120 THEN IF BS=1 THEN TT=152
-8821  IF IF TT=121 THEN IF BS=0 THEN TT=153
+8820  IF TT=120 AND BS=1 THEN TT=152
+8821  IF TT=121 AND BS=0 THEN TT=153
 8822  VP(I)=TT
 8823 NEXT I
 8824 ' TODO: This part will not be needed once the screens only load 18 rows of data
