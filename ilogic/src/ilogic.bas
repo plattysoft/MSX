@@ -18,26 +18,27 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1:C=3:R=2' Override for testing
+7999 I1=1:I2=1:I3=1:'C=0:R=0' Override for testing
 
-8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Got to load them 3 times
+8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
 8012 CMD WRTVRAM 1, &H1000:CMD WRTVRAM 2, &H3000
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
+8049 ' Setup of visual debug
 8050 FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
 8101 AD=1:X=8:Y=120:GS=1
 8102 Y=20
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
-8110 FOR I=0 TO 5:CI(I)=0:NEXT I:NI=0' NI: Number of items collected
+8110 FOR I=0 TO 5:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8190 GOSUB 8800 ' Load initial room
 8199 GOTO 9000 ' Start game loop
 
 9000 ' BEGIN GAME LOOP
-9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of the loop
+9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
 9002 ' UPDATE
 9003 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
@@ -48,10 +49,10 @@ FILE "../res/ilogic.akm"
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
 9039 NEXT I
-9050 IF NL>0 GOSUB 11000 'process laser animations only if there are lasers
+9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 
 9080 ' END GAME LOOP
-9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10
+9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10 ' FD is debug for detecting frame drops
 9082 PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9090 IF TIME<1 GOTO 9090 ELSE 9000
 
@@ -104,7 +105,9 @@ FILE "../res/ilogic.akm"
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
 9270 IF DJ=1 AND VY>-4 THEN GOSUB 9820 'Double Jump check
 9273 GOSUB 9700' Check for item collection
-9298 IF Y<=0 THEN R=R-1:Y=124   :GOSUB 8800' Load new room
+9296 IF Y<=0 THEN R=R-1:Y=124   :GOSUB 8800' Load new room
+9297 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
+9298 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9299 RETURN
 
 9300 'GS=3 Falling
@@ -127,7 +130,9 @@ FILE "../res/ilogic.akm"
 9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
 9391 GOSUB 9700' Check for item collection
-9398 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
+9396 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
+9397 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
+9398 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9399 RETURN
 
 9400 'GS=4 Initial hold onto wall
@@ -235,7 +240,7 @@ FILE "../res/ilogic.akm"
 10306   NEXT J
 10307 NEXT I
 
-10308 'IF X<16 OR X>160 OR Y<56 OR Y>128 GOTO 10311 'TODO:For now Always hide the main character and the enemies
+10308 'IF X<16 OR X>160 OR Y<56 OR Y>128 GOTO 10311 ' TODO:For now Always hide the main character and the enemies
 10309 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
 
 10311 VPOKE KS,2:FOR J=1 to 20:VPOKE KS+J,36:NEXT J:VPOKE KS+21, 3
@@ -282,6 +287,7 @@ FILE "../res/ilogic.akm"
 11020 ' Vertical lasers check
 11021 I0=X\8+(Y+12)\8*32
 11022 IF VP(I0)=63 OR VP(I0+1)=63 OR VP(I0+2)=63 THEN PD=8
+11090 ' Check animations (we animate when they are off to have consistent frame drops if any)
 11091 TA=TA+1 ' TA: timer for animation
 11092 IF TA MOD 5 = 1 THEN GOSUB 12000
 11093 IF TA MOD 5 = 3 THEN GOSUB 12100
