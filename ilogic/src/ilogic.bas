@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 'I1=1:I2=1:I3=1:I4=1:I5=0:I6=2:C=1:R=2' Override for testing
+7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2:C=3:R=4' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
