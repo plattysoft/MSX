@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1:'C=0:R=0' Override for testing
+7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2:C=1:R=3' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -77,7 +77,8 @@ FILE "../res/ilogic.akm"
 9161 IF VX=0 THEN GOTO 9190' Skip tile colision check if we are not moving
 9162 IF VX>0 THEN T3=VP(TT-&H80+2):T4=VP(TT-&H60+2):T5=VP(TT-&H40+2):T6=VP(TT-&H20+2)
 9163 IF VX<0 THEN T3=VP(TT-&H80):T4=VP(TT-&H60):T5=VP(TT-&H40):T6=VP(TT-&H20)
-9180 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
+9170 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
+9171 IF T4=153 THEN GOSUB 9750
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
 9191 IF S=5 THEN GOSUB 9500
@@ -186,6 +187,14 @@ FILE "../res/ilogic.akm"
 9733 IF TV=74 THEN I6=1:T$="GOT THE ID FUSE#I CAN USE RESTORE#MAIN POWER":GOSUB 10300'ID Card - Brick Swap item
 
 9739 RETURN
+
+9750 ' fun open fuse box
+9751 IF I4=0 THEN T$="THIS IS THE FUSE BOX##I NEED A TOOL TO#OPEN IT":GOSUB 10300:RETURN
+9752 IF I6=2 THEN T$="I ALREADY REPLACED#THE FUSE##NOTHING TO DO HERE":GOSUB 10300:RETURN
+9753 ' Open, show broken fuse
+9760 IT=&H1800+TT-&H60-1:VPOKE IT,82:VPOKE IT+1,83::VPOKE IT+32,114::VPOKE IT+33,115
+9761 ' Replace VPEEK proxy
+9799 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF I2=0 THEN RETURN
