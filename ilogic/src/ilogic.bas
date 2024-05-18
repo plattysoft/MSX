@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2:C=6:R=0  ' Override for testing
+7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2:C=5:R=0  ' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -50,7 +50,7 @@ FILE "../res/ilogic.akm"
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
-
+9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9620
 9080 ' END GAME LOOP
 9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10 ' FD is debug for detecting frame drops
 9082 PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
@@ -143,8 +143,9 @@ FILE "../res/ilogic.akm"
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
 9501 IC=(Y+2)\8*32+(X+2)\8+32
-9503 IF VP(IC)<>80 AND VP(IC+1)<>81 THEN RETURN
+9503 IF VP(IC)<>80 AND VP(IC+1)<>81 AND VP(IC)<>84 THEN RETURN
 9504 IF I3=0 THEN T$="I NEED AN ID CARD#TO OPERATE THE#CONF SWITCHES":GOSUB 10300:RETURN
+9505 IF VP(IC)=84 THEN GOSUB 9600:RETURN ' Swap temp bricks
 9510 IF BS=1 THEN BS=0:TP=&H70 ELSE BS=1:TP=&HD0
 9520 ' And swap the indicator on the console
 9521 ' Swap the image
@@ -164,6 +165,25 @@ FILE "../res/ilogic.akm"
 9563 NEXT
 9590 IF STICK(0)=5 THEN 9590
 9599 RETURN
+
+9600 ' fun start timer for temp bricks
+9601 IF BT=0 THEN BT=1:GOSUB 9620:BT=500
+9609 RETURN
+9620 ' fun swap temp bricks
+9621 ' Swap the indicator on the console
+9622 FOR I=0 TO 7
+9623   A=VPEEK(210*8+I+BT*16):VPOKE 116*8+I,A:VPOKE &H800+116*8+I,A:VPOKE &H1000+116*8+I,A
+9629 NEXT
+9630 ' Swap bricks
+9631 FOR I=0 TO 7
+9632   A=VPEEK(208*8+I+BT*8):VPOKE 122*8+I,A:VPOKE &H800+122*8+I,A:VPOKE &H1000+122*8+I,A
+9639 NEXT
+9651 ' Also swap the screen reading, change them for empty and solid
+9660 FOR I=0 TO 672
+9661   IF VP(I)=184 THEN VP(I)=122 ELSE IF VP(I)=122 THEN VP(I)=184
+9663 NEXT
+9690 IF STICK(0)=5 THEN 9590
+9699 RETURN
 
 9700 ' fun Check for item collection
 9701 IF IR=0 THEN RETURN
@@ -343,7 +363,7 @@ FILE "../res/ilogic.akm"
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196:NL=0:IR=0
+8809 EC=0:LT=196:NL=0:IR=0:BT=0
 8810 FOR I=0 TO 672
 8811  TT=VPEEK(&H1800+I)
 8812  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
@@ -354,9 +374,9 @@ FILE "../res/ilogic.akm"
 8817  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
 8820  IF TT=120 AND BS=1 THEN TT=152
 8821  IF TT=121 AND BS=0 THEN TT=153
-8822  VP(I)=TT
-8823 NEXT I
-8824 ' TODO: This part will not be needed once the screens only load 18 rows of data
+8824  VP(I)=TT
+8825 NEXT I
+8826 ' TODO: This part will not be needed once the screens only load 18 rows of data
 8827 FOR I=1 TO 5
 8828  IF CI(I)>0 THEN TP=&H1AA0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8829 NEXT I
