@@ -18,7 +18,7 @@ FILE "../res/ilogic.akm"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
-7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2:C=5:R=0  ' Override for testing
+7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
@@ -50,7 +50,7 @@ FILE "../res/ilogic.akm"
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
-9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9620
+9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
 9080 ' END GAME LOOP
 9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10 ' FD is debug for detecting frame drops
 9082 PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
@@ -167,23 +167,31 @@ FILE "../res/ilogic.akm"
 9599 RETURN
 
 9600 ' fun start timer for temp bricks
-9601 IF BT=0 THEN BT=1:GOSUB 9620:BT=500
+9601 IF BT=0 THEN BT=1:TC=1:GOSUB 9610:BT=600:TS=300 ELSE BT=0:GOSUB 9610
 9609 RETURN
-9620 ' fun swap temp bricks
-9621 ' Swap the indicator on the console
-9622 FOR I=0 TO 7
-9623   A=VPEEK(210*8+I+BT*16):VPOKE 116*8+I,A:VPOKE &H800+116*8+I,A:VPOKE &H1000+116*8+I,A
+
+9610 ' fun swap temp bricks
+9612 ' Swap the indicator on the console
+9613 FOR I=0 TO 7
+9614   A=VPEEK(210*8+I+BT*16):VPOKE 116*8+I,A:VPOKE &H800+116*8+I,A:VPOKE &H1000+116*8+I,A
+9619 NEXT
+9620 ' Swap bricks
+9621 FOR I=0 TO 7
+9622   A=VPEEK(208*8+I+BT*8):VPOKE 122*8+I,A:VPOKE &H800+122*8+I,A:VPOKE &H1000+122*8+I,A
 9629 NEXT
-9630 ' Swap bricks
-9631 FOR I=0 TO 7
-9632   A=VPEEK(208*8+I+BT*8):VPOKE 122*8+I,A:VPOKE &H800+122*8+I,A:VPOKE &H1000+122*8+I,A
-9639 NEXT
-9651 ' Also swap the screen reading, change them for empty and solid
-9660 FOR I=0 TO 672
-9661   IF VP(I)=184 THEN VP(I)=122 ELSE IF VP(I)=122 THEN VP(I)=184
-9663 NEXT
-9690 IF STICK(0)=5 THEN 9590
-9699 RETURN
+9630 ' Also swap the screen reading, change them for empty and solid
+9631 FOR I=0 TO 672
+9632   IF VP(I)=184 THEN VP(I)=122 ELSE IF VP(I)=122 THEN VP(I)=184
+9633 NEXT
+9648 IF STICK(0)=5 THEN 9648
+9649 RETURN
+
+9650 ' fun Swap tmp brick color
+9651 IF TC=1 THEN TC=0:TS=TS-5 ELSE TC=1:IF TS>100 THEN TS=TS-95 ELSE TS=TS-20
+9652 FOR I=0 TO 7
+9653   A=VPEEK(208*8+I+TC*8):VPOKE 122*8+I,A:VPOKE &H800+122*8+I,A:VPOKE &H1000+122*8+I,A
+9654 NEXT
+9659 RETURN
 
 9700 ' fun Check for item collection
 9701 IF IR=0 THEN RETURN
@@ -363,7 +371,8 @@ FILE "../res/ilogic.akm"
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196:NL=0:IR=0:BT=0
+8808 EC=0:LT=196:NL=0:IR=0
+8809 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8810 FOR I=0 TO 672
 8811  TT=VPEEK(&H1800+I)
 8812  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
