@@ -115,6 +115,7 @@ FILE "../res/splash_0_0.plet5"
 9249 IF T0>=128 OR T1>=128 OR T2>=128 THEN VY=0:Y=Y-VY:Y=((Y+2)/8+1)*8-2:DJ=0:GS=3
 9250 IF VX=0 THEN 9270' Skip horizontal collision check if we are not moving
 9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
+9252 ' TODO: This calculations are the same for Going up, down, and sliding wall, we can consolidate a subroutine
 9254 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
 9255 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
@@ -151,21 +152,21 @@ FILE "../res/splash_0_0.plet5"
 9399 RETURN
 
 9400 'GS=4 Holding into a wall
-9402 IF VY<7 THEN VY=VY+1
-9403 Y=Y+VY/4
-9404 IF VY<0 THEN TT=((Y+2)/8)*32 ELSE TT=((Y+32)/8)*32
-9412 T0 = VP (TT+(X+2)/8)
-9413 T1 = VP (TT+(X+8)/8)
-9414 T2 = VP (TT+(X+15)/8)
-9439 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
+9401 WT=WT-1: IF WT>0 GOTO 9410 'Only do wall grip check every 4 frames
+9402 TT = X/8
+9403 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
+9404 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
+9405 GOSUB 9800 'Re-check wall grip
+9409 IF GS<>4 THEN RETURN 'If we are no longer holding on a wall, skip the step
+9410 ' Still holding on a wall, move and check for ceiling and floor hit
+9411 IF VY<7 THEN VY=VY+1
+9412 Y=Y+VY/4
+9413 IF VY<0 THEN TT=((Y+2)/8)*32 ELSE TT=((Y+32)/8)*32
+9420 T0 = VP (TT+(X+2)/8)
+9421 T1 = VP (TT+(X+8)/8)
+9422 T2 = VP (TT+(X+15)/8)
+9429 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
-9480 ' Re-check stick to the wall (Each 4 frames)
-9481 WT=WT-1: IF WT>0 THEN 9490 'Re-check wall grip
-9482 ' Re-calculate wall grip
-9483 TT = X/8
-9484 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
-9485 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
-9489 GOSUB 9800 ' Check for wall grip (if we are falling we can lose it)
 9490 ' Check for wall jump actually
 9492 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9499 RETURN
@@ -264,9 +265,12 @@ FILE "../res/splash_0_0.plet5"
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF I2=0 THEN RETURN
-9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN GS=4:SA=3:ST=7:WT=4 ELSE RETURN
+9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN GS=4:SA=3:ST=7:WT=4 ELSE 9810
 9804 IF VY>7 THEN VY=7 ELSE IF VY<-9 THEN VY=-9
 9809 RETURN
+9810 ' No grip
+9811 IF GS=4 THEN IF VY>0 THEN GS=2 ELSE GS=3
+9819 RETURN
 
 9820 'fun Double Jump Check
 9821 IF I1=0 THEN RETURN
