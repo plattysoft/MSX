@@ -200,13 +200,15 @@ FILE "../res/splash_0_0.plet5"
 9609 RETURN
 
 9610 ' fun swap temp bricks
-9612 ' Swap the indicator on the console
-9613 FOR I=0 TO 7
-9614   A=VPEEK(210*8+I+BT*16):VPOKE 116*8+I,A:VPOKE &H800+116*8+I,A:VPOKE &H1000+116*8+I,A
+9611 ' Swap the indicator on the console
+9612 TM=752+BT*16' TeMp value: initial value is 210 tile (210*8), dst tile is 116, 928=116*8, 752=210*8-928
+9613 FOR I=928 TO 935
+9614   A=VPEEK(TM+I):VPOKE I,A:VPOKE &H800+I,A:VPOKE &H1000+I,A
 9619 NEXT
 9620 ' Swap bricks
-9621 FOR I=0 TO 7
-9622   A=VPEEK(208*8+I+BT*8):VPOKE 122*8+I,A:VPOKE &H800+122*8+I,A:VPOKE &H1000+122*8+I,A
+9621 TM=688+BT*8' TeMp value: initial value is 208 tile (208*8), dst tile is 122, 976=122*8, 688=208*8-976
+9622 FOR I=976 TO 983
+9623   A=VPEEK(TM+I):VPOKE I,A:VPOKE &H800+I,A:VPOKE &H1000+I,A
 9629 NEXT
 9630 ' Also swap the screen reading, change them for empty and solid
 9631 FOR I=0 TO 672
@@ -218,9 +220,9 @@ FILE "../res/splash_0_0.plet5"
 9650 ' fun Swap tmp brick color
 9651 IF TC=1 THEN TC=0:TS=TS-5 ELSE TC=1:IF TS>100 THEN TS=TS-95 ELSE TS=TS-20
 9652 TM=688+TC*8' TeMp value: initial value is 208 tile (208*8), dst tile is 122, 976=122*8, 688=208*8-976
-9652 FOR I=976 TO 983
-9653   A=VPEEK(TM+I):VPOKE I,A:VPOKE &H800+I,A:VPOKE &H1000+I,A
-9654 NEXT
+9653 FOR I=976 TO 983
+9654   A=VPEEK(TM+I):VPOKE I,A:VPOKE &H800+I,A:VPOKE &H1000+I,A
+9655 NEXT
 9659 RETURN
 
 9700 ' fun Check for item collection
