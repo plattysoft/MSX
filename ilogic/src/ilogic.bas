@@ -7,6 +7,11 @@ INCLUDE "map_2.inc"
 FILE "../res/map_3_6.plet5"
 FILE "../res/ilogic.akm"
 
+FILE "../res/splash.chr.plet5" '40
+FILE "../res/splash.clr.plet5"
+FILE "../res/splash_0_0.plet5"
+
+
 20 CMD PLYLOAD 39, 1
 21 'CMD PLYSONG 0
 22 'CMD PLYPLAY
@@ -15,6 +20,13 @@ FILE "../res/ilogic.akm"
 110 DEFINT A-Z
 
 1010 DIM RR(49), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
+
+5000 ' Start screen
+5010 CMD WRTCHR 40:CMD WRTCLR 41 ' Load tileset (patterns and colors) Got to load them 3 times
+5011 CMD WRTVRAM 40, &H800:CMD WRTVRAM 41, &H2800
+5012 CMD WRTVRAM 40, &H1000:CMD WRTVRAM 41, &H3000
+5020 CMD WRTSCR 42
+5090 IF STRIG(0) OR STRIG(1) GOTO 7990 ELSE 5090
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0
@@ -136,9 +148,24 @@ FILE "../res/ilogic.akm"
 9398 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9399 RETURN
 
-9400 'GS=4 Initial hold onto wall
-9401 WT=WT-1: IF WT=0 THEN GS=3' WT: Wall Time is reset each time we start a jump
-9402 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
+9400 'GS=4 Holding into a wall
+9402 IF VY<7 THEN VY=VY+1
+9403 Y=Y+VY/4
+9404 IF VY<0 THEN TT=((Y+2)/8)*32 ELSE TT=((Y+32)/8)*32
+9412 T0 = VP (TT+(X+2)/8)
+9413 T1 = VP (TT+(X+8)/8)
+9414 T2 = VP (TT+(X+15)/8)
+9439 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
+9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
+9480 ' Re-check stick to the wall (Each 4 frames)
+9481 WT=WT-1: IF WT>0 THEN 9490 'Re-check wall grip
+9482 ' Re-calculate wall grip
+9483 TT = X/8
+9484 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
+9485 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
+9489 GOSUB 9800 ' Check for wall grip (if we are falling we can lose it)
+9490 ' Check for wall jump actually
+9492 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9499 RETURN
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
@@ -232,10 +259,8 @@ FILE "../res/ilogic.akm"
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF I2=0 THEN RETURN
-9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN IF WT>0 THEN GS=4:GOTO 9809 ELSE 9803 ELSE 9809
-9803 SA=3:ST=7
+9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN GS=4:SA=3:ST=7:WT=4 ELSE RETURN
 9804 IF VY>7 THEN VY=7 ELSE IF VY<-9 THEN VY=-9
-9808 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9809 RETURN
 
 9820 'fun Double Jump Check
