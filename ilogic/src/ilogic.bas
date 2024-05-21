@@ -31,7 +31,10 @@ FILE "../res/splash_0_0.plet5"
 5099 GOTO 5090
 
 7990 C=3:R=3' Actual initial room of the game
-7991 I1=0:I2=0:I3=0
+7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
+7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
+
+7995 'GM=0
 7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
 
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
@@ -51,6 +54,14 @@ FILE "../res/splash_0_0.plet5"
 8190 GOSUB 8800 ' Load initial room
 8199 GOTO 9000 ' Start game loop
 
+8700 ' fun player dies
+8701 ' Animate death: TODO
+8702 TIME=0
+8703 IF TIME<25 THEN 8703 'for now, just add a 1 second delay
+8751 ' Restore player state to the beginning of the room
+8752 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
+8799 RETURN
+
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
 9002 ' UPDATE
@@ -68,6 +79,7 @@ FILE "../res/splash_0_0.plet5"
 9080 ' END GAME LOOP
 9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10 ' FD is debug for detecting frame drops
 9082 PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
+9083 IF PD>0 AND GM=1 THEN GOSUB 8700
 9090 IF TIME<1 GOTO 9090 ELSE 9000
 
 9100 'GS=1 Standing
@@ -169,6 +181,7 @@ FILE "../res/splash_0_0.plet5"
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9490 ' Check for wall jump actually
 9492 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
+9493 ' TODO Consider moving the jump debouncing to the main game loop
 9499 RETURN
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
@@ -402,6 +415,8 @@ FILE "../res/splash_0_0.plet5"
 
 8800 ' fun Load new room
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
+8802 ' Record player state when entering the room
+8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
