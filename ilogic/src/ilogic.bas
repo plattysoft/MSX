@@ -22,6 +22,7 @@ FILE "../res/splash_0_0.plet5"
 1010 DIM RR(49), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 5000 ' Start screen
+5001 CMD CLRSCR
 5010 CMD WRTCHR 40:CMD WRTCLR 41 ' Load tileset (patterns and colors) Got to load them 3 times
 5011 CMD WRTVRAM 40, &H800:CMD WRTVRAM 41, &H2800
 5012 CMD WRTVRAM 40, &H1000:CMD WRTVRAM 41, &H3000
@@ -35,8 +36,9 @@ FILE "../res/splash_0_0.plet5"
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
 
 7995 'GM=0
-7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
+7999 'I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
 
+8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
 8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
 8012 CMD WRTVRAM 1, &H1000:CMD WRTVRAM 2, &H3000
@@ -93,7 +95,7 @@ FILE "../res/splash_0_0.plet5"
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
 9121 ST=ST+1:IF ST=3 THEN ST=0
 9122 IF ST=1 THEN YO=1 ELSE YO=0
-9140 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:SA=0:ST=4:JD=1:DJ=1:WT=4:RETURN 'JD: Jump Debouncing, DJ=double jump
+9140 IF NOT(STRIG(SS)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:SA=0:ST=4:JD=1:DJ=1:WT=4:RETURN 'JD: Jump Debouncing, DJ=double jump
 9141 X=X+VX
 9142 TT = ((Y+32)/8)*32
 9143 T0 = VP (TT+(X+2)/8)
@@ -180,7 +182,7 @@ FILE "../res/splash_0_0.plet5"
 9429 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9490 ' Check for wall jump actually
-9492 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
+9492 IF NOT(STRIG(SS)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9493 ' TODO Consider moving the jump debouncing to the main game loop
 9496 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9499 RETURN
@@ -288,8 +290,8 @@ FILE "../res/splash_0_0.plet5"
 
 9820 'fun Double Jump Check
 9821 IF I1=0 THEN RETURN
-9822 IF JD=1 AND NOT(STRIG(0)) THEN JD=0:GOTO 9829
-9823 IF JD=0 AND STRIG(0) THEN GS=2:SA=0:ST=4:JD=1:DJ=0:VY=VY-14:IF VY<-14 THEN VY=-14 ELSE IF VY>-6 THEN VY=-6
+9822 IF JD=1 AND NOT(STRIG(SS)) THEN JD=0:GOTO 9829
+9823 IF JD=0 AND STRIG(SS) THEN GS=2:SA=0:ST=4:JD=1:DJ=0:VY=VY-14:IF VY<-14 THEN VY=-14 ELSE IF VY>-6 THEN VY=-6
 9829 RETURN
 
 9900 'fun Update enemies
