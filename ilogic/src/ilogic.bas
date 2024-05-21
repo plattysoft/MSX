@@ -182,6 +182,7 @@ FILE "../res/splash_0_0.plet5"
 9490 ' Check for wall jump actually
 9492 IF NOT(STRIG(0)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9493 ' TODO Consider moving the jump debouncing to the main game loop
+9496 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9499 RETURN
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
