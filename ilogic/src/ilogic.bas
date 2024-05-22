@@ -35,8 +35,8 @@ FILE "../res/splash_0_0.plet5"
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
 
-7995 'GM=0
-7999 'I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
+7995 GM=0
+7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
 
 8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
@@ -66,8 +66,9 @@ FILE "../res/splash_0_0.plet5"
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
-9002 ' UPDATE
-9003 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
+9002 IF STRIG(SS)=0 THEN JD=0
+9003 ' UPDATE
+9004 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
 9009 ' DRAW
 9010 PUT SPRITE 1,(X,Y+YO),15,D:PUT SPRITE 0,(X,Y+4+YO),4,9+SA+D
@@ -95,7 +96,7 @@ FILE "../res/splash_0_0.plet5"
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
 9121 ST=ST+1:IF ST=3 THEN ST=0
 9122 IF ST=1 THEN YO=1 ELSE YO=0
-9140 IF NOT(STRIG(SS)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:SA=0:ST=4:JD=1:DJ=1:WT=4:RETURN 'JD: Jump Debouncing, DJ=double jump
+9140 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-14:SA=0:ST=4:JD=1:DJ=1:WT=4:RETURN 'JD: Jump Debouncing, DJ=double jump
 9141 X=X+VX
 9142 TT = ((Y+32)/8)*32
 9143 T0 = VP (TT+(X+2)/8)
@@ -182,7 +183,7 @@ FILE "../res/splash_0_0.plet5"
 9429 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9490 ' Check for wall jump actually
-9492 IF NOT(STRIG(SS)) THEN JD=0 ELSE IF JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
+9492 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-14:VX=-VX:JD=1:WT=4:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9493 ' TODO Consider moving the jump debouncing to the main game loop
 9496 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9499 RETURN
@@ -290,7 +291,6 @@ FILE "../res/splash_0_0.plet5"
 
 9820 'fun Double Jump Check
 9821 IF I1=0 THEN RETURN
-9822 IF JD=1 AND NOT(STRIG(SS)) THEN JD=0:GOTO 9829
 9823 IF JD=0 AND STRIG(SS) THEN GS=2:SA=0:ST=4:JD=1:DJ=0:VY=VY-14:IF VY<-14 THEN VY=-14 ELSE IF VY>-6 THEN VY=-6
 9829 RETURN
 
