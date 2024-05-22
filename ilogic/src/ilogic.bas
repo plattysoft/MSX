@@ -62,7 +62,7 @@ FILE "../res/splash_0_0.plet5"
 8703 IF TIME<25 THEN 8703 'for now, just add a 1 second delay
 8751 ' Restore player state to the beginning of the room
 8752 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
-8799 RETURN
+8799 IF STICK(SS)=0 THEN RETURN ELSE 8799
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
