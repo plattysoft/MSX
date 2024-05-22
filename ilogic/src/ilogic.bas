@@ -13,8 +13,8 @@ FILE "../res/splash_0_0.plet5"
 
 
 20 CMD PLYLOAD 39, 1
-21 'CMD PLYSONG 0
-22 'CMD PLYPLAY
+21 CMD PLYSONG 0
+22 CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -36,7 +36,7 @@ FILE "../res/splash_0_0.plet5"
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
 
 7995 'GM=0
-7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
+7999 'I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
 
 8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
