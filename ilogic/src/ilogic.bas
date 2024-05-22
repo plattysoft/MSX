@@ -35,7 +35,7 @@ FILE "../res/splash_0_0.plet5"
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
 
-7995 GM=0
+7995 'GM=0
 7999 I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
 
 8001 CMD CLRSCR
