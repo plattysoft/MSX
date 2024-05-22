@@ -66,7 +66,7 @@ FILE "../res/splash_0_0.plet5"
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
-9002 IF STRIG(SS)=0 THEN JD=0
+9002 IF STRIG(SS)=0 THEN JD=0'If the trigger is not pressed, it is debounced
 9003 ' UPDATE
 9004 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
@@ -300,7 +300,8 @@ FILE "../res/splash_0_0.plet5"
 9903  EW(EI)=EW(EI)+1:IF EW(EI)=3 THEN EW(EI)=0:ES(EI)=ES(EI)+EV(EI):IF ES(EI)=3 THEN ES(EI)=0 ELSE IF ES(EI)=-1 THEN ES(EI)=2
 9904  ON ET(EI) GOSUB 9910,9920,9930,9940 ' Update enemy based on type
 9905  ' Colision box detection
-9906  IF ABS(X-EX(EI))<16 AND Y-EY(EI)>-31 AND Y-EY(EI)<15 THEN PD=8
+9906  ' Original check: IF ABS(X-EX(EI))<16 AND Y-EY(EI)>-31 AND Y-EY(EI)<15
+9907  IF ABS(X-EX(EI))<12 AND Y-EY(EI)>-29 AND Y-EY(EI)<12 THEN PD=8 'Maybe we can do a more refined check if the gross check succeed
 9908 NEXT I
 9909 RETURN
 
