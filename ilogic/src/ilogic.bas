@@ -301,7 +301,7 @@ FILE "../res/splash_0_0.plet5"
 9904  ON ET(EI) GOSUB 9910,9920,9930,9940 ' Update enemy based on type
 9905  ' Colision box detection
 9906  ' Original check: IF ABS(X-EX(EI))<16 AND Y-EY(EI)>-31 AND Y-EY(EI)<15
-9907  IF ABS(X-EX(EI))<12 AND Y-EY(EI)>-29 AND Y-EY(EI)<12 THEN PD=8 'Maybe we can do a more refined check if the gross check succeed
+9907  IF ABS(X-EX(EI))<12 AND Y-EY(EI)>-29 AND Y-EY(EI)<12 THEN PD=8 'Maybe we can do a more refined check if a "gross" check succeed
 9908 NEXT I
 9909 RETURN
 
