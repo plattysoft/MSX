@@ -13,8 +13,8 @@ FILE "../res/splash_0_0.plet5"
 
 
 20 CMD PLYLOAD 39, 1
-21 CMD PLYSONG 0
-22 CMD PLYPLAY
+21 'CMD PLYSONG 0
+22 'CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -35,8 +35,10 @@ FILE "../res/splash_0_0.plet5"
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
 
+7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7999 'I1=1:I2=1:I3=1:I4=1:I5=0:I6=2':C=0:R=1  ' Override for testing
+7996 'C=6:R=2
+7999 I1=1:I2=1':I3=1:I4=1:I5=0:I6=2
 
 8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
@@ -49,7 +51,7 @@ FILE "../res/splash_0_0.plet5"
 8050 FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
-8101 AD=1:X=8:Y=120:GS=1
+8101 AD=1:X=8:Y=120:GS=1:GI=0
 8102 Y=20
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
 8110 FOR I=0 TO 5:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
@@ -110,7 +112,7 @@ FILE "../res/splash_0_0.plet5"
 9171 IF T4=155 THEN GOSUB 9750
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
-9191 IF S=5 THEN GOSUB 9500
+9191 GOSUB 9500' Check for switches
 9192 IF T0=180 OR T1=180 OR T2=180 THEN X=X-1 ELSE IF T0=183 OR T1=183 OR T2=183 THEN X=X+1 'Handle convoy belts
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
 9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
@@ -190,9 +192,11 @@ FILE "../res/splash_0_0.plet5"
 
 9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
 9501 IC=(Y+2)\8*32+(X+2)\8+32
-9503 IF VP(IC)<>80 AND VP(IC+1)<>81 AND VP(IC)<>84 THEN RETURN
-9504 IF I3=0 THEN T$="I NEED AN ID CARD#TO OPERATE THE#CONF SWITCHES":GOSUB 10300:RETURN
-9505 IF VP(IC)=84 THEN GOSUB 9600:RETURN ' Swap temp bricks
+9502 IF VP(IC)<>80 AND VP(IC+1)<>81 AND VP(IC)<>84 THEN RETURN
+9503 IF GI=0 THEN GI=-1:T$="PRESS \ TO OPERATE#THE CONFIG SWITCHES[":GOSUB 10300:RETURN
+9504 IF S=5 THEN GI=1 ELSE RETURN 'GI: Game Item action performed (if they do it once, we stop showing the tutorial popup)
+9507 IF I3=0 THEN T$="I NEED MY ID CARD TO#OPERATE THE CONFIG#SWITCHES[":GOSUB 10300:RETURN
+9508 IF VP(IC)=84 THEN GOSUB 9600:RETURN ' Swap temp bricks
 9510 IF BS=1 THEN BS=0:TP=&H70 ELSE BS=1:TP=&HD0
 9520 ' And swap the indicator on the console
 9521 ' Swap the image
@@ -325,7 +329,7 @@ FILE "../res/splash_0_0.plet5"
 9943 IF EY(EI) MOD 8=6 THEN EL=VP(((EY(EI)+8+6*EV(EI))\8)*32+(EX(EI))\8):IF EL=141 OR EL=173 THEN EY(EI)=EY(EI)-EV(EI):EV(EI)=-EV(EI)
 9949 RETURN
 
-10300 ' fun Display a pop-up
+10300 ' fun Display a pop-up  [\]^_` map to .(down arrow))?!-,
 10301 ' Store current scrren info
 10302 KS=&H1905
 10303 FOR I=0 TO 9 'Rows
@@ -421,6 +425,7 @@ FILE "../res/splash_0_0.plet5"
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8802 ' Record player state when entering the room
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
+8004 IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
