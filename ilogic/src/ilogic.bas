@@ -37,8 +37,8 @@ FILE "../res/splash_0_0.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=6:R=2
-7999 I1=1:I2=1':I3=1:I4=1:I5=0:I6=2
+7996 C=0:R=4
+7999 I1=1:I2=1:I3=1:I4=1:I5=1:I6=0
 
 8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
@@ -109,10 +109,9 @@ FILE "../res/splash_0_0.plet5"
 9162 IF VX>0 THEN T3=VP(TT-&H80+2):T4=VP(TT-&H60+2):T5=VP(TT-&H40+2):T6=VP(TT-&H20+2)
 9163 IF VX<0 THEN T3=VP(TT-&H80):T4=VP(TT-&H60):T5=VP(TT-&H40):T6=VP(TT-&H20)
 9170 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
-9171 IF T4=155 THEN GOSUB 9750
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4 ELSE AT=3
-9191 GOSUB 9500' Check for switches
+9191 GOSUB 9500' Check for room interaction (switches, fuse, computer)
 9192 IF T0=180 OR T1=180 OR T2=180 THEN X=X-1 ELSE IF T0=183 OR T1=183 OR T2=183 THEN X=X+1 'Handle convoy belts
 9197 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
 9198 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
@@ -193,14 +192,20 @@ FILE "../res/splash_0_0.plet5"
 9496 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9499 RETURN
 
-9500 ' Fun swap bricks (Icons swap, but only one is actually checked)
-9501 IC=(Y+2)\8*32+(X+2)\8+32
-9502 IF VP(IC)<>80 AND VP(IC+1)<>81 AND VP(IC)<>84 THEN RETURN
-9503 IF GI=0 THEN GI=-1:T$="PRESS \ TO OPERATE#THE CONFIG SWITCHES[":GOSUB 10300:RETURN
-9504 IF S=5 THEN GI=1 ELSE RETURN 'GI: Game Item action performed (if they do it once, we stop showing the tutorial popup)
-9507 IF I3=0 THEN T$="I NEED MY ID CARD TO#OPERATE THE CONFIG#SWITCHES[":GOSUB 10300:RETURN
-9508 IF VP(IC)=84 THEN GOSUB 9600:RETURN ' Swap temp bricks
-9510 IF BS=1 THEN BS=0:TP=&H70 ELSE BS=1:TP=&HD0
+9500 ' fun Check room interactions (switches, fuse & computer)
+9501 IF T4=155 THEN GOSUB 9750:RETURN
+9502 IC=(Y+2)\8*32+(X+2)\8+32
+9503 IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Switches
+9504 IF VP(IC)=82 THEN GOSUB 9550:RETURN ' Open Fuse Box
+9505 IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Computer
+9509 RETURN
+
+9510 ' Fun swap bricks (Icons swap, but only one is actually checked)
+9513 IF GI=0 THEN GI=-1:T$="PRESS \ TO OPERATE#THE CONFIG SWITCHES[":GOSUB 10300:RETURN
+9514 IF S=5 THEN GI=1 ELSE RETURN 'GI: Game Item action performed (if they do it once, we stop showing the tutorial popup)
+9517 IF I3=0 THEN T$="I NEED MY ID CARD TO#OPERATE THE CONFIG#SWITCHES[":GOSUB 10300:RETURN
+9518 IF VP(IC)=84 THEN GOSUB 9600:RETURN ' Swap temp bricks
+9519 IF BS=1 THEN BS=0:TP=&H70 ELSE BS=1:TP=&HD0
 9520 ' And swap the indicator on the console
 9521 ' Swap the image
 9522 FOR I=0 TO 15
@@ -212,13 +217,21 @@ FILE "../res/splash_0_0.plet5"
 9532   A=VPEEK(208*8+I+BS*8):VPOKE 120*8+I,A:VPOKE &H800+120*8+I,A:VPOKE &H1000+120*8+I,A
 9533   A=VPEEK(208*8+8+I-BS*8):VPOKE 121*8+I,A:VPOKE &H800+121*8+I,A:VPOKE &H1000+121*8+I,A
 9539 NEXT
-9551 ' Also swap the screen reading, change them for empty and solid
-9560 FOR I=0 TO 672
-9561   IF VP(I)=120 THEN VP(I)=152 ELSE IF VP(I)=152 THEN VP(I)=120
-9562   IF VP(I)=121 THEN VP(I)=153 ELSE IF VP(I)=153 THEN VP(I)=121
-9563 NEXT
-9590 IF STICK(SS)=5 THEN 9590
-9599 RETURN
+9540 ' Also swap the screen reading, change them for empty and solid
+9541 FOR I=0 TO 672
+9542   IF VP(I)=120 THEN VP(I)=152 ELSE IF VP(I)=152 THEN VP(I)=120
+9543   IF VP(I)=121 THEN VP(I)=153 ELSE IF VP(I)=153 THEN VP(I)=121
+9544 NEXT
+9545 IF STICK(SS)=5 THEN 9545
+9549 RETURN
+
+9550 ' fun Can we set the fuse in an open box?
+9551 IF I6=0 AND DI=0 THEN DI=-1:T$="THE FUSE IS BROKEN[#I NEED A NEW ONE TO#REPLACE IT[":GOSUB 10300:RETURN
+9552 IF I6=1 THEN I6=2:T$="MAIN POWER IS RESTORED[#I CAN REBOOT THE SYSTEM^":GOSUB 10300:RETURN' Got the fuse, put it in place, close the box
+9559 RETURN
+
+9560 ' fun check the computer
+9561 IF I6=0 THEN T$="THE COMPUTER IS OFF[#I NEED TO RESTORE#MAIN POWER[":GOSUB 10300:RETURN
 
 9600 ' fun start timer for temp bricks
 9601 IF BT=0 THEN BT=1:TC=1:GOSUB 9610:BT=600:TS=300 ELSE BT=0:GOSUB 9610
@@ -285,6 +298,7 @@ FILE "../res/splash_0_0.plet5"
 9753 ' Open, show broken fuse
 9760 IT=&H1800+TT-&H60-1:VPOKE IT,82:VPOKE IT+1,83::VPOKE IT+32,114::VPOKE IT+33,115
 9761 ' Replace VPEEK proxy
+9762 IT=IT-&H1800:VP(IT)=82:VP(IT+1)=83:VP(IT+32)=114:VP(IT+33)=115
 9799 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
@@ -428,7 +442,7 @@ FILE "../res/splash_0_0.plet5"
 8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
 8802 ' Record player state when entering the room
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
-8004 IF GI=-1 THEN GI=0' We show the tutorial action once per room
+8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
