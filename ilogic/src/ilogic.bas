@@ -37,8 +37,8 @@ FILE "../res/splash_0_0.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=5:R=3
-7999 I1=1:I2=1:I3=1:I4=0:I5=1:I6=2
+7996 'C=5:R=3
+7999 'I1=1:I2=1:I3=1:I4=0:I5=1:I6=2
 
 8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
