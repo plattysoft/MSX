@@ -21,6 +21,8 @@ FILE "../res/splash_0_0.plet5"
 
 1010 DIM RR(49), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
+
+
 5000 ' Start screen
 5001 CMD CLRSCR
 5010 CMD WRTCHR 40:CMD WRTCLR 41 ' Load tileset (patterns and colors) Got to load them 3 times
@@ -69,6 +71,7 @@ FILE "../res/splash_0_0.plet5"
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
 9002 IF STRIG(SS)=0 THEN JD=0'If the trigger is not pressed, it is debounced
+
 9003 ' UPDATE
 9004 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
@@ -210,13 +213,13 @@ FILE "../res/splash_0_0.plet5"
 9520 ' And swap the indicator on the console
 9521 ' Swap the image
 9522 FOR I=0 TO 15
-9523   A=VPEEK(210*8+I+BS*16):VPOKE 112*8+I,A:VPOKE &H800+112*8+I,A:VPOKE &H1000+112*8+I,A
-9524   VPOKE &H2000+80*8+I,TP:VPOKE &H2800+80*8+I,TP:VPOKE &H3000+80*8+I,TP
+9523   A=VPEEK(1680+I+BS*16):VPOKE &H380+I,A:VPOKE &HB80+I,A:VPOKE &H1380+I,A'1680 = 210*8, 896 = 118*8 = &h380, steps start at 0, &h800 and &h1000
+9524   VPOKE &H2280+I,TP:VPOKE &H2A80+I,TP:VPOKE &H3280+I,TP'640 = 80*8 = &h280, steps start at &H2000, &h2800 and &h3000
 9529 NEXT
 9530 ' Swap Bricks and console color
 9531 FOR I=0 TO 7
-9532   A=VPEEK(208*8+I+BS*8):VPOKE 120*8+I,A:VPOKE &H800+120*8+I,A:VPOKE &H1000+120*8+I,A
-9533   A=VPEEK(208*8+8+I-BS*8):VPOKE 121*8+I,A:VPOKE &H800+121*8+I,A:VPOKE &H1000+121*8+I,A
+9532   A=VPEEK(&H680+I+BS*8):VPOKE &H3C0+I,A:VPOKE &HBC0+I,A:VPOKE &H13C0+I,A' 208*8 = &h680, 120*8 = &H3C0, steps start at 0, &h800 and &h1000
+9533   A=VPEEK(&H688+I-BS*8):VPOKE &H3C8+I,A:VPOKE &HBC8+I,A:VPOKE &H13C8+I,A '121*8=&H3C8
 9539 NEXT
 9540 ' Also swap the screen reading, change them for empty and solid
 9541 FOR I=0 TO 672
