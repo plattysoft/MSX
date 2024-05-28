@@ -19,7 +19,7 @@ FILE "../res/splash_0_0.plet5"
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
-1010 DIM RR(49), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
+1010 DIM RR(35), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 
 
@@ -285,7 +285,7 @@ FILE "../res/splash_0_0.plet5"
 9724 TV=VP(TI):TP=&H2A0+NI*3:GOSUB 12220
 9725 VP(TI)=0:VP(TI+1)=0
 9726 VP(TI+32)=0:VP(TI+33)=0
-9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=TI*64' Set the item collected position on room details
+9727 IF RR(R*7+C+1) = 0 THEN RR(R*7+C+1)=TI' Set the item collected position on room details
 9728 IF TV=64 THEN I1=1:T$="GOT THE NG_BOOTS^#I CAN DOUBLE JUMP IN#THE AIR[":GOSUB 10300 'Double Jump item
 9729 IF TV=66 THEN I2=1:T$="GOT THE ST_GLOVE^#I CAN HOLD TO WALLS#AND JUMP FROM THEM[":GOSUB 10300 'Wall jump item
 9730 IF TV=68 THEN I3=1:T$="GOT MY ID CARD^#I CAN USE THE CONFIG#SWITCHES[":GOSUB 10300'ID Card - Brick Swap item
@@ -455,7 +455,7 @@ FILE "../res/splash_0_0.plet5"
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
 8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8805 CMD WRTSCR R*7+C+3
-8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
+8806 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
 8808 EC=0:LT=196:NL=0:IR=0
 8809 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
