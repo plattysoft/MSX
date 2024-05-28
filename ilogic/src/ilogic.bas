@@ -11,9 +11,6 @@ FILE "../res/splash.chr.plet5" '40
 FILE "../res/splash.clr.plet5"
 FILE "../res/splash_0_0.plet5"
 
-FILE "../res/start.chr.plet5"
-FILE "../res/start.clr.plet5"
-
 
 20 CMD PLYLOAD 39, 1
 21 'CMD PLYSONG 0
@@ -25,10 +22,9 @@ FILE "../res/start.clr.plet5"
 1010 DIM RR(35), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 
-2000 ' Platty Soft Intro (current 1287 bytes)
+2000 ' Platty Soft Intro
 2001 CMD CLRSCR 'CLS
-2002 CMD WRTCHR 43 ' Load tiles for home screen and platty intro
-2003 CMD WRTCLR 44
+2002 RI=40:GOSUB 5100'Load splash and platty tiles
 
 2100 'Prepare the initial position
 2110 FOR I=0 to 3
@@ -80,7 +76,7 @@ FILE "../res/start.clr.plet5"
 
 5000 ' Start screen
 5001 CMD CLRSCR
-5010 RI=40:GOSUB 5100 ' Load splash screen resources
+5010 'RI=40:GOSUB 5100 ' Load splash screen resources
 5020 CMD WRTSCR 42
 5090 IF STRIG(0) THEN SS=0:GOTO 7990
 5091 IF STRIG(1) THEN SS=1:GOTO 7990
@@ -102,7 +98,7 @@ FILE "../res/start.clr.plet5"
 7999 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 
 8001 CMD CLRSCR
-8010 RI=0:GOSUB 5100 ' Load room resources
+8010 RI=1:GOSUB 5100 ' Load room resources
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
