@@ -40,7 +40,7 @@ FILE "../res/splash_0_0.plet5"
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
 7996 'C=5:R=3
-7999 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
+7999 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 
 8001 CMD CLRSCR
 8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
@@ -282,7 +282,7 @@ FILE "../res/splash_0_0.plet5"
 9720 ' fun Pick up item
 9721 TV=0:TP=TI:GOSUB 12220 ' Put 0 in TI position (4 tiles)
 9723 NI=NI+1:CI(NI)=VP(TI)
-9724 TV=VP(TI):TP=&H1AA0+NI*3:GOSUB 12220
+9724 TV=VP(TI):TP=&H2A0+NI*3:GOSUB 12220
 9725 VP(TI)=0:VP(TI+1)=0
 9726 VP(TI+32)=0:VP(TI+33)=0
 9727 IF RR(R*7+C+1)\64 = 0 THEN RR(R*7+C+1)=TI*64' Set the item collected position on room details
@@ -300,9 +300,9 @@ FILE "../res/splash_0_0.plet5"
 9752 IF I6=2 AND DI=0 THEN DI=-1:T$="I ALREADY REPLACED#THE FUSE^#NOTHING ELSE TO DO#HERE[":GOSUB 10300:RETURN
 9753 IF DI=-1 THEN RETURN
 9755 ' Open, show broken fuse
-9756 TV=82:TP=TT:GOSUB 12220'IT=&H1800+TT-&H60-1:VPOKE IT,82:VPOKE IT+1,83::VPOKE IT+32,114::VPOKE IT+33,115
+9756 TV=82:TP=TT-&H61:GOSUB 12220'IT=&H1800+TT-&H60-1:VPOKE IT,82:VPOKE IT+1,83::VPOKE IT+32,114::VPOKE IT+33,115
 9757 ' Replace VPEEK proxy
-9758 IT=IT-&H1800:VP(IT)=82:VP(IT+1)=83:VP(IT+32)=114:VP(IT+33)=115
+9758 VP(TP)=82:VP(TP+1)=83:VP(TP+32)=114:VP(TP+33)=115
 9759 RETURN
 
 9760 ' fun access computer
@@ -446,7 +446,7 @@ FILE "../res/splash_0_0.plet5"
 12199 RETURN
 
 12220 ' fun set TV (tile value) into TP (tile position) 16x16 tiles
-12221 VPOKE TP,TV:VPOKE TP+1,TV+1:VPOKE TP+&H20,TV+&H20:VPOKE TP+&H21,TV+&H21
+12221 TQ=TP+&H1800:VPOKE TQ,TV:VPOKE TQ+1,TV+1:VPOKE TQ+&H20,TV+&H20:VPOKE TQ+&H21,TV+&H21
 12222 RETURN
 
 8800 ' fun Load new room
@@ -456,7 +456,7 @@ FILE "../res/splash_0_0.plet5"
 8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1)\64 ' We store collection of items after the 7th bit of the room info (we store the position in screen)
-8807 IF RI>0 THEN TP=&H1800+RI:TV=0:GOSUB 12220
+8807 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
 8808 EC=0:LT=196:NL=0:IR=0
 8809 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8810 FOR I=0 TO 672
@@ -473,7 +473,7 @@ FILE "../res/splash_0_0.plet5"
 8825 NEXT I
 8826 ' TODO: This part will not be needed once the screens only load 18 rows of data
 8827 FOR I=1 TO 5
-8828  IF CI(I)>0 THEN TP=&H1AA0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8828  IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8829 NEXT I
 8830 RETURN
 
