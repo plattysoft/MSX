@@ -21,17 +21,19 @@ FILE "../res/splash_0_0.plet5"
 
 1010 DIM RR(35), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
-
-
 5000 ' Start screen
 5001 CMD CLRSCR
-5010 CMD WRTCHR 40:CMD WRTCLR 41 ' Load tileset (patterns and colors) Got to load them 3 times
-5011 CMD WRTVRAM 40, &H800:CMD WRTVRAM 41, &H2800
-5012 CMD WRTVRAM 40, &H1000:CMD WRTVRAM 41, &H3000
+5010 RI=40:GOSUB 5100
 5020 CMD WRTSCR 42
 5090 IF STRIG(0) THEN SS=0:GOTO 7990
 5091 IF STRIG(1) THEN SS=1:GOTO 7990
 5099 GOTO 5090
+
+5100 ' Write RI (Resource ID) to pattern table (3 times) and RI+1 to color table (3 times)
+5101 CMD WRTCHR RI:CMD WRTCLR RI+1 ' Load tileset (patterns and colors) Got to load them 3 times
+5102 CMD WRTVRAM RI, &H800:CMD WRTVRAM RI+1, &H2800
+5103 CMD WRTVRAM RI, &H1000:CMD WRTVRAM RI+1, &H3000
+5109 RETURN
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
@@ -43,9 +45,7 @@ FILE "../res/splash_0_0.plet5"
 7999 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 
 8001 CMD CLRSCR
-8010 CMD WRTCHR 1:CMD WRTCLR 2 ' Load tileset (patterns and colors) Got to load them 3 times
-8011 CMD WRTVRAM 1, &H800:CMD WRTVRAM 2, &H2800
-8012 CMD WRTVRAM 1, &H1000:CMD WRTVRAM 2, &H3000
+8010 RI=0:GOSUB 5100
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
