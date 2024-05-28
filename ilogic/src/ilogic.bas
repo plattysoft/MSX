@@ -11,6 +11,9 @@ FILE "../res/splash.chr.plet5" '40
 FILE "../res/splash.clr.plet5"
 FILE "../res/splash_0_0.plet5"
 
+FILE "../res/start.chr.plet5"
+FILE "../res/start.clr.plet5"
+
 
 20 CMD PLYLOAD 39, 1
 21 'CMD PLYSONG 0
@@ -21,9 +24,63 @@ FILE "../res/splash_0_0.plet5"
 
 1010 DIM RR(35), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
+
+2000 ' Platty Soft Intro (current 1287 bytes)
+2001 CMD CLRSCR 'CLS
+2002 CMD WRTCHR 43 ' Load tiles for home screen and platty intro
+2003 CMD WRTCLR 44
+
+2100 'Prepare the initial position
+2110 FOR I=0 to 3
+2120  FOR K=0 TO 3
+2121   VPOKE &H1906+I+K*32,152+I*32+K
+2122  NEXT K
+2123 NEXT I
+
+2299 ' This part is 800 bytes of compiled code
+2300 ' Scroll up 32 times (push everything up and add a line at the bottom on the 4 tiles)
+2310 FOR I=&H4E0 TO &H4FF
+2311 TIME=0
+2312  FOR J=&HCC0 TO &HCDF
+2313   FOR K=0 TO &H300 STEP &H100
+2321    VPOKE J+K, VPEEK(J+K+1)
+2323    VPOKE &H2000+J+K, VPEEK(&H2001+J+K)
+2347   NEXT K
+2348  NEXT J
+2350  FOR K=0 TO &H300 STEP &H100
+2352   VPOKE &HCDF+K, VPEEK(I+K)
+2354   VPOKE &H2CDF+K, VPEEK(&H2800+I+K)
+2396  NEXT K
+2397 IF STRIG(0) OR STRIG(1) THEN 2800
+2398 IF TIME<1 GOTO 2397
+2399 NEXT I
+
+2499 ' This part is 400 bytes of compiled code
+2500 FOR I=0 TO 8
+2509  TIME = 0
+2510  FOR K=0 TO I
+2520   VPOKE &H192A+K,172-I+K:VPOKE &H194A+K,204-I+K::VPOKE &H196A+K,236-I+K
+2530  NEXT K
+2531  IF TIME<2 GOTO 2531
+2540 NEXT I
+2600 FOR I=0 TO 5
+2609  TIME = 0
+2610  FOR K=0 TO I
+2620   VPOKE &H1933+K,178-I+K:VPOKE &H1953+K,210-I+K::VPOKE &H1973+K,242-I+K
+2630  NEXT K
+2631 IF STRIG(0) OR STRIG(1) THEN 2800
+2632  IF TIME<2 GOTO 2631
+2640 NEXT I
+
+2650 TIME=0
+2651 IF STRIG(0) OR STRIG(1) THEN 2800
+2660 IF TIME<75 GOTO 2651
+
+2800 ' END OF INTRO
+
 5000 ' Start screen
 5001 CMD CLRSCR
-5010 RI=40:GOSUB 5100
+5010 RI=40:GOSUB 5100 ' Load splash screen resources
 5020 CMD WRTSCR 42
 5090 IF STRIG(0) THEN SS=0:GOTO 7990
 5091 IF STRIG(1) THEN SS=1:GOTO 7990
@@ -45,12 +102,12 @@ FILE "../res/splash_0_0.plet5"
 7999 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 
 8001 CMD CLRSCR
-8010 RI=0:GOSUB 5100
+8010 RI=0:GOSUB 5100 ' Load room resources
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
 8049 ' Setup of visual debug
-8050 FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
+8050 'FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
 8101 AD=1:X=8:Y=120:GS=1:GI=0
@@ -109,7 +166,7 @@ FILE "../res/splash_0_0.plet5"
 9145 T2 = VP (TT+(X+15)/8)
 9146 TT = TT + X/8
 9161 IF VX=0 THEN GOTO 9190' Skip tile colision check if we are not moving
-9162 IF VX>0 THEN T3=VP(TT-&H80+2):T4=VP(TT-&H60+2):T5=VP(TT-&H40+2):T6=VP(TT-&H20+2)
+9162 IF VX>0 THEN T3=VP(TT-&H7E):T4=VP(TT-&H5E):T5=VP(TT-&H3E):T6=VP(TT-&H1E)' Used to be TT-&H80+2, etc
 9163 IF VX<0 THEN T3=VP(TT-&H80):T4=VP(TT-&H60):T5=VP(TT-&H40):T6=VP(TT-&H20)
 9170 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 THEN X=X-VX
 9189 GOSUB 9700' Check for item collection
