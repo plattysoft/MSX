@@ -100,7 +100,7 @@ FILE "../res/sfx.akx"
 7995 'GM=0
 7996 'C=6:R=2
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
-7999 'GOSUB 10000 ' Show the ending
+7999 GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
