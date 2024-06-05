@@ -152,7 +152,7 @@ FILE "../res/sfx.akx"
 9113 IF S=7 THEN VX=-2:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9114 SA=4:ST=3:YO=0' SA=4 marks a resting position
 9117 GOTO 9140 ' Skip walk animation (no input)
-9118 IF S0=4 THEN S0=0 ELSE S0=S0+1:GOTO 9140 ' No animation this frame
+9118 IF S0=2 THEN S0=0 ELSE S0=S0+1:GOTO 9140 ' No animation this frame
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
 9121 ST=ST+1:IF ST=3 THEN ST=0:CMD PLYSOUND 6
 9122 IF ST=1 THEN YO=1 ELSE YO=0
