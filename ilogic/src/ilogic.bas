@@ -571,14 +571,14 @@ FILE "../res/sfx.akx"
 
 8910 ' fun Parse enemy type 1 (horizontal, bottom)
 8911 GOSUB 8840' Initialize enemy
-8912 ET(EC)=1:EV(EC)=1
+8912 ET(EC)=1:EV(EC)=2
 8914 GOSUB 8850 ' Preload sprite
 8918 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
 8919 RETURN
 
 8920 ' fun Parse enemy type 2 (horizontal, top)
 8921 GOSUB 8840' Initialize enemy
-8922 ET(EC)=2:EV(EC)=1
+8922 ET(EC)=2:EV(EC)=2
 8923 EY(EC)=EY(EC)-8
 8924 GOSUB 8850' Preload sprite
 8928 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
@@ -586,14 +586,14 @@ FILE "../res/sfx.akx"
 
 8930 ' fun Parse enemy type 3 (vertical, right)
 8931 GOSUB 8840' Initialize enemy
-8932 ET(EC)=3:EV(EC)=1
+8932 ET(EC)=3:EV(EC)=2
 8935 GOSUB 8850' Preload sprite
 8938 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
 8939 RETURN
 
 8940 ' fun Parse enemy type 4 (vertical, left)
 8941 GOSUB 8840' Initialize enemy
-8942 ET(EC)=4:EV(EC)=1
+8942 ET(EC)=4:EV(EC)=2
 8944 EX(EC)=EX(EC)-8
 8945 GOSUB 8850' Preload sprite
 8948 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
