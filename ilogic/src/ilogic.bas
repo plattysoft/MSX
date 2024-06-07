@@ -490,7 +490,7 @@ FILE "../res/sfx.akx"
 11001 ' Skip laser death check if lasers are off
 11002 IF LS=0 THEN 11091
 11003 ' Horizontal lasers check
-11010 I0=(X+8)\8+Y\8*32
+11010 I0=X\8+1+Y\8*32
 11011 IF VP(I0)=62 OR VP(I0+32)=62 OR VP(I0+64)=62 OR VP(I0+96)=62 THEN PD=8
 11020 ' Vertical lasers check
 11021 I0=X\8+(Y+12)\8*32
@@ -507,8 +507,7 @@ FILE "../res/sfx.akx"
 11500 FOR I=&H21F0 TO &H21FF
 11600  VPOKE I, LC:VPOKE I+&H800, LC: VPOKE I+&H1000, LC
 11700 NEXT I
-11800 ' Lasers ON enable sound on channel 3 with sound generator
-11810 'IF LC=0 THEN SOUND 8, 0 ELSE IF LP=1 THEN SOUND 8, &B11111
+11800 ' TODO: Apply SFX for lasers turning on and off
 11990 RETURN
 
 12000 'ANIMATE LASER (horizontal), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
@@ -522,7 +521,7 @@ FILE "../res/sfx.akx"
 12059 RETURN
 
 12100 'ANIMATE LASER (vertical), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
-12101 'LT=LT+1:IF LT=200 THEN LT=196 'We only need to swap pattern once
+12101 'We only need to swap pattern once in LT, on the horizintal one, the patter for vertical is 4 tiles ahead (32 positions)
 12150 FOR I=32 TO 39'The vertical tiles are 32 positions (4 tiles) ahead of the vertical ones
 12153  LM=VPEEK(LT+I)
 12155  VPOKE &H1F8+I, LM:VPOKE &H9F8+I, LM:VPOKE &H11F8+I, LM
