@@ -15,8 +15,8 @@ FILE "strings.txt" '43
 FILE "../res/sfx.akx"
 
 20 CMD PLYLOAD 39, 44 '39,44
-21 'CMD PLYSONG 0
-22 'CMD PLYPLAY
+21 CMD PLYSONG 0
+22 CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -98,7 +98,7 @@ FILE "../res/sfx.akx"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=1:R=1
+7996 C=3:R=4
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
@@ -140,10 +140,10 @@ FILE "../res/sfx.akx"
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
 9080 ' END GAME LOOP
-9081 IF TIME=0 THEN FD=2 ELSE IF TIME>1 THEN FD=8 ELSE FD=10 ' FD is debug for detecting frame drops
 9082 PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 IF PD>0 AND GM=1 THEN GOSUB 8700
-9090 IF TIME<2 GOTO 9090 ELSE 9000
+9085 FD=10
+9090 IF TIME<2 THEN FD=2:GOTO 9090 ELSE 9000
 
 9100 'GS=1 Standing
 9101 S=STICK(SS)
