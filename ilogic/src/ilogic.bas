@@ -487,7 +487,7 @@ FILE "../res/sfx.akx"
 10990 RETURN
 
 11000 ' fun Process laser animations
-11001 ' Check laser death if lasers are on
+11001 ' Skip laser death check if lasers are off
 11002 IF LS=0 THEN 11091
 11003 ' Horizontal lasers check
 11010 I0=(X+8)\8+Y\8*32
@@ -495,10 +495,9 @@ FILE "../res/sfx.akx"
 11020 ' Vertical lasers check
 11021 I0=X\8+(Y+12)\8*32
 11022 IF VP(I0)=63 OR VP(I0+1)=63 OR VP(I0+2)=63 THEN PD=8
-11090 ' Check animations (we animate when they are off to have consistent frame drops if any)
+11090 ' Check animations (we animate when they are off to have consistent frame drops if any) TODO: Does this make sense
 11091 TA=TA+1 ' TA: timer for animation
-11092 IF TA MOD 4 = 1 THEN GOSUB 12000
-11093 IF TA MOD 4 = 3 THEN GOSUB 12100
+11092 ON TA MOD 6 GOSUB 12000, 12010, 12020, 121000, 121000, 121000 'we have 3 sections of the screen, and one for vertical and one for horizontal
 11098 IF TA MOD 40 = 0 THEN GOSUB 11100
 11099 RETURN
 
@@ -512,20 +511,36 @@ FILE "../res/sfx.akx"
 11990 RETURN
 
 12000 'ANIMATE LASER (vertical), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
-12001 LT=LT+1:IF LT=200 THEN LT=196
-12002 FOR I=0 TO 7
-12003  LR=VPEEK(LT*8+I)
-12004  VPOKE &H1F0+I, LR:VPOKE &H9F0+I, LR: VPOKE &H11F0+I, LR
-12006 NEXT I
-12099 RETURN
+12001 ' First step of the animation, swap patterns
+12002 LT=LT+8:IF LT=200*8 THEN LT=196*8
+12009 LV=&H1F0:GOSUB 12050:RETURN
+
+12010 ' Second step of animation, middle part of the screen
+12011 LV=&H9F0:GOSUB 12050:RETURN
+
+12020 ' Third step of animation, lower part of the screen
+12021 LV=&H11F0:GOSUB 12050:RETURN
+
+12050 'Replace tiles (vertical), current pattern, starting on LV: Laser Vpoke position
+12052 FOR I=0 TO 7
+12054  VPOKE LV+I, VPEEK(LT+I)
+12056 NEXT I
+12059 RETURN
 
 12100 'ANIMATE LASER (horizontal), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
 12101 'LT=LT+1:IF LT=200 THEN LT=196 'We only need to swap pattern once
-12102 FOR I=0 TO 7
-12103  LM=VPEEK(LT*8+I+32)
-12105  VPOKE &H1F8+I, LM:VPOKE &H9F8+I, LM: VPOKE &H11F8+I, LM
-12106 NEXT I
-12199 RETURN
+12102 LV=&H1F8:GOSUB 12150:RETURN
+
+12110 ' Second step of animation, middle part of the screen
+12111 LV=&H9F8:GOSUB 12150:RETURN
+
+12120 ' Third step of animation, lower part of the screen
+12121 LV=&H11F8:GOSUB 12150:RETURN
+
+12150 FOR I=32 TO 39
+12155  VPOKE LV+I, VPEEK(LT+I)
+12156 NEXT I
+12159 RETURN
 
 12220 ' fun set TV (tile value) into TP (tile position) 16x16 tiles
 12221 TQ=TP+&H1800:VPOKE TQ,TV:VPOKE TQ+1,TV+1:VPOKE TQ+&H20,TV+&H20:VPOKE TQ+&H21,TV+&H21
@@ -539,7 +554,7 @@ FILE "../res/sfx.akx"
 8805 CMD WRTSCR R*7+C+3
 8806 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8807 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8808 EC=0:LT=196:NL=0:IR=0
+8808 EC=0:LT=196*8:NL=0:IR=0
 8809 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8810 FOR I=0 TO 672
 8811  TT=VPEEK(&H1800+I)
