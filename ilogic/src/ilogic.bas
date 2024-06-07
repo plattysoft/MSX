@@ -497,8 +497,8 @@ FILE "../res/sfx.akx"
 11022 IF VP(I0)=63 OR VP(I0+1)=63 OR VP(I0+2)=63 THEN PD=8
 11090 ' Check animations (we animate when they are off to have consistent frame drops if any) TODO: Does this make sense
 11091 TA=TA+1 ' TA: timer for animation
-11092 IF TA MOD 8 = 0 GOSUB 12000
-11093 IF TA MOD 8 = 4 GOSUB 12100 'we animate vertical one horizontal separately
+11092 IF TA MOD 4 = 0 GOSUB 12000
+11093 IF TA MOD 4 = 2 GOSUB 12100 'we animate vertical one horizontal separately
 11098 IF TA MOD 40 = 0 THEN GOSUB 11100
 11099 RETURN
 
