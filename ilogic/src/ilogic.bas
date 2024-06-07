@@ -497,7 +497,7 @@ FILE "../res/sfx.akx"
 11022 IF VP(I0)=63 OR VP(I0+1)=63 OR VP(I0+2)=63 THEN PD=8
 11090 ' Check animations (we animate when they are off to have consistent frame drops if any) TODO: Does this make sense
 11091 TA=TA+1 ' TA: timer for animation
-11092 ON TA MOD 6 GOSUB 12000, 12010, 12020, 121000, 121000, 121000 'we have 3 sections of the screen, and one for vertical and one for horizontal
+11092 ON TA MOD 4 GOSUB 12000, 11099, 12100, 11099 'we have 3 sections of the screen, and one for vertical and one for horizontal
 11098 IF TA MOD 40 = 0 THEN GOSUB 11100
 11099 RETURN
 
@@ -513,32 +513,18 @@ FILE "../res/sfx.akx"
 12000 'ANIMATE LASER (vertical), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
 12001 ' First step of the animation, swap patterns
 12002 LT=LT+8:IF LT=200*8 THEN LT=196*8
-12009 LV=&H1F0:GOSUB 12050:RETURN
-
-12010 ' Second step of animation, middle part of the screen
-12011 LV=&H9F0:GOSUB 12050:RETURN
-
-12020 ' Third step of animation, lower part of the screen
-12021 LV=&H11F0:GOSUB 12050:RETURN
-
 12050 'Replace tiles (vertical), current pattern, starting on LV: Laser Vpoke position
 12052 FOR I=0 TO 7
-12054  VPOKE LV+I, VPEEK(LT+I)
+12053  LM=VPEEK(LT+I)
+12054  VPOKE &H1F0+I, LM:VPOKE &H9F0+I, LM:VPOKE &H11F0+I, LM
 12056 NEXT I
 12059 RETURN
 
 12100 'ANIMATE LASER (horizontal), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
 12101 'LT=LT+1:IF LT=200 THEN LT=196 'We only need to swap pattern once
-12102 LV=&H1F8:GOSUB 12150:RETURN
-
-12110 ' Second step of animation, middle part of the screen
-12111 LV=&H9F8:GOSUB 12150:RETURN
-
-12120 ' Third step of animation, lower part of the screen
-12121 LV=&H11F8:GOSUB 12150:RETURN
-
 12150 FOR I=32 TO 39
-12155  VPOKE LV+I, VPEEK(LT+I)
+12153  LM=VPEEK(LT+I)
+12155  VPOKE &H1F8+I, LM:VPOKE &H9F8+I, LM:VPOKE &H11F8+I, LM
 12156 NEXT I
 12159 RETURN
 
