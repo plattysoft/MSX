@@ -233,7 +233,7 @@ FILE "../res/sfx.akx"
 9405 GOSUB 9800 'Re-check wall grip
 9409 IF GS<>2 THEN RETURN 'If we are no longer holding on a wall, skip the step
 9410 ' Still holding on a wall, move and check for ceiling and floor hit
-9411 IF VY<18 THEN VY=VY+5 ELSE VY=18
+9411 IF VY<12 THEN VY=VY+5 ELSE VY=12
 9412 Y=Y+VY/6
 9413 IF VY<0 THEN TT=((Y+2)/8)*32 ELSE TT=((Y+32)/8)*32
 9420 T0 = VP (TT+(X+2)/8)
@@ -522,8 +522,8 @@ FILE "../res/sfx.akx"
 
 12100 'ANIMATE LASER (vertical), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
 12101 'We only need to swap pattern once in LT, on the horizintal one, the patter for vertical is 4 tiles ahead (32 positions)
-12150 FOR I=32 TO 39'The vertical tiles are 32 positions (4 tiles) ahead of the vertical ones
-12153  LM=VPEEK(LT+I)
+12150 FOR I=0 TO 7'The vertical tiles are 32 positions (4 tiles) ahead of the vertical ones
+12153  LM=VPEEK(LT+I+32)
 12155  VPOKE &H1F8+I, LM:VPOKE &H9F8+I, LM:VPOKE &H11F8+I, LM
 12156 NEXT I
 12159 RETURN
