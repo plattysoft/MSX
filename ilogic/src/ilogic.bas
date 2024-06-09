@@ -105,7 +105,7 @@ FILE "../res/sfx.akx"
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
 8049 ' Setup of visual debug
-8050 FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
+8050 'FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
 8101 AD=1:X=8:Y=120:GS=1:GI=0
