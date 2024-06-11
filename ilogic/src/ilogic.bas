@@ -13,7 +13,7 @@ FILE "../res/splash_0_0.plet5"
 
 FILE "strings.txt" '43
 FILE "../res/sfx.akx"
-FILE "../res/cls.scr.plet5"
+FILE "../res/cls.plet5"
 
 20 CMD PLYLOAD 39, 44 '39,44
 21 CMD PLYSONG 0
