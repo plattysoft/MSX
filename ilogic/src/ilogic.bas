@@ -13,6 +13,7 @@ FILE "../res/splash_0_0.plet5"
 
 FILE "strings.txt" '43
 FILE "../res/sfx.akx"
+FILE "../res/cls.scr.plet5"
 
 20 CMD PLYLOAD 39, 44 '39,44
 21 CMD PLYSONG 0
@@ -24,7 +25,7 @@ FILE "../res/sfx.akx"
 1010 DIM RR(35), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 2000 ' Platty Soft Intro
-2001 CMD CLRSCR 'CLS
+2001 CMD WRTSCR 45 'CLS
 2002 RI=40:GOSUB 5100'Load splash and platty tiles
 
 2100 'Prepare the initial position
@@ -74,7 +75,7 @@ FILE "../res/sfx.akx"
 2500 ' END OF INTRO
 
 5000 ' Start screen
-5001 CMD CLRSCR
+5001 CMD WRTSCR 45
 5010 'RI=40:GOSUB 5100 ' Load splash screen resources
 5020 CMD WRTSCR 42
 5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
@@ -89,7 +90,7 @@ FILE "../res/sfx.akx"
 5109 RETURN
 
 7000 ' Start New Game
-7001 CMD CLRSCR
+7001 CMD WRTSCR 45
 7010 RI=1:GOSUB 5100 ' Load room resources
 
 7990 C=3:R=3' Actual initial room of the game
@@ -361,7 +362,7 @@ FILE "../res/sfx.akx"
 9760 ' fun access computer
 9761 IF I6<2 AND DI=0 THEN DI=-1:TR=11:GOSUB 10300:RETURN' IF NO POWER, show NO POWER Message
 9762 IF I6=2 AND I5=0 THEN DI=-1:TR=12:GOSUB 10300:RETURN' IF POWER BUT NO DISK show NO DISK Message
-9763 IF I6=2 AND I5=1 THEN GOSUB 10000:RETURN' IF POWER AND DISK show ending
+9763 IF I6=2 AND I5=1 THEN GOSUB 10000:GOTO 2000' IF POWER AND DISK show ending
 9769 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
@@ -411,7 +412,7 @@ FILE "../res/sfx.akx"
 
 10000 'fun ending
 10001 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
-10005 CMD CLRSCR
+10005 CMD WRTSCR 45
 10009 CMD RESTORE 43:RESTORE 16
 10010 ' Blank screen, show text as in a console
 10020 TY=1:GOSUB 10200
@@ -424,7 +425,7 @@ FILE "../res/sfx.akx"
 10070 TY=15:GOSUB 10200
 10080 TY=18:GOSUB 10200
 10090 TY=22:GOSUB 10200
-10091 IF STRIG(0)=0 THEN 10091
+10091 IF STRIG(0)=0 AND STRIG(1)=0 THEN 10091
 10099 RETURN
 
 10200 'Writing text on Screen subroutine (a letter at a time, with sound)
