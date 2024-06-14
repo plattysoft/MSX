@@ -96,6 +96,7 @@ FILE "../res/cls.plet5"
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
+7993 PZ=0' Player DereZ, number of deaths starts at 0
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
@@ -123,6 +124,8 @@ FILE "../res/cls.plet5"
 8703 IF TIME<25 THEN 8703 'for now, just add a 1 second delay
 8751 ' Restore player state to the beginning of the room
 8752 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
+8755 PZ=PZ+1:T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1):IF PZ<10 THEN T$="0"+T$
+8756 TX=25:TY=22:GOSUB 10900
 8799 IF STICK(SS)=0 THEN RETURN ELSE 8799
 
 9000 ' BEGIN GAME LOOP
@@ -486,7 +489,8 @@ FILE "../res/cls.plet5"
 10911   TF=TF+1
 10920   CT$=MID$(T$,i,1)
 10940   IF CT$=" " THEN TT=0 ELSE TT=ASC(CT$)+159
-10941   IF CT$="#" THEN TF=0:TY=TY+2 ELSE VPOKE &H1800+TX-1+TY*32+TF, TT
+10941   IF TT<224 THEN TT=TT+7 'Fix the gap on the ASCII numbers and the letters
+10949   IF CT$="#" THEN TF=0:TY=TY+2 ELSE VPOKE &H1800+TX-1+TY*32+TF, TT
 10950 NEXT I
 10990 RETURN
 
