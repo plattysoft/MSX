@@ -114,6 +114,7 @@ FILE "../res/cls.plet5"
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
 8110 FOR I=0 TO 5:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8190 GOSUB 8800 ' Load initial room
+8191 DI=-1' Not showing dialog info at the start of a new game
 8199 GOTO 9000 ' Start game loop
 
 8700 ' fun player dies
