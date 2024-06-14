@@ -565,9 +565,9 @@ FILE "../res/cls.plet5"
 8824  VP(I)=TT
 8825 NEXT I
 8826 ' TODO: This part will not be needed once the screens only load 18 rows of data
-8827 FOR I=1 TO 5
-8828  IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
-8829 NEXT I
+8827 'FOR I=1 TO 5
+8828 ' IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8829 'NEXT I
 8830 RETURN
 
 8840 ' fun Initialize enemy
