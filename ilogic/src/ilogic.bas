@@ -118,15 +118,21 @@ FILE "../res/cls.plet5"
 8191 DI=-1' Not showing dialog info at the start of a new game
 8199 GOTO 9000 ' Start game loop
 
+8650 ' Draw the number of deaths
+8661 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1):IF PZ<10 THEN T$="0"+T$
+8662 TX=25:TY=22:GOSUB 10900
+8669 RETURN
+
 8700 ' fun player dies
 8701 ' Animate death: TODO
 8702 TIME=0
 8703 IF TIME<25 THEN 8703 'for now, just add a 1 second delay
 8751 ' Restore player state to the beginning of the room
 8752 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
-8755 PZ=PZ+1:T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1):IF PZ<10 THEN T$="0"+T$
-8756 TX=25:TY=22:GOSUB 10900
+8760 ' Draw the number of deaths
+8761 PZ=PZ+1:GOSUB 8650
 8799 IF STICK(SS)=0 THEN RETURN ELSE 8799
+
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
@@ -548,27 +554,31 @@ FILE "../res/cls.plet5"
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
 8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8805 CMD WRTSCR R*7+C+3
-8806 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
-8807 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8808 EC=0:LT=196*8:NL=0:IR=0
-8809 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
-8810 FOR I=0 TO 672
-8811  TT=VPEEK(&H1800+I)
-8812  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
-8813  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
-8814  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
-8815  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
-8816  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
-8817  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
-8820  IF TT=120 AND BS=1 THEN TT=152
-8821  IF TT=121 AND BS=0 THEN TT=153
-8824  VP(I)=TT
-8825 NEXT I
-8826 ' TODO: This part will not be needed once the screens only load 18 rows of data
-8827 'FOR I=1 TO 5
-8828 ' IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
-8829 'NEXT I
-8830 RETURN
+8806 IF R=3 AND C=3 THEN GOSUB 8830' This part is only needed on room 3-3, which is the one with the lower part of the screen
+
+8807 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
+8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
+8809 EC=0:LT=196*8:NL=0:IR=0
+8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
+8811 FOR I=0 TO 672
+8812  TT=VPEEK(&H1800+I)
+8813  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
+8814  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
+8815  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
+8816  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
+8817  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
+8818  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
+8819  IF TT=120 AND BS=1 THEN TT=152
+8820  IF TT=121 AND BS=0 THEN TT=153
+8821  VP(I)=TT
+8822 NEXT I
+8829 RETURN
+
+8830 ' Redraw items on the bottom area and number of deaths
+8832 FOR I=1 TO 5
+8833  IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8834 NEXT I
+8835 GOSUB 8650:RETURN
 
 8840 ' fun Initialize enemy
 8841 EC=EC+1
