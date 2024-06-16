@@ -150,7 +150,7 @@ FILE "../res/cls.plet5"
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
 9080 ' END GAME LOOP
-9082 'PUT SPRITE 31,,FD: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
+9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<2 THEN FD=2 ELSE FD=10
 9085 IF PD>0 AND GM=1 THEN GOSUB 8700
 9090 IF TIME<2 THEN 9090 ELSE 9000
@@ -237,7 +237,7 @@ FILE "../res/cls.plet5"
 
 9400 'GS=4 Holding into a wall
 9401 WT=WT-1: IF WT>0 GOTO 9410 'Only do wall grip check every 2 frames
-9402 TT = X/8
+9402 TT = (X+VX)/8
 9403 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
 9404 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
 9405 GOSUB 9800 'Re-check wall grip
@@ -375,7 +375,7 @@ FILE "../res/cls.plet5"
 9769 RETURN
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
-9801 IF I2=0 THEN RETURN
+9801 IF I2=0 THEN RETURN' Can't hold to walls without the Glove (I2)
 9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN GS=4:CMD PLYSOUND 11:SA=3:ST=7:WT=4 ELSE 9810
 9804 IF VY>20 THEN VY=20 ELSE IF VY<-12 THEN VY=-12
 9809 RETURN
