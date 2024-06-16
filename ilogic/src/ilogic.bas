@@ -95,7 +95,7 @@ FILE "../res/cls.plet5"
 
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
-7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts, 0: God Mode
+7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts (TODO), 0: God Mode
 7993 PZ=0' Player DereZ, number of deaths starts at 0
 
 7994 ' DEBUG OVERRIDE INIT
@@ -241,7 +241,7 @@ FILE "../res/cls.plet5"
 9403 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
 9404 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
 9405 GOSUB 9800 'Re-check wall grip
-9409 IF GS<>2 THEN RETURN 'If we are no longer holding on a wall, skip the step
+9409 IF GS<>4 THEN RETURN 'If we are no longer holding on a wall, skip the step
 9410 ' Still holding on a wall, move and check for ceiling and floor hit
 9411 IF VY<12 THEN VY=VY+5 ELSE VY=12
 9412 Y=Y+VY/6
