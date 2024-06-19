@@ -118,8 +118,10 @@ FILE "../res/cls.plet5"
 8199 GOTO 9000 ' Start game loop
 
 8650 ' Draw the number of deaths
-8661 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1):IF PZ<10 THEN T$="0"+T$
-8662 TX=25:TY=22:GOSUB 10900
+8661 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1)
+8662 IF PZ<100 THEN T$="0"+T$
+8663 IF PZ<10 THEN T$="0"+T$
+8664 TX=27:TY=22:GOSUB 10900
 8669 RETURN
 
 8700 ' fun player dies
@@ -345,7 +347,7 @@ FILE "../res/cls.plet5"
 9720 ' fun Pick up item
 9721 TV=0:TP=TI:GOSUB 12220 ' Put 0 in TI position (4 tiles)
 9722 NI=NI+1:CI(NI)=VP(TI)
-9723 TV=VP(TI):TP=&H2A0+NI*3:GOSUB 12220
+9723 TV=VP(TI):TP=&H29E+NI*3:GOSUB 12220
 9724 VP(TI)=0:VP(TI+1)=0
 9725 VP(TI+32)=0:VP(TI+33)=0
 9726 IF RR(R*7+C+1) = 0 THEN RR(R*7+C+1)=TI' Set the item collected position on room details
@@ -575,7 +577,7 @@ FILE "../res/cls.plet5"
 
 8830 ' Redraw items on the bottom area and number of deaths
 8832 FOR I=1 TO 6
-8833  IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8833  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8834 NEXT I
 8835 GOSUB 8650:RETURN
 
