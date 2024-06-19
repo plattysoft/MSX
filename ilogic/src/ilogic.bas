@@ -22,7 +22,7 @@ FILE "../res/cls.plet5"
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
 
-1010 DIM RR(35), VP(672), CI(5), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
+1010 DIM RR(35), VP(672), CI(6), KT(220) 'RR - Room Resource, VP - VPeek replacement, CI - Collected items, KT - Keep tiles (for showing a popup)
 
 2000 ' Platty Soft Intro
 2001 CMD WRTSCR 45 'CLS
@@ -100,7 +100,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=6:R=1
+7996 'C=0:R=0
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
@@ -349,12 +349,12 @@ FILE "../res/cls.plet5"
 9724 VP(TI)=0:VP(TI+1)=0
 9725 VP(TI+32)=0:VP(TI+33)=0
 9726 IF RR(R*7+C+1) = 0 THEN RR(R*7+C+1)=TI' Set the item collected position on room details
-9728 IF TV=64 THEN I1=1:TR=0:GOSUB 10300 'Double Jump item
-9729 IF TV=66 THEN I2=1:TR=1:GOSUB 10300 'Wall jump item
-9730 IF TV=68 THEN I3=1:TR=2:GOSUB 10300'ID Card - Brick Swap item
-9731 IF TV=70 THEN I4=1:TR=3:GOSUB 10300
-9732 IF TV=72 THEN I5=1:TR=4:GOSUB 10300'ID Card - Brick Swap item
-9733 IF TV=74 THEN I6=1:TR=5:GOSUB 10300'ID Card - Brick Swap item
+9728 IF TV=64 THEN I1=1:TR=0:GOSUB 10300 'Boots - Double Jump item
+9729 IF TV=66 THEN I2=1:TR=1:GOSUB 10300 'Glove - Wall jump item
+9730 IF TV=68 THEN I3=1:TR=2:GOSUB 10300 'ID Card - Brick Swap item
+9731 IF TV=70 THEN I4=1:TR=3:GOSUB 10300 'Wrench, to open fuse box
+9732 IF TV=72 THEN I5=1:TR=4:GOSUB 10300 'Boot disk - boot computer
+9733 IF TV=74 THEN I6=1:TR=5:GOSUB 10300 'Fuse - Fix the main power
 
 9739 RETURN
 
@@ -574,7 +574,7 @@ FILE "../res/cls.plet5"
 8829 RETURN
 
 8830 ' Redraw items on the bottom area and number of deaths
-8832 FOR I=1 TO 5
+8832 FOR I=1 TO 6
 8833  IF CI(I)>0 THEN TP=&H2A0+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8834 NEXT I
 8835 GOSUB 8650:RETURN
