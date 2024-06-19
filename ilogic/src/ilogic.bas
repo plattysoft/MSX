@@ -17,7 +17,7 @@ FILE "../res/cls.plet5"
 
 20 CMD PLYLOAD 39, 44 '39,44
 21 CMD PLYSONG 0
-22 CMD PLYPLAY
+22 'CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -75,9 +75,9 @@ FILE "../res/cls.plet5"
 2500 ' END OF INTRO
 
 5000 ' Start screen
-5001 CMD WRTSCR 45
-5010 'RI=40:GOSUB 5100 ' Load splash screen resources
+5001 'CMD WRTSCR 45
 5020 CMD WRTSCR 42
+5021 CMD PLYPLAY ' Start the music on the main start screen
 5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
 5090 IF STRIG(0) THEN SS=0:GOTO 7000
 5091 IF STRIG(1) THEN SS=1:GOTO 7000
@@ -100,7 +100,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=0:R=0
+7996 C=6:R=4
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
@@ -160,6 +160,7 @@ FILE "../res/cls.plet5"
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
+9052 GOSUB 10400'IF NB>0 GOSUB 10400 'animate convoy belts
 9080 ' END GAME LOOP
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<2 THEN FD=2 ELSE FD=10
@@ -500,6 +501,16 @@ FILE "../res/cls.plet5"
 10388 IF STRIG(SS) THEN 10388
 10389 CMD PLYSOUND 4
 10390 RETURN
+
+10400 ' fun animate convoy belts
+10401 'each 200ms, we swap state (we have 3 states)
+10402 CB=CB+1
+10403 IF CB MOD 8 <> 0 THEN RETURN
+10404 IT=21+CB\8: IF CB=32 THEN CB=0
+10405 FOR I=0 TO 7
+10406  TT= VPEEK(IT*8+I):VPOKE 183*8+I, TT:VPOKE 183*8+&H800+I, TT:VPOKE 183*8+&H1000+I, TT
+10407 NEXT
+10409 RETURN
 
 10900 'fun Write text T$ on Screen at position TX, TY (in row/column)
 10901 TF=0
