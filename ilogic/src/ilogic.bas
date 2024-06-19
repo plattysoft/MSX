@@ -96,7 +96,7 @@ FILE "../res/cls.plet5"
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts (TODO), 0: God Mode
-7993 PZ=0' Player DereZ, number of deaths starts at 0
+7993 PZ=0:PT=4000' Player DereZ, number of deaths starts at 0, PT: Play Timer (countdown)
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
@@ -123,6 +123,15 @@ FILE "../res/cls.plet5"
 8663 IF PZ<10 THEN T$="0"+T$
 8664 TX=27:TY=22:GOSUB 10900
 8669 RETURN
+
+8670 ' Update the timer
+9671 PT=PT-1 'TODO Check for time's up and show game over
+9672 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
+8672 IF PT<1000 THEN T$="0"+T$
+8673 IF PT<100 THEN T$="0"+T$
+8674 IF PT<10 THEN T$="0"+T$
+8675 TX=20:TY=22:GOSUB 10900
+8679 RETURN
 
 8700 ' fun player dies
 8701 ' Animate death: TODO
@@ -155,6 +164,8 @@ FILE "../res/cls.plet5"
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<2 THEN FD=2 ELSE FD=10
 9085 IF PD>0 AND GM=1 THEN GOSUB 8700
+9086 ' Once per second, update the countdown
+9087 CW=CW+1:IF CW=30 THEN CW=0:GOSUB 8670
 9090 IF TIME<2 THEN 9090 ELSE 9000
 
 9100 'GS=1 Standing
