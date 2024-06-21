@@ -474,11 +474,13 @@ FILE "../res/cls.plet5"
 10307   NEXT J
 10308 NEXT I
 
-10309 'IF X<16 OR X>160 OR Y<56 OR Y>128 GOTO 10311 ' TODO:For now Always hide the main character and the enemies
-10310 FOR I=1 TO EC ' Hide the enemies
-10311   IF EX(I)>24 AND EX(I)<216 AND EY(I)>48 AND EY(I)<128 THEN PUT SPRITE I+3,,0,0
-10312 NEXT
-10313 ' TODO: Now the character
+10309 ' Hide only the sprites that are behind the popup
+10310 ' Main character
+10311 IF X>24 AND X<214 AND Y>32 AND Y<128 THEN PUT SPRITE 0,,0,0:PUT SPRITE 1,,0,0:PUT SPRITE 2,,0,0
+10314 ' Enemies
+10315 FOR I=1 TO EC ' Hide the enemies
+10316   IF EX(I)>24 AND EX(I)<216 AND EY(I)>48 AND EY(I)<128 THEN PUT SPRITE I+3,,0,0
+10317 NEXT
 
 10319 VPOKE KS,2:FOR J=1 to 20:VPOKE KS+J,36:NEXT J:VPOKE KS+21, 3
 10320 FOR I=1 TO 8 'Rows
