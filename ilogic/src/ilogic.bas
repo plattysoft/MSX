@@ -100,7 +100,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=6:R=4
+7996 'C=6:R=4
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
@@ -160,7 +160,7 @@ FILE "../res/cls.plet5"
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
-9052 GOSUB 10400'IF NB>0 GOSUB 10400 'animate convoy belts
+9052 IF NB>0 GOSUB 10400 'animate convoy belts
 9080 ' END GAME LOOP
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<2 THEN FD=2 ELSE FD=10
@@ -172,6 +172,7 @@ FILE "../res/cls.plet5"
 9100 'GS=1 Standing
 9101 S=STICK(SS)
 9102 VX=0
+9110 IF S=1 THEN TR=0:GOSUB 10300
 9112 IF S=3 THEN VX=2:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9113 IF S=7 THEN VX=-2:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9114 SA=4:ST=3:YO=0' SA=4 marks a resting position
@@ -463,7 +464,7 @@ FILE "../res/cls.plet5"
 10250 NEXT I
 10290 RETURN
 
-10300 ' fun Display a pop-up  [\]^_` map to [(down arrow))]!-.
+10300 ' fun Display a pop-up
 10301 CMD RESTORE 43:RESTORE TR:READ T$
 10302 ' Store current scrren info
 10303 KS=&H1905
@@ -474,9 +475,12 @@ FILE "../res/cls.plet5"
 10308 NEXT I
 
 10309 'IF X<16 OR X>160 OR Y<56 OR Y>128 GOTO 10311 ' TODO:For now Always hide the main character and the enemies
-10310 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
+10310 FOR I=1 TO EC ' Hide the enemies
+10311   IF EX(I)>24 AND EX(I)<216 AND EY(I)>48 AND EY(I)<128 THEN PUT SPRITE I+3,,0,0
+10312 NEXT
+10313 ' TODO: Now the character
 
-10311 VPOKE KS,2:FOR J=1 to 20:VPOKE KS+J,36:NEXT J:VPOKE KS+21, 3
+10319 VPOKE KS,2:FOR J=1 to 20:VPOKE KS+J,36:NEXT J:VPOKE KS+21, 3
 10320 FOR I=1 TO 8 'Rows
 10321   KR=KS+I*32
 10322   VPOKE KR, 4
