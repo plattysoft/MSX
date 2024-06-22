@@ -100,7 +100,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=6:R=4
+7996 C=2:R=0
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
@@ -160,7 +160,7 @@ FILE "../res/cls.plet5"
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
-9052 IF NB>0 GOSUB 10400 'animate convoy belts
+9052 GOSUB 10400':IF NB>0 GOSUB 10400 'animate convoy belts
 9080 ' END GAME LOOP
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<2 THEN FD=2 ELSE FD=10
@@ -509,10 +509,9 @@ FILE "../res/cls.plet5"
 10390 RETURN
 
 10400 ' fun animate convoy belts
-10401 'each 200ms, we swap state (we have 3 states)
+10401 'each 200ms, we swap state (we have 4 states)
 10402 CB=CB+1
-10403 IF CB MOD 8 <> 0 THEN RETURN
-10404 IT=21+CB\8: IF CB=32 THEN CB=0
+10404 IT=21+CB: IF CB=4 THEN CB=0
 10405 FOR I=0 TO 7
 10406  TT= VPEEK(IT*8+I):VPOKE 183*8+I, TT:VPOKE 183*8+&H800+I, TT:VPOKE 183*8+&H1000+I, TT
 10407 NEXT
