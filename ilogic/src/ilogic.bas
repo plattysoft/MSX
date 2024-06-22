@@ -508,12 +508,12 @@ FILE "../res/cls.plet5"
 10389 CMD PLYSOUND 4
 10390 RETURN
 
-10400 ' fun animate convoy belts
-10401 'each 200ms, we swap state (we have 4 states)
+10400 ' fun animate convoy belts TODO animating to the left too
+10401 ' each frame, we swap state (we have 4 states)
 10402 CB=CB+1
-10404 IT=21+CB: IF CB=4 THEN CB=0
-10405 FOR I=0 TO 7
-10406  TT= VPEEK(IT*8+I):VPOKE 183*8+I, TT:VPOKE 183*8+&H800+I, TT:VPOKE 183*8+&H1000+I, TT
+10404 IT=21+CB: IF CB=4 THEN CB=0'Left tiles are stored in 54 (+32)
+10405 FOR I=2 TO 4
+10406  TT=VPEEK(IT*8+I):VPOKE 183*8+I, TT:VPOKE 183*8+&H800+I, TT:VPOKE 183*8+&H1000+I, TT
 10407 NEXT
 10409 RETURN
 
