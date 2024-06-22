@@ -100,7 +100,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=2:R=0
+7996 C=1:R=4
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
@@ -160,7 +160,7 @@ FILE "../res/cls.plet5"
 9039 NEXT I
 9050 IF NL>0 GOSUB 11000 'process laser animations and check for death (only if there are lasers)
 9051 IF BT>0 THEN BT=BT-1:IF BT=0 THEN GOSUB 9610 ELSE IF BT=TS THEN GOSUB 9650' fun Swap temporary bricks
-9052 GOSUB 10400':IF NB>0 GOSUB 10400 'animate convoy belts
+9052 IF NB>0 GOSUB 10400 'animate convoy belts
 9080 ' END GAME LOOP
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<2 THEN FD=2 ELSE FD=10
@@ -508,13 +508,14 @@ FILE "../res/cls.plet5"
 10389 CMD PLYSOUND 4
 10390 RETURN
 
-10400 ' fun animate convoy belts TODO animating to the left too
+10400 ' fun animate convoy belts
 10401 ' each frame, we swap state (we have 4 states)
-10402 CB=CB+1
-10404 IT=21+CB: IF CB=4 THEN CB=0'Left tiles are stored in 54 (+32)
-10405 FOR I=2 TO 4
-10406  TT=VPEEK(IT*8+I):VPOKE 183*8+I, TT:VPOKE 183*8+&H800+I, TT:VPOKE 183*8+&H1000+I, TT
-10407 NEXT
+10402 CB=CB+8
+10404 IT=&HA8+CB: IF CB=32 THEN CB=0 'Left tiles are stored in 54 (IT+&H100)
+10405 FOR I=2 TO 4 'The only bytes that change are the middle ones
+10406  TT=VPEEK(IT+I):VPOKE &H5B8+I,TT:VPOKE &HDB8+I,TT:VPOKE &H15B8+I,TT
+10407  TT=VPEEK(IT+&H100+I):VPOKE &H5A0+I,TT:VPOKE &HDA0+I,TT:VPOKE &H15A0+I,TT
+10408 NEXT
 10409 RETURN
 
 10900 'fun Write text T$ on Screen at position TX, TY (in row/column)
@@ -586,7 +587,7 @@ FILE "../res/cls.plet5"
 
 8807 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
 8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196*8:NL=0:IR=0
+8809 EC=0:LT=196*8:NL=0:IR=0:NB=0
 8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8811 FOR I=0 TO 672
 8812  TT=VPEEK(&H1800+I)
@@ -598,8 +599,9 @@ FILE "../res/cls.plet5"
 8818  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
 8819  IF TT=120 AND BS=1 THEN TT=152
 8820  IF TT=121 AND BS=0 THEN TT=153
-8821  VP(I)=TT
-8822 NEXT I
+8821  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
+8822  VP(I)=TT
+8823 NEXT I
 8829 RETURN
 
 8830 ' Redraw items on the bottom area and number of deaths
