@@ -117,6 +117,11 @@ FILE "../res/cls.plet5"
 8191 DI=-1' Not showing dialog info at the start of a new game
 8199 GOTO 9000 ' Start game loop
 
+8600 'fun calculate tiles to right or left
+8601 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
+8602 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
+8610 RETURN
+
 8650 ' Draw the number of deaths
 8661 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1)
 8662 IF PZ<100 THEN T$="0"+T$
@@ -215,8 +220,7 @@ FILE "../res/cls.plet5"
 9250 IF VX=0 THEN 9270' Skip horizontal collision check if we are not moving
 9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
 9252 ' TODO: This calculations are the same for Going up, down, and sliding wall, we can consolidate a subroutine
-9254 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
-9255 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
+9254 GOSUB 8600
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
 9270 IF DJ=1 AND VY>-13 THEN GOSUB 9820 'Double Jump check
 9273 GOSUB 9700' Check for item collection
@@ -239,8 +243,7 @@ FILE "../res/cls.plet5"
 9343 T2 = VP (TT+(X+15)/8)
 9344 TT = X/8
 9350 IF VX=0 THEN 9385' Skip horizontal collision check if we are not moving
-9354 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
-9355 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
+9354 GOSUB 8600
 9381 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:GOSUB 9800 'Wall jump check
 9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32:CMD PLYSOUND 10
 9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
@@ -434,6 +437,79 @@ FILE "../res/cls.plet5"
 9943 IF EY(EI) MOD 8=7 THEN EL=VP(((EY(EI)+8+3*EV(EI))\8)*32+(EX(EI))\8):IF EL=141 OR EL=173 THEN EY(EI)=EY(EI)-EV(EI):EV(EI)=-EV(EI)
 9949 RETURN
 
+8800 ' fun Load new room
+8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
+8802 ' Record player state when entering the room
+8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
+8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
+8805 CMD WRTSCR R*7+C+3
+8806 IF R=3 AND C=3 THEN GOSUB 8830' This part is only needed on room 3-3, which is the one with the lower part of the screen
+
+8807 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
+8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
+8809 EC=0:LT=196*8:NL=0:IR=0:NB=0
+8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
+8811 FOR I=0 TO 672
+8812  TT=VPEEK(&H1800+I)
+8813  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
+8814  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
+8815  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
+8816  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
+8817  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
+8818  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
+8819  IF TT=120 AND BS=1 THEN TT=152
+8820  IF TT=121 AND BS=0 THEN TT=153
+8821  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
+8822  VP(I)=TT
+8823 NEXT I
+8829 RETURN
+
+8830 ' Redraw items on the bottom area and number of deaths
+8832 FOR I=1 TO 6
+8833  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8834 NEXT I
+8835 GOSUB 8650:RETURN
+
+8840 ' fun Initialize enemy
+8841 EC=EC+1
+8842 EX(EC)=(I MOD 32)*8
+8843 EY(EC)=(I\32)*8-1
+8849 RETURN
+
+8850 ' fun Preload sprite where the enemy is located
+8851 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3
+8859 RETURN
+
+8910 ' fun Parse enemy type 1 (horizontal, bottom)
+8911 GOSUB 8840' Initialize enemy
+8912 ET(EC)=1:EV(EC)=2
+8914 GOSUB 8850 ' Preload sprite
+8918 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
+8919 RETURN
+
+8920 ' fun Parse enemy type 2 (horizontal, top)
+8921 GOSUB 8840' Initialize enemy
+8922 ET(EC)=2:EV(EC)=2
+8923 EY(EC)=EY(EC)-8
+8924 GOSUB 8850' Preload sprite
+8928 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
+8929 RETURN
+
+8930 ' fun Parse enemy type 3 (vertical, right)
+8931 GOSUB 8840' Initialize enemy
+8932 ET(EC)=3:EV(EC)=2
+8935 GOSUB 8850' Preload sprite
+8938 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
+8939 RETURN
+
+8940 ' fun Parse enemy type 4 (vertical, left)
+8941 GOSUB 8840' Initialize enemy
+8942 ET(EC)=4:EV(EC)=2
+8944 EX(EC)=EX(EC)-8
+8945 GOSUB 8850' Preload sprite
+8948 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
+8949 RETURN
+
 10000 'fun ending
 10001 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
 10005 CMD WRTSCR 45
@@ -592,76 +668,3 @@ FILE "../res/cls.plet5"
 12220 ' fun set TV (tile value) into TP (tile position) 16x16 tiles
 12221 TQ=TP+&H1800:VPOKE TQ,TV:VPOKE TQ+1,TV+1:VPOKE TQ+&H20,TV+&H20:VPOKE TQ+&H21,TV+&H21
 12222 RETURN
-
-8800 ' fun Load new room
-8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
-8802 ' Record player state when entering the room
-8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
-8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
-8805 CMD WRTSCR R*7+C+3
-8806 IF R=3 AND C=3 THEN GOSUB 8830' This part is only needed on room 3-3, which is the one with the lower part of the screen
-
-8807 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
-8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196*8:NL=0:IR=0:NB=0
-8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
-8811 FOR I=0 TO 672
-8812  TT=VPEEK(&H1800+I)
-8813  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
-8814  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
-8815  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
-8816  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
-8817  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
-8818  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
-8819  IF TT=120 AND BS=1 THEN TT=152
-8820  IF TT=121 AND BS=0 THEN TT=153
-8821  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
-8822  VP(I)=TT
-8823 NEXT I
-8829 RETURN
-
-8830 ' Redraw items on the bottom area and number of deaths
-8832 FOR I=1 TO 6
-8833  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
-8834 NEXT I
-8835 GOSUB 8650:RETURN
-
-8840 ' fun Initialize enemy
-8841 EC=EC+1
-8842 EX(EC)=(I MOD 32)*8
-8843 EY(EC)=(I\32)*8-1
-8849 RETURN
-
-8850 ' fun Preload sprite where the enemy is located
-8851 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3
-8859 RETURN
-
-8910 ' fun Parse enemy type 1 (horizontal, bottom)
-8911 GOSUB 8840' Initialize enemy
-8912 ET(EC)=1:EV(EC)=2
-8914 GOSUB 8850 ' Preload sprite
-8918 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
-8919 RETURN
-
-8920 ' fun Parse enemy type 2 (horizontal, top)
-8921 GOSUB 8840' Initialize enemy
-8922 ET(EC)=2:EV(EC)=2
-8923 EY(EC)=EY(EC)-8
-8924 GOSUB 8850' Preload sprite
-8928 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
-8929 RETURN
-
-8930 ' fun Parse enemy type 3 (vertical, right)
-8931 GOSUB 8840' Initialize enemy
-8932 ET(EC)=3:EV(EC)=2
-8935 GOSUB 8850' Preload sprite
-8938 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
-8939 RETURN
-
-8940 ' fun Parse enemy type 4 (vertical, left)
-8941 GOSUB 8840' Initialize enemy
-8942 ET(EC)=4:EV(EC)=2
-8944 EX(EC)=EX(EC)-8
-8945 GOSUB 8850' Preload sprite
-8948 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
-8949 RETURN
