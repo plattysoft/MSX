@@ -135,8 +135,8 @@ FILE "../res/cls.plet5"
 
 8700 ' fun player dies
 8701 ' Animate death: TODO
-8702 TIME=0
-8703 IF TIME<25 THEN 8703 'for now, just add a 1 second delay
+8702 ' Teleport out
+8703 GOSUB 11300
 8751 ' Restore player state to the beginning of the room
 8752 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
 8760 ' Draw the number of deaths
@@ -548,12 +548,28 @@ FILE "../res/cls.plet5"
 11099 RETURN
 
 11100 ' SWAP LASER STATE color at tiles 62, 63,from &H89 to 00. Color table starts at &H2000
-11200 IF LS=1 THEN LC=&H00:LS=0 ELSE LC=&H89:LS=1
-11500 FOR I=&H21F0 TO &H21FF
-11600  VPOKE I, LC:VPOKE I+&H800, LC: VPOKE I+&H1000, LC
-11700 NEXT I
-11800 ' TODO: Apply SFX for lasers turning on and off
-11990 RETURN
+11110 IF LS=1 THEN LC=&H00:LS=0 ELSE LC=&H89:LS=1
+11120 FOR I=&H21F0 TO &H21FF
+11130  VPOKE I, LC:VPOKE I+&H800, LC: VPOKE I+&H1000, LC
+11140 NEXT I
+11150 ' TODO: Apply SFX for lasers turning on and off
+11190 RETURN
+
+11300 ' fun teleport
+11301 PUT SPRITE 0,(X,Y),7,41
+11302 'CMD PLYSOUND 12
+11310 I=41
+11311  TIME=0:PUT SPRITE 0,,,I
+11312 IF TIME<4 THEN 11312 ELSE I=I+1:IF I<44 THEN 11311
+11313
+11314 'PUT SPRITE 1,,0:PUT SPRITE 2,,0:PUT SPRITE 3,,0
+11315 'FOR I=62 TO 58 STEP -1
+11316 ' TIME=0:PUT SPRITE 0,,,I
+11317 ' IF TIME<4 THEN 11312
+11318 'NEXT
+11319 'PUT SPRITE 0,(0,0),0
+11320 RETURN
+
 
 12000 'ANIMATE LASER (horizontal), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
 12001 ' First step of the animation, swap patterns

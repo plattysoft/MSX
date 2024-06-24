@@ -1,3 +1,28 @@
+## Sprites
+
+Player (sprites 0 to 27)
+```
+9010 PUT SPRITE 1,(X,Y+YO),15,D:PUT SPRITE 0,(X,Y+4+YO),4,9+SA+D
+9020 PUT SPRITE 2,(X,Y+14),14,1+ST+D
+```
+layer 0: arms
+layer 1: body
+layer 2: legs
+
+D: 0 -  looking left
+D: 14 - looking right
+
+
+Enemies: (sprites 28 to 40)
+```
+9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
+```
+ES(I) can be 0-3
+ES(I) can be 1 to 4
+
+Teleport: (sprites 41 to 44)
+
+
 ## Variables:
 
 * R: Current row on the map
