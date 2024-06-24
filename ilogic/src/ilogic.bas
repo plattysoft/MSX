@@ -117,10 +117,18 @@ FILE "../res/cls.plet5"
 8191 DI=-1' Not showing dialog info at the start of a new game
 8199 GOTO 9000 ' Start game loop
 
-8600 'fun calculate tiles to right or left
-8601 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
-8602 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
+8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
+8601 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
+8602 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
+8603 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
 8610 RETURN
+
+8620 ' fun calculate tiles up or down (T0, T1 and T2), starting on TT (derived from X, Y and VY)
+8621 IF VY<0 THEN TT=((Y+2)/8)*32 ELSE TT=((Y+32)/8)*32
+8622 T0 = VP (TT+(X+2)/8)
+8623 T1 = VP (TT+(X+8)/8)
+8624 T2 = VP (TT+(X+15)/8)
+8629 RETURN
 
 8650 ' Draw the number of deaths
 8661 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1)
@@ -188,10 +196,7 @@ FILE "../res/cls.plet5"
 9122 IF ST=1 THEN YO=1 ELSE YO=0
 9140 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-38:SA=0:ST=4:JD=1:DJ=1:WT=4:CMD PLYSOUND 8:RETURN 'JD: Jump Debouncing, DJ=double jump
 9141 X=X+VX
-9142 TT = ((Y+32)/8)*32
-9143 T0 = VP (TT+(X+2)/8)
-9144 T1 = VP (TT+(X+8)/8)
-9145 T2 = VP (TT+(X+15)/8)
+9143 GOSUB 8620
 9146 TT = TT + X/8
 9161 IF VX=0 THEN GOTO 9190' Skip tile colision check if we are not moving
 9162 IF VX>0 THEN T3=VP(TT-&H7E):T4=VP(TT-&H5E):T5=VP(TT-&H3E):T6=VP(TT-&H1E)' Used to be TT-&H80+2, etc
@@ -211,16 +216,11 @@ FILE "../res/cls.plet5"
 9212 X=X+VX
 9213 ST=5
 9214 SA=3
-9240 TT = ((Y+2)/8)*32
-9241 T0 = VP (TT+(X+2)/8)
-9242 T1 = VP (TT+(X+8)/8)
-9243 T2 = VP (TT+(X+15)/8)
+9241 GOSUB 8620
 9244 TT = X/8
 9249 IF T0>=128 OR T1>=128 OR T2>=128 THEN VY=0:Y=Y-VY:Y=((Y+2)/8+1)*8-2:DJ=0:GS=3:CMD PLYSOUND 10
 9250 IF VX=0 THEN 9270' Skip horizontal collision check if we are not moving
-9251 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
-9252 ' TODO: This calculations are the same for Going up, down, and sliding wall, we can consolidate a subroutine
-9254 GOSUB 8600
+9254 GOSUB 8600 ' Calculate left and right tiles (T3, T4, T5, T6 and T7)
 9261 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:IF VY>-4 THEN GOSUB 9800
 9270 IF DJ=1 AND VY>-13 THEN GOSUB 9820 'Double Jump check
 9273 GOSUB 9700' Check for item collection
@@ -237,25 +237,22 @@ FILE "../res/cls.plet5"
 9320 S=STICK(SS)
 9321 IF S=3 THEN VX=VX+2:IF VX>2 THEN VX=2:D=0
 9322 IF S=7 THEN VX=VX-2:IF VX<-2 THEN VX=-2:D=14
-9340 TT = ((Y+32)/8)*32
-9341 T0 = VP (TT+(X+2)/8)
-9342 T1 = VP (TT+(X+8)/8)
-9343 T2 = VP (TT+(X+15)/8)
+9341 GOSUB 8620
 9344 TT = X/8
 9350 IF VX=0 THEN 9385' Skip horizontal collision check if we are not moving
-9354 GOSUB 8600
+9354 GOSUB 8600 ' Calculate left and right tiles (T3, T4, T5, T6 and T7)
 9381 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:GOSUB 9800 'Wall jump check
 9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32:CMD PLYSOUND 10
 9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
 9391 GOSUB 9700' Check for item collection
 9396 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
-9397 IF X=239 THEN C=C+1:X=2:GOSUB 8800' Load new room
-9398 IF X=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
+9397 IF X>=238 THEN C=C+1:X=2:GOSUB 8800' Load new room
+9398 IF X<=1 THEN C=C-1:X=238:GOSUB 8800' Load new room
 9399 RETURN
 
 9400 'GS=4 Holding into a wall
 9401 WT=WT-1: IF WT>0 GOTO 9410 'Only do wall grip check every 2 frames
-9402 TT = (X+VX)/8
+9402 TT = (X+VX)/8 'TODO find a way to reuse this code too
 9403 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
 9404 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
 9405 GOSUB 9800 'Re-check wall grip
@@ -263,10 +260,7 @@ FILE "../res/cls.plet5"
 9410 ' Still holding on a wall, move and check for ceiling and floor hit
 9411 IF VY<12 THEN VY=VY+5 ELSE VY=12
 9412 Y=Y+VY/6
-9413 IF VY<0 THEN TT=((Y+2)/8)*32 ELSE TT=((Y+32)/8)*32
-9420 T0 = VP (TT+(X+2)/8)
-9421 T1 = VP (TT+(X+8)/8)
-9422 T2 = VP (TT+(X+15)/8)
+9420 GOSUB 8620
 9429 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9450 S=STICK(SS)
