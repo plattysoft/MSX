@@ -100,8 +100,8 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=1:R=4
-7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
+7996 'C=1:R=4
+7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
@@ -119,8 +119,10 @@ FILE "../res/cls.plet5"
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
 8601 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
-8602 IF VX>0 THEN T3=VP(TT+(Y+32)/8*32+2):T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2):T7=VP(TT+(Y+2)/8*32+2)
-8603 IF VX<0 THEN T3=VP(TT+(Y+32)/8*32):T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32):T7=VP(TT+(Y+2)/8*32)
+8602 TZ=(Y+32)/8*32
+8605 IF VX>0 THEN TZ=TZ+2:T7=VP(TT+(Y+2)/8*32+2)
+8606 IF VX<0 THEN T7=VP(TT+(Y+2)/8*32)
+8609 T3=VP(TT+TZ):T4=VP(TT+TZ-32):T5=VP(TT+TZ-64):T6=VP(TT+TZ-96)
 8610 RETURN
 
 8620 ' fun calculate tiles up or down (T0, T1 and T2), starting on TT (derived from X, Y and VY)
