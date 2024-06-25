@@ -147,14 +147,22 @@ FILE "../res/cls.plet5"
 8679 RETURN
 
 8700 ' fun player dies
-8701 ' Animate death: TODO
 8702 ' Teleport out
 8703 GOSUB 11300
-8751 ' Restore player state to the beginning of the room
-8752 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
-8760 ' Draw the number of deaths
-8761 PZ=PZ+1:GOSUB 8650
-8799 IF STICK(SS)=0 THEN RETURN ELSE 8799
+8704 PUT SPRITE 1,,0:PUT SPRITE 2,,0:PUT SPRITE 3,,0
+8705 GOSUB 11320
+
+8750 ' Restore player state to the beginning of the room
+8751 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
+
+8760 GOSUB 11300 'Teleport initial place
+8761 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
+8762 PUT SPRITE 3,(X,Y+14),14,1+ST+D
+8763 GOSUB 11320
+
+8770 ' Draw the number of deaths
+8771 PZ=PZ+1:GOSUB 8650
+8799 RETURN
 
 
 9000 ' BEGIN GAME LOOP
@@ -165,8 +173,8 @@ FILE "../res/cls.plet5"
 9004 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9005 GOSUB 9900 ' Update Enemies
 9009 ' DRAW
-9010 PUT SPRITE 1,(X,Y+YO),15,D:PUT SPRITE 0,(X,Y+4+YO),4,9+SA+D
-9020 PUT SPRITE 2,(X,Y+14),14,1+ST+D
+9010 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
+9020 PUT SPRITE 3,(X,Y+14),14,1+ST+D
 9030 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
@@ -458,7 +466,7 @@ FILE "../res/cls.plet5"
 8823 NEXT I
 8829 RETURN
 
-8830 ' Redraw items on the bottom area and number of deaths
+8830 ' fun Redraw items on the bottom area and number of deaths (only needed on reload of the initial screen and when debugging)
 8832 FOR I=1 TO 6
 8833  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8834 NEXT I
@@ -546,7 +554,7 @@ FILE "../res/cls.plet5"
 
 10309 ' Hide only the sprites that are behind the popup
 10310 ' Main character
-10311 IF X>24 AND X<214 AND Y>32 AND Y<128 THEN PUT SPRITE 0,,0,0:PUT SPRITE 1,,0,0:PUT SPRITE 2,,0,0
+10311 IF X>24 AND X<214 AND Y>32 AND Y<128 THEN PUT SPRITE 1,,0,0:PUT SPRITE 2,,0,0:PUT SPRITE 3,,0,0
 10314 ' Enemies
 10315 FOR I=1 TO EC ' Hide the enemies
 10316   IF EX(I)>24 AND EX(I)<216 AND EY(I)>48 AND EY(I)<128 THEN PUT SPRITE I+3,,0,0
@@ -625,20 +633,19 @@ FILE "../res/cls.plet5"
 11150 ' TODO: Apply SFX for lasers turning on and off
 11190 RETURN
 
-11300 ' fun teleport
-11301 PUT SPRITE 0,(X,Y),7,41
+11300 ' fun teleport start
+11301 PUT SPRITE 0,(X,Y+4),7,41
 11302 'CMD PLYSOUND 12
-11310 I=41
+11310 I=41' Animate teleport in
 11311  TIME=0:PUT SPRITE 0,,,I
 11312 IF TIME<4 THEN 11312 ELSE I=I+1:IF I<44 THEN 11311
-11313
-11314 'PUT SPRITE 1,,0:PUT SPRITE 2,,0:PUT SPRITE 3,,0
-11315 'FOR I=62 TO 58 STEP -1
-11316 ' TIME=0:PUT SPRITE 0,,,I
-11317 ' IF TIME<4 THEN 11312
-11318 'NEXT
-11319 'PUT SPRITE 0,(0,0),0
-11320 RETURN
+11319 RETURN
+
+11320 I=44' Animate teleport out
+11321  TIME=0:PUT SPRITE 0,,,I
+11322 IF TIME<4 THEN 11322 ELSE I=I-1: IF I>40 THEN 11321
+11323 PUT SPRITE 0,(0,0),0
+11329 RETURN
 
 
 12000 'ANIMATE LASER (horizontal), we have 4 patterns, they all have the same colors, tile 144-147, base address for the copy is tile 62 -> 62*8=496 -> 0x1F0
