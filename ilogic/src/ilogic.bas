@@ -79,8 +79,8 @@ FILE "../res/cls.plet5"
 5020 CMD WRTSCR 42
 5021 CMD PLYPLAY ' Start the music on the main start screen
 5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
-5090 IF STRIG(0) THEN SS=0:GOTO 7000
-5091 IF STRIG(1) THEN SS=1:GOTO 7000
+5090 IF STRIG(0) THEN SS=0:GOTO 6000
+5091 IF STRIG(1) THEN SS=1:GOTO 6000
 5099 GOTO 5090
 
 5100 ' Write RI (Resource ID) to pattern table (3 times) and RI+1 to color table (3 times)
@@ -89,6 +89,8 @@ FILE "../res/cls.plet5"
 5103 CMD WRTVRAM RI, &H1000:CMD WRTVRAM RI+1, &H3000
 5109 RETURN
 
+6000 'TODO Intro sequence
+
 7000 ' Start New Game
 7001 CMD WRTSCR 45
 7010 RI=1:GOSUB 5100 ' Load room resources
@@ -96,7 +98,7 @@ FILE "../res/cls.plet5"
 7990 C=3:R=3' Actual initial room of the game
 7991 I1=0:I2=0:I3=0:I4=0:I5=0:I6=0' No items hold at the beginning of the game
 7992 GM=1' Game Mode: 1: Infinite lifes, 2: One life with 3 hearts (TODO), 0: God Mode
-7993 PZ=0:PT=4000' Player DereZ, number of deaths starts at 0, PT: Play Timer (countdown)
+7993 PZ=0:PT=5000' Player DereZ, number of deaths starts at 0, PT: Play Timer (countdown)
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
@@ -118,7 +120,7 @@ FILE "../res/cls.plet5"
 8199 GOTO 9000 ' Start game loop
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
-8601 ' We can simplify T3 and T7 calculated, then T4, T5 and T6 offset from T3 (or T4) as they can only overlap (it is either 4 or 5 consecutive tiles)
+8601 ' We can simplify T3 and T7 calculated (it is either 4 or 5 consecutive tiles) based on the value of Y MOD 8
 8602 TZ=(Y+32)/8*32
 8605 IF VX>0 THEN TZ=TZ+2:T7=VP(TT+(Y+2)/8*32+2)
 8606 IF VX<0 THEN T7=VP(TT+(Y+2)/8*32)
