@@ -120,11 +120,11 @@ FILE "../res/cls.plet5"
 8199 GOTO 9000 ' Start game loop
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
-8601 ' We can simplify T3 and T7 calculated (it is either 4 or 5 consecutive tiles) based on the value of Y MOD 8
-8602 TZ=(Y+32)/8*32
-8605 IF VX>0 THEN TZ=TZ+2:T7=VP(TT+(Y+2)/8*32+2)
+8601 ' We can simplify T3 and T7 calculated (it is either 4 or 5 consecutive tiles) based on the value of Y MOD 8 - IF (Y+2)\8 is the same as (Y+8)\8 or not
+8602 TZ=(Y+32)/8*32' the others are at Y+8, Y+16, Y+24 and then Y+32 (8 pixels down each
+8605 IF VX>0 THEN T7=VP(TT+(Y+2)/8*32+2):TZ=TZ+2:
 8606 IF VX<0 THEN T7=VP(TT+(Y+2)/8*32)
-8609 T3=VP(TT+TZ):T4=VP(TT+TZ-32):T5=VP(TT+TZ-64):T6=VP(TT+TZ-96)
+8609 T3=VP(TT+TZ):T4=VP(TT+TZ-&H20):T5=VP(TT+TZ-&H40):T6=VP(TT+TZ-&H60)
 8610 RETURN
 
 8620 ' fun calculate tiles up or down (T0, T1 and T2), starting on TT (derived from X, Y and VY)
@@ -638,7 +638,7 @@ FILE "../res/cls.plet5"
 11190 RETURN
 
 11300 ' fun teleport start
-11301 PUT SPRITE 0,(X,Y+4),7,41
+11301 PUT SPRITE 0,(X,Y+4),13,41
 11302 'CMD PLYSOUND 12
 11310 I=41' Animate teleport in
 11311  TIME=0:PUT SPRITE 0,,,I
