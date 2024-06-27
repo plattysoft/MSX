@@ -102,8 +102,8 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=1:R=4
-7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
+7996 'C=1:R=1
+7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
@@ -263,11 +263,13 @@ FILE "../res/cls.plet5"
 9399 RETURN
 
 9400 'GS=4 Holding into a wall
-9401 WT=WT-1: IF WT>0 GOTO 9410 'Only do wall grip check every 2 frames
-9402 TT = (X+VX)/8 'TODO find a way to reuse this code too
-9403 IF VX>0 THEN T4=VP(TT+(Y+24)/8*32+2):T5=VP(TT+(Y+16)/8*32+2):T6=VP(TT+(Y+8)/8*32+2)
-9404 IF VX<0 THEN T4=VP(TT+(Y+24)/8*32):T5=VP(TT+(Y+16)/8*32):T6=VP(TT+(Y+8)/8*32)
-9405 GOSUB 9800 'Re-check wall grip
+9401 WT=WT-1: IF WT>0 GOTO 9450 'The first 4 frames of wall jump are stick
+9402 'IF WT=-2 THEN WT=0 ELSE 9410 'Only do wall grip check every 2 frames
+9403 TT = (X+VX)/8 'TODO find a way to reuse this code too
+9404 TZ=TT+(Y+24)/8*32
+9406 IF VX>0 THEN TZ=TZ+2
+9407 T4=VP(TZ):T5=VP(TZ-&H20):T6=VP(TZ-&H40)
+9408 GOSUB 9800 'Re-check wall grip
 9409 IF GS<>4 THEN RETURN 'If we are no longer holding on a wall, skip the step
 9410 ' Still holding on a wall, move and check for ceiling and floor hit
 9411 IF VY<12 THEN VY=VY+5 ELSE VY=12
@@ -400,11 +402,12 @@ FILE "../res/cls.plet5"
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF I2=0 THEN RETURN' Can't hold to walls without the Glove (I2)
-9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN GS=4:CMD PLYSOUND 11:SA=3:ST=7:WT=4 ELSE 9810
-9804 IF VY>20 THEN VY=20 ELSE IF VY<-12 THEN VY=-12
+9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN 9803 ELSE 9810
+9803 IF GS<4 THEN GS=4:CMD PLYSOUND 11:SA=3:ST=7:WT=4
+9804 IF VY>12 THEN VY=12 ELSE IF VY<0 THEN VY=0
 9809 RETURN
 9810 ' No grip
-9811 IF GS=4 THEN IF VY>0 THEN GS=2:CMD PLYSOUND 10 ELSE GS=3:CMD PLYSOUND 9
+9811 IF GS=4 THEN GS=2:CMD PLYSOUND 10
 9819 RETURN
 
 9820 'fun Double Jump Check
