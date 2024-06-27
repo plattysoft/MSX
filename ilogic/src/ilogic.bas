@@ -263,22 +263,22 @@ FILE "../res/cls.plet5"
 9399 RETURN
 
 9400 'GS=4 Holding into a wall
-9401 WT=WT-1: IF WT>0 GOTO 9450 'The first 4 frames of wall jump are stick
-9402 'IF WT=-2 THEN WT=0 ELSE 9410 'Only do wall grip check every 2 frames
-9403 TT = (X+VX)/8 'TODO find a way to reuse this code too
+9401 WT=WT-1: IF WT>0 GOTO 9450 'The first 4 frames of wall jump are stick (skip tile checks and speed movement)
+9402 'Wall grip re-check
+9403 TT = (X+VX)/8
 9404 TZ=TT+(Y+24)/8*32
 9406 IF VX>0 THEN TZ=TZ+2
 9407 T4=VP(TZ):T5=VP(TZ-&H20):T6=VP(TZ-&H40)
 9408 GOSUB 9800 'Re-check wall grip
 9409 IF GS<>4 THEN RETURN 'If we are no longer holding on a wall, skip the step
-9410 ' Still holding on a wall, move and check for ceiling and floor hit
+9410 ' Still holding on a wall, move and check for floor hit
 9411 IF VY<12 THEN VY=VY+5 ELSE VY=12
 9412 Y=Y+VY/6
 9420 GOSUB 8620
-9429 IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0
+9429 'IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0 'Wall grip never has negative speed
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9450 S=STICK(SS)
-9451 IF VX>0 THEN IF S<>7 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3
+9451 IF VX>0 THEN IF S<>7 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3 'Un-sticking from a wall
 9452 IF VX<0 THEN IF S<>3 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3
 9490 ' Check for wall jump actually
 9492 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-38:VX=-VX:JD=1:WT=4:DJ=1:CMD PLYSOUND 7:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
@@ -402,7 +402,7 @@ FILE "../res/cls.plet5"
 
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF I2=0 THEN RETURN' Can't hold to walls without the Glove (I2)
-9802 IF T5>=64 AND (T4>=64 OR T6>=64) THEN 9803 ELSE 9810
+9802 IF T5>=128 AND (T4>=128 OR T6>=128) THEN 9803 ELSE 9810
 9803 IF GS<4 THEN GS=4:CMD PLYSOUND 11:SA=3:ST=7:WT=4
 9804 IF VY>12 THEN VY=12 ELSE IF VY<0 THEN VY=0
 9809 RETURN
