@@ -476,23 +476,25 @@ FILE "../res/cls.plet5"
 8805 CMD WRTSCR R*7+C+3
 8806 IF R=3 AND C=3 THEN GOSUB 8830' This part is only needed on room 3-3, which is the one with the lower part of the screen
 
-8807 RI=RR(R*7+C+1) ' We store collection of items after the 7th bit of the room info (we store the position in screen)
+8807 RI=RR(R*7+C+1) ' We store collection of items on the room info (we store the position in screen)
 8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196*8:NL=0:IR=0:NB=0
+8809 EC=0:LT=196*8:NL=0:IR=0:NB=0'TODO: We could pre-caclulate if there are items, lasers and belts in the room, or hardcode it
 8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8811 FOR I=0 TO 672
 8812  TT=VPEEK(&H1800+I)
-8813  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
-8814  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
-8815  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
-8816  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
-8817  IF TT=62 OR TT=63 THEN NL=1 ' There are lasers in the room
-8818  IF TT>=64 OR TT<=74 THEN IR=1 ' There are items in the room
-8819  IF TT=120 AND BS=1 THEN TT=152
-8820  IF TT=121 AND BS=0 THEN TT=153
-8821  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
-8822  VP(I)=TT
-8823 NEXT I
+8813  IF TT<62 THEN 8827 ' Given that most of the rooms are places you can walk through, this saves a lot of IF checks
+8814  IF TT=62 OR TT=63 THEN NL=1: GOTO 8827 ' There are lasers in the room
+8815  IF TT>=64 OR TT<=74 THEN IR=1:GOTO 8827 ' There are items in the room
+8816  ' TODO: If we put the enemies together after 192 we can also skip most comparisons here
+8818  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
+8819  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
+8820  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
+8821  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
+8822  IF TT=120 AND BS=1 THEN TT=152 ' TODO Maybe we can put all the special cases together, so we can save more comparisons
+8823  IF TT=121 AND BS=0 THEN TT=153
+8824  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
+8827  VP(I)=TT
+8828 NEXT I
 8829 RETURN
 
 8830 ' fun Redraw items on the bottom area and number of deaths (only needed on reload of the initial screen and when debugging)
