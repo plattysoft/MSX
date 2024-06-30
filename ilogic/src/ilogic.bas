@@ -5,7 +5,7 @@ FILE "../res/map.clr.plet5"
 INCLUDE "map_2.inc"
 
 FILE "../res/map_3_6.plet5"
-FILE "../res/ilogic.akm"
+FILE "../res/ilogic_2.akm"
 
 FILE "../res/splash.chr.plet5" '40
 FILE "../res/splash.clr.plet5"
@@ -16,8 +16,8 @@ FILE "../res/sfx.akx"
 FILE "../res/cls.plet5"
 
 20 CMD PLYLOAD 39, 44 '39,44
-21 CMD PLYSONG 0
-22 'CMD PLYPLAY
+21CMD PLYSONG 2 ' Song 2 is silent
+22 CMD PLYPLAY
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -76,6 +76,7 @@ FILE "../res/cls.plet5"
 
 5000 ' Start screen
 5001 'CMD WRTSCR 45
+5011 CMD PLYMUTE:CMD PLYSONG 1:CMD PLYPLAY ' Main screen sound
 5020 CMD WRTSCR 42
 5021 CMD PLYPLAY ' Start the music on the main start screen
 5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
@@ -95,7 +96,8 @@ FILE "../res/cls.plet5"
 6010 RI=1:GOSUB 5100 ' Load room resources
 
 6100 ' Intro sequence
-6101 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
+6101 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
+6102 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
 6105 CMD WRTSCR 45
 6109 CMD RESTORE 43:RESTORE 27:TK=1' Text sKip enabled (pressing space)
 6110 ' Blank screen, show text as in a console
@@ -140,6 +142,7 @@ FILE "../res/cls.plet5"
 8110 FOR I=0 TO 6:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8190 GOSUB 8800 ' Load initial room
 8191 DI=-1' Not showing dialog info at the start of a new game
+8195 CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song
 8199 GOTO 9000 ' Start game loop
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
@@ -469,7 +472,7 @@ FILE "../res/cls.plet5"
 9949 RETURN
 
 8800 ' fun Load new room
-8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I
+8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier, so it feels more snappy
 8802 ' Record player state when entering the room
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
 8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
@@ -532,7 +535,7 @@ FILE "../res/cls.plet5"
 8931 GOSUB 8840' Initialize enemy
 8932 ET(EC)=3:EV(EC)=2
 8935 GOSUB 8850' Preload sprite
-8938 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
+8938 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0' TODO This additions can be embedded
 8939 RETURN
 
 8940 ' fun Parse enemy type 4 (vertical, left)
@@ -544,7 +547,8 @@ FILE "../res/cls.plet5"
 8949 RETURN
 
 10000 'fun ending
-10001 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
+10001 CMD PLYMUTE:CMD PLYSONG 1:CMD PLYPLAY' Song 2 is silent
+10002 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
 10005 CMD WRTSCR 45
 10009 CMD RESTORE 43:RESTORE 16:TK=0' Text sKip enable (to skip text using space) disabled
 10010 ' Blank screen, show text as in a console
@@ -558,7 +562,7 @@ FILE "../res/cls.plet5"
 10070 TY=15:GOSUB 10200
 10080 TY=18:GOSUB 10200
 10090 TY=22:GOSUB 10200
-10091 IF STRIG(0)=0 AND STRIG(1)=0 THEN 10091
+10091 IF STRIG(SS)=0 THEN 10091
 10099 RETURN
 
 10200 'Writing text on Screen subroutine (a letter at a time, with sound)
