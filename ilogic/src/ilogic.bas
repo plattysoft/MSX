@@ -16,8 +16,7 @@ FILE "../res/sfx.akx"
 FILE "../res/cls.plet5"
 
 20 CMD PLYLOAD 39, 44 '39,44
-21CMD PLYSONG 2 ' Song 2 is silent
-22 CMD PLYPLAY
+21 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -214,7 +213,7 @@ FILE "../res/cls.plet5"
 9052 IF NB>0 GOSUB 10400 'animate convoy belts
 9080 ' END GAME LOOP
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
-9083 'IF TIME<2 THEN FD=2 ELSE FD=10
+9083 'IF TIME<1 THEN FD=2 ELSE FD=10
 9085 IF PD>0 AND GM=1 THEN GOSUB 8700
 9086 ' Once per second, update the countdown
 9087 CW=CW+1:IF CW=30 THEN CW=0:GOSUB 8670
@@ -316,7 +315,7 @@ FILE "../res/cls.plet5"
 9503 IC=(Y+2)\8*32+(X+2)\8+32
 9504 IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Switches
 9505 IF VP(IC)=82 THEN GOSUB 9550:RETURN ' Open Fuse Box
-9506 IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Computer TODO does this work?
+9506 'IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Computer TODO does this work? can we remove the duplicate
 9509 RETURN
 
 9510 ' Fun swap bricks (Icons swap, but only one is actually checked)
@@ -472,7 +471,7 @@ FILE "../res/cls.plet5"
 9949 RETURN
 
 8800 ' fun Load new room
-8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier, so it feels more snappy
+8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8006 or so), to make it feel more snappy
 8802 ' Record player state when entering the room
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
 8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
@@ -481,13 +480,13 @@ FILE "../res/cls.plet5"
 
 8807 RI=RR(R*7+C+1) ' We store collection of items on the room info (we store the position in screen)
 8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196*8:NL=0:IR=0:NB=0'TODO: We could pre-caclulate if there are items, lasers and belts in the room, or hardcode it
+8809 EC=0:LT=196*8:NL=0:IR=0:NB=0'TODO: We could pre-caclulate if there are items, lasers and belts in the room, or hardcode it in one specific tile
 8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8811 FOR I=0 TO 672
 8812  TT=VPEEK(&H1800+I)
 8813  IF TT<62 THEN 8827 ' Given that most of the rooms are places you can walk through, this saves a lot of IF checks
 8814  IF TT=62 OR TT=63 THEN NL=1: GOTO 8827 ' There are lasers in the room
-8815  IF TT>=64 OR TT<=74 THEN IR=1:GOTO 8827 ' There are items in the room
+8815  IF TT>=64 AND TT<=74 THEN IR=1:GOTO 8827 ' There are items in the room
 8816  ' TODO: If we put the enemies together after 192 we can also skip most comparisons here
 8818  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
 8819  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
@@ -520,7 +519,7 @@ FILE "../res/cls.plet5"
 8911 GOSUB 8840' Initialize enemy
 8912 ET(EC)=1:EV(EC)=2
 8914 GOSUB 8850 ' Preload sprite
-8918 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
+8918 VPOKE &H1800+I,0:VPOKE &H1801+I,0
 8919 RETURN
 
 8920 ' fun Parse enemy type 2 (horizontal, top)
@@ -528,14 +527,14 @@ FILE "../res/cls.plet5"
 8922 ET(EC)=2:EV(EC)=2
 8923 EY(EC)=EY(EC)-8
 8924 GOSUB 8850' Preload sprite
-8928 VPOKE &H1800+I,0:VPOKE &H1800+I+1,0
+8928 VPOKE &H1800+I,0:VPOKE &H1801+I,0
 8929 RETURN
 
 8930 ' fun Parse enemy type 3 (vertical, right)
 8931 GOSUB 8840' Initialize enemy
 8932 ET(EC)=3:EV(EC)=2
 8935 GOSUB 8850' Preload sprite
-8938 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0' TODO This additions can be embedded
+8938 VPOKE &H1800+I,0:VPOKE &H1820+I,0
 8939 RETURN
 
 8940 ' fun Parse enemy type 4 (vertical, left)
@@ -543,7 +542,7 @@ FILE "../res/cls.plet5"
 8942 ET(EC)=4:EV(EC)=2
 8944 EX(EC)=EX(EC)-8
 8945 GOSUB 8850' Preload sprite
-8948 VPOKE &H1800+I,0:VPOKE &H1800+I+32,0
+8948 VPOKE &H1800+I,0:VPOKE &H1820+I,0
 8949 RETURN
 
 10000 'fun ending
@@ -573,7 +572,7 @@ FILE "../res/cls.plet5"
 10231   IF CT$=" " THEN TT=0 ELSE TT=ASC(CT$)+159
 10240   VPOKE &H1800+TX-1+TY*32+I,TT:CMD PLYSOUND 1
 10244   T=TIME
-10245   IF TK=1 AND STRIG(SS) THEN TX=0:GOSUB 10900:RETURN 'TODO Debounce the string press
+10245   IF TK=1 AND STRIG(SS) THEN TX=0:GOSUB 10900:RETURN
 10246   IF TIME<T+TW GOTO 10245
 10250 NEXT I
 10290 RETURN
