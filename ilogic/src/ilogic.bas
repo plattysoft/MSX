@@ -171,12 +171,12 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8669 RETURN
 
 8670 ' Update the timer
-9671 PT=PT-1 'TODO Check for time's up and show game over
-9672 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
-8672 IF PT<1000 THEN T$="0"+T$
-8673 IF PT<100 THEN T$="0"+T$
-8674 IF PT<10 THEN T$="0"+T$
-8675 TX=20:TY=22:GOSUB 10900
+8671 PT=PT-1 'TODO Check for time's up and show game over
+8672 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
+8673 IF PT<1000 THEN T$="0"+T$
+8674 IF PT<100 THEN T$="0"+T$
+8675 IF PT<10 THEN T$="0"+T$
+8676 TX=20:TY=22:GOSUB 10900
 8679 RETURN
 
 8700 ' fun player dies
