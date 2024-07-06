@@ -4,7 +4,7 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map_2.inc"
 
-FILE "../res/map_3_6.plet5"
+FILE "../res/map_3_6.plet5" ' What is this screen?
 FILE "../res/ilogic_2.akm"
 
 FILE "../res/splash.chr.plet5" '40
@@ -14,6 +14,8 @@ FILE "../res/splash_0_0.plet5"
 FILE "strings.txt" '43
 FILE "../res/sfx.akx"
 FILE "../res/cls.plet5"
+
+FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console messages (intro / ending)
 
 20 CMD PLYLOAD 39, 44 '39,44
 21 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
@@ -99,7 +101,7 @@ FILE "../res/cls.plet5"
 6100 ' Intro sequence
 6101 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
 6102 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
-6105 CMD WRTSCR 45
+6105 CMD WRTSCR 46
 6109 CMD RESTORE 43:RESTORE 27:TK=1' Text sKip enabled (pressing space)
 6110 ' Blank screen, show text as in a console
 6120 TY=1:GOSUB 10200
@@ -548,9 +550,9 @@ FILE "../res/cls.plet5"
 8949 RETURN
 
 10000 'fun ending
-10001 CMD PLYMUTE:CMD PLYSONG 1:CMD PLYPLAY' Song 2 is silent
+10001 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY' Song 2 is silent
 10002 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
-10005 CMD WRTSCR 45
+10005 CMD WRTSCR 46
 10009 CMD RESTORE 43:RESTORE 16:TK=0' Text sKip enable (to skip text using space) disabled
 10010 ' Blank screen, show text as in a console
 10020 TY=1:GOSUB 10200
@@ -567,14 +569,14 @@ FILE "../res/cls.plet5"
 10099 RETURN
 
 10200 'Writing text on Screen subroutine (a letter at a time, with sound)
-10201 READ T$:TX=0
+10201 READ T$:TX=1
 10210 FOR I=1 TO LEN(T$)
 10220   CT$=MID$(T$,i,1)
 10230   IF CT$="@" THEN TW=12:TX=TX-1:GOTO 10244 ELSE TW=3
 10231   IF CT$=" " THEN TT=0 ELSE TT=ASC(CT$)+159
 10240   VPOKE &H1800+TX-1+TY*32+I,TT:CMD PLYSOUND 1
 10244   T=TIME
-10245   IF TK=1 AND STRIG(SS) THEN TX=0:GOSUB 10900:RETURN
+10245   IF TK=1 AND STRIG(SS) THEN TX=1:GOSUB 10900:RETURN
 10246   IF TIME<T+TW GOTO 10245
 10250 NEXT I
 10290 RETURN
