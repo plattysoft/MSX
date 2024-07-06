@@ -129,7 +129,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 7993 PZ=0:PT=5000' Player DereZ, number of deaths starts at 0, PT: Play Timer (countdown)
 
 7994 ' DEBUG OVERRIDE INIT
-7995 'GM=0
+7995 PT=5'GM=0
 7996 'C=1:R=1
 7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
@@ -171,13 +171,25 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8669 RETURN
 
 8670 ' Update the timer
-8671 PT=PT-1 'TODO Check for time's up and show game over
+8671 PT=PT-1: IF PT=0 GOSUB 8680: GOTO 2000 'TODO Check for time's up and show game over
 8672 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
 8673 IF PT<1000 THEN T$="0"+T$
 8674 IF PT<100 THEN T$="0"+T$
 8675 IF PT<10 THEN T$="0"+T$
 8676 TX=20:TY=22:GOSUB 10900
 8679 RETURN
+
+8680 ' GAME OVER Placeholder
+8681 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
+8682 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
+8683 CMD WRTSCR 46
+8684 CMD RESTORE 43:RESTORE 38:TK=0' Text sKip enabled (pressing space)
+8685 ' Blank screen, show text as in a console
+8691 TY=1:GOSUB 10200
+8692 TY=3:GOSUB 10200
+8693 TY=5:GOSUB 10200
+8694 IF STRIG(SS) THEN 8699 ELSE 8694
+8699 RETURN
 
 8700 ' fun player dies
 8702 ' Teleport out
@@ -196,7 +208,6 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8770 ' Draw the number of deaths
 8771 PZ=PZ+1:GOSUB 8650
 8799 RETURN
-
 
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
