@@ -330,7 +330,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 9500 ' fun Check room interactions (switches, fuse & computer)
 9501 IF T4=155 THEN GOSUB 9750:RETURN ' Fuse Box
-9502 IF T4=87 THEN GOSUB 9760:RETURN ' Computer Terminal
+9502 IF T4=119 THEN GOSUB 9760:RETURN ' Computer Terminal
 9503 IC=(Y+2)\8*32+(X+2)\8+32
 9504 IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Switches
 9505 IF VP(IC)=82 THEN GOSUB 9550:RETURN ' Open Fuse Box
