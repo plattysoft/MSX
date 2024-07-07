@@ -171,7 +171,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8669 RETURN
 
 8670 ' Update the timer
-8671 PT=PT-1: IF PT=0 GOSUB 8680: GOTO 2000 'TODO Check for time's up and show game over
+8671 PT=PT-1 ' Check for time's up is done on the calling code to be able to pop all the stack calls
 8672 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
 8673 IF PT<1000 THEN T$="0"+T$
 8674 IF PT<100 THEN T$="0"+T$
@@ -183,13 +183,17 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8681 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
 8682 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
 8683 CMD WRTSCR 46
-8684 CMD RESTORE 43:RESTORE 38:TK=0' Text sKip enabled (pressing space)
+8684 CMD RESTORE 43:RESTORE 38:TK=0' Text sKip disabled (pressing space)
 8685 ' Blank screen, show text as in a console
 8691 TY=1:GOSUB 10200
-8692 TY=3:GOSUB 10200
-8693 TY=5:GOSUB 10200
-8694 IF STRIG(SS) THEN 8699 ELSE 8694
-8699 RETURN
+8692 TY=4:GOSUB 10200
+8693 TY=6:GOSUB 10200
+8694 TY=9:GOSUB 10200
+8695 TY=11:GOSUB 10200
+8696 TY=14:GOSUB 10200
+8697 TY=17:GOSUB 10200
+8698 TY=20:GOSUB 10200
+8699 IF STRIG(SS) THEN RETURN ELSE 8699
 
 8700 ' fun player dies
 8702 ' Teleport out
@@ -230,8 +234,8 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9082 'PUT SPRITE 31,,GS+4: PUT SPRITE 30,,PD ' Visual debig of Frame Drops and Player Death
 9083 'IF TIME<1 THEN FD=2 ELSE FD=10
 9085 IF PD>0 AND GM=1 THEN GOSUB 8700
-9086 ' Once per second, update the countdown
-9087 CW=CW+1:IF CW=30 THEN CW=0:GOSUB 8670
+9086 ' Once per second, update the countdown, also check for game over
+9087 CW=CW+1:IF CW=30 THEN CW=0:GOSUB 8670:IF PT=0 GOSUB 8680:GOTO 2000
 9090 IF TIME<2 THEN 9090 ELSE 9000
 
 9100 'GS=1 Standing
@@ -584,7 +588,9 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 10210 FOR I=1 TO LEN(T$)
 10220   CT$=MID$(T$,i,1)
 10230   IF CT$="@" THEN TW=12:TX=TX-1:GOTO 10244 ELSE TW=3
-10231   IF CT$=" " THEN TT=0 ELSE TT=ASC(CT$)+159
+10231   IF CT$=" " THEN TT=0:GOTO 10240
+10232   TT=ASC(CT$)+159
+10233   IF TT<224 THEN TT=TT+7 'Fix the gap on the ASCII numbers and the letters
 10240   VPOKE &H1800+TX-1+TY*32+I,TT:CMD PLYSOUND 1
 10244   T=TIME
 10245   IF TK=1 AND STRIG(SS) THEN TX=1:GOSUB 10900:RETURN
