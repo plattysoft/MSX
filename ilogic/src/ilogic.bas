@@ -129,7 +129,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 7993 PZ=0:PT=5000' Player DereZ, number of deaths starts at 0, PT: Play Timer (countdown)
 
 7994 ' DEBUG OVERRIDE INIT
-7995 PT=5'GM=0
+7995 'GM=0
 7996 'C=1:R=1
 7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=1
 7999 'GOSUB 10000 ' Show the ending
@@ -195,7 +195,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8698 TY=20:GOSUB 10200
 8699 IF STRIG(SS) THEN RETURN ELSE 8699
 
-8700 ' fun player dies
+8700 ' f    un player dies
 8702 ' Teleport out
 8703 GOSUB 11300
 8704 PUT SPRITE 1,,0:PUT SPRITE 2,,0:PUT SPRITE 3,,0
