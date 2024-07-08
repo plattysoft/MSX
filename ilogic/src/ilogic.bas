@@ -131,7 +131,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
 7996 'C=1:R=1
-7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
+7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
@@ -145,7 +145,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8110 FOR I=0 TO 6:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8190 GOSUB 8800 ' Load initial room
 8191 DI=-1' Not showing dialog info at the start of a new game
-8195 CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song
+8195 'CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song TODO play silent to test SFC better
 8199 GOTO 9000 ' Start game loop
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
@@ -195,7 +195,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8698 TY=20:GOSUB 10200
 8699 IF STRIG(SS) THEN RETURN ELSE 8699
 
-8700 ' f    un player dies
+8700 ' fun player dies
 8702 ' Teleport out
 8703 GOSUB 11300
 8704 PUT SPRITE 1,,0:PUT SPRITE 2,,0:PUT SPRITE 3,,0
@@ -490,39 +490,33 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9949 RETURN
 
 8800 ' fun Load new room
-8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8006 or so), to make it feel more snappy
+8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8010 or so), to make it feel more snappy
 8802 ' Record player state when entering the room
 8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
 8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8805 CMD WRTSCR R*7+C+3
-8806 IF R=3 AND C=3 THEN GOSUB 8830' This part is only needed on room 3-3, which is the one with the lower part of the screen
-
+8806 IF R=3 AND C=3 THEN GOSUB 8860' This part is only needed on room 3-3, which is the one with the lower part of the screen
 8807 RI=RR(R*7+C+1) ' We store collection of items on the room info (we store the position in screen)
 8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
 8809 EC=0:LT=196*8:NL=0:IR=0:NB=0'TODO: We could pre-caclulate if there are items, lasers and belts in the room, or hardcode it in one specific tile
-8810 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
-8811 FOR I=0 TO 672
-8812  TT=VPEEK(&H1800+I)
-8813  IF TT<62 THEN 8827 ' Given that most of the rooms are places you can walk through, this saves a lot of IF checks
-8814  IF TT=62 OR TT=63 THEN NL=1: GOTO 8827 ' There are lasers in the room
-8815  IF TT>=64 AND TT<=74 THEN IR=1:GOTO 8827 ' There are items in the room
-8816  ' TODO: If we put the enemies together after 192 we can also skip most comparisons here
-8818  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
-8819  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
-8820  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
-8821  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
-8822  IF TT=120 AND BS=1 THEN TT=152 ' TODO Maybe we can put all the special cases together, so we can save more comparisons
-8823  IF TT=121 AND BS=0 THEN TT=153
-8824  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
-8827  VP(I)=TT
-8828 NEXT I
-8829 RETURN
 
-8830 ' fun Redraw items on the bottom area and number of deaths (only needed on reload of the initial screen and when debugging)
-8832 FOR I=1 TO 6
-8833  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
-8834 NEXT I
-8835 GOSUB 8650:RETURN
+8820 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
+8821 FOR I=0 TO 672
+8822  TT=VPEEK(&H1800+I)
+8823  IF TT<62 THEN 8837 ' Given that most of the rooms are places you can walk through, this saves a lot of IF checks
+8824  IF TT=62 OR TT=63 THEN NL=1: GOTO 8837 ' There are lasers in the room
+8825  IF TT>=64 AND TT<=74 THEN IR=1:GOTO 8837 ' There are items in the room
+8826  ' TODO: If we put the enemies together after 192 we can also skip most comparisons here
+8828  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
+8829  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
+8830  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
+8831  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
+8832  IF TT=120 AND BS=1 THEN TT=152 ' TODO Maybe we can put all the special cases together, so we can save more comparisons
+8833  IF TT=121 AND BS=0 THEN TT=153
+8834  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
+8837  VP(I)=TT
+8838 NEXT I
+8839 RETURN
 
 8840 ' fun Initialize enemy
 8841 EC=EC+1
@@ -533,6 +527,12 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8850 ' fun Preload sprite where the enemy is located
 8851 PUT SPRITE 3+EC,(EX(EC),EY(EC)),14,25+ES(EC)+ET(EC)*3
 8859 RETURN
+
+8860 ' fun Redraw items on the bottom area and number of deaths (only needed on reload of the initial screen and when debugging)
+8862 FOR I=1 TO 6
+8863  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8864 NEXT I
+8865 GOSUB 8650:RETURN
 
 8910 ' fun Parse enemy type 1 (horizontal, bottom)
 8911 GOSUB 8840' Initialize enemy
@@ -692,16 +692,17 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 11300 ' fun teleport start
 11301 PUT SPRITE 0,(X,Y+4),13,41
-11302 'CMD PLYSOUND 12
+11302 CMD PLYSOUND 12
 11310 I=41' Animate teleport in
 11311  TIME=0:PUT SPRITE 0,,,I
 11312 IF TIME<4 THEN 11312 ELSE I=I+1:IF I<44 THEN 11311
 11319 RETURN
 
 11320 I=44' Animate teleport out
-11321  TIME=0:PUT SPRITE 0,,,I
-11322 IF TIME<4 THEN 11322 ELSE I=I-1: IF I>40 THEN 11321
-11323 PUT SPRITE 0,(0,0),0
+11321 'CMD PLYSOUND 12
+11322 TIME=0:PUT SPRITE 0,,,I
+11323 IF TIME<4 THEN 11323 ELSE I=I-1: IF I>40 THEN 11322
+11324 PUT SPRITE 0,(0,0),0
 11329 RETURN
 
 
