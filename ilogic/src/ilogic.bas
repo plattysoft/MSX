@@ -290,8 +290,8 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9314 SA=0:ST=6
 9319 ' The next 3 lines enable gliding
 9320 S=STICK(SS)
-9321 IF S=3 THEN VX=VX+2:IF VX>2 THEN VX=2:D=0
-9322 IF S=7 THEN VX=VX-2:IF VX<-2 THEN VX=-2:D=14
+9321 IF S=3 THEN D=0:VX=VX+2:IF VX>2 THEN VX=2
+9322 IF S=7 THEN D=14:VX=VX-2:IF VX<-2 THEN VX=-2
 9341 GOSUB 8620
 9344 TT = X/8
 9350 IF VX=0 THEN 9385' Skip horizontal collision check if we are not moving
@@ -334,7 +334,6 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9503 IC=(Y+2)\8*32+(X+2)\8+32
 9504 IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Switches
 9505 IF VP(IC)=82 THEN GOSUB 9550:RETURN ' Open Fuse Box
-9506 'IF VP(IC)=80 OR VP(IC+1)=81 OR VP(IC)=84 THEN GOSUB 9510:RETURN ' Computer TODO does this work? can we remove the duplicate
 9509 RETURN
 
 9510 ' Fun swap bricks (Icons swap, but only one is actually checked)
@@ -455,7 +454,11 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 9820 'fun Double Jump Check
 9821 IF I1=0 THEN RETURN
-9823 IF JD=0 AND STRIG(SS) THEN GS=2:CMD PLYSOUND 8:SA=0:ST=4:JD=1:DJ=0:VY=VY-38:IF VY<-38 THEN VY=-38 ELSE IF VY>-28 THEN VY=-28
+9823 IF JD=0 AND STRIG(SS) THEN GS=2:CMD PLYSOUND 8 ELSE 9829
+9824 SA=0:ST=4:JD=1:DJ=0:VY=VY-38:IF VY<-38 THEN VY=-38 ELSE IF VY>-28 THEN VY=-28
+9825 S=STICK(SS)
+9826 IF S=3 THEN VX=2:D=0
+9827 IF S=7 THEN VX=-2:D=14
 9829 RETURN
 
 9900 'fun Update enemies
