@@ -1,10 +1,12 @@
-FILE "../res/sprites.bin.plet5"
+'FILE "../res/sprites.bin.plet5"
+FILE "./sprites_updated.bin.plet5"
 FILE "../res/map.chr.plet5"
 FILE "../res/map.clr.plet5"
 
 INCLUDE "map_2.inc"
 
-FILE "../res/map_3_6.plet5" ' What is this screen?
+'FILE "../res/map_3_6.plet5" ' What is this screen?
+FILE "../res/cls.plet5"
 FILE "../res/ilogic_2.akm"
 
 FILE "../res/splash.chr.plet5" '40
@@ -206,7 +208,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 8760 GOSUB 11300 'Teleport initial place
 8761 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
-8762 PUT SPRITE 3,(X,Y+14),14,1+ST+D
+8762 PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
 8763 GOSUB 11320
 
 8770 ' Draw the number of deaths
@@ -222,7 +224,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9005 GOSUB 9900 ' Update Enemies
 9009 ' DRAW
 9010 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
-9020 PUT SPRITE 3,(X,Y+14),14,1+ST+D
+9020 PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
 9030 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
