@@ -20,7 +20,7 @@ FILE "../res/cls.plet5"
 FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console messages (intro / ending)
 
 20 CMD PLYLOAD 39, 44 '39,44
-21 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
+21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
 
 100 COLOR 15,1,1:SCREEN 2,2,0
 110 DEFINT A-Z
@@ -81,7 +81,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 5000 ' Start screen
 5001 'CMD WRTSCR 45
-5011 CMD PLYMUTE:CMD PLYSONG 1:CMD PLYPLAY ' Main screen sound
+5011 CMD PLYMUTE:CMD PLYSONG 1 ' Main screen sound
 5020 CMD WRTSCR 42
 5021 CMD PLYPLAY ' Start the music on the main start screen
 5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
@@ -97,11 +97,11 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 
 6000 ' Start New Game
-6001 CMD WRTSCR 45
+6001 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
+6002 CMD WRTSCR 45
 6010 RI=1:GOSUB 5100 ' Load room resources
 
 6100 ' Intro sequence
-6101 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
 6102 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
 6105 CMD WRTSCR 46
 6109 CMD RESTORE 43:RESTORE 27:TK=1' Text sKip enabled (pressing space)
@@ -495,15 +495,16 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9949 RETURN
 
 8800 ' fun Load new room
-8801 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8010 or so), to make it feel more snappy
-8802 ' Record player state when entering the room
-8003 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
-8004 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
-8805 CMD WRTSCR R*7+C+3
-8806 IF R=3 AND C=3 THEN GOSUB 8860' This part is only needed on room 3-3, which is the one with the lower part of the screen
-8807 RI=RR(R*7+C+1) ' We store collection of items on the room info (we store the position in screen)
-8808 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
-8809 EC=0:LT=196*8:NL=0:IR=0:NB=0'TODO: We could pre-caclulate if there are items, lasers and belts in the room, or hardcode it in one specific tile
+8801 CMD PLYMUTE
+8802 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8010 or so), to make it feel more snappy
+8803 ' Record player state when entering the room
+8004 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
+8005 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
+8806 CMD WRTSCR R*7+C+3
+8807 IF R=3 AND C=3 THEN GOSUB 8860' This part is only needed on room 3-3, which is the one with the lower part of the screen
+8808 RI=RR(R*7+C+1) ' We store collection of items on the room info (we store the position in screen)
+8809 IF RI>0 THEN TP=RI:TV=0:GOSUB 12220
+8810 EC=0:LT=196*8:NL=0:IR=0:NB=0'TODO: We could pre-caclulate if there are items, lasers and belts in the room, or hardcode it in one specific tile
 
 8820 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8821 FOR I=0 TO 672
@@ -519,8 +520,9 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8832  IF TT=120 AND BS=1 THEN TT=152 ' TODO Maybe we can put all the special cases together, so we can save more comparisons
 8833  IF TT=121 AND BS=0 THEN TT=153
 8834  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
-8837  VP(I)=TT
-8838 NEXT I
+8836  VP(I)=TT
+8837 NEXT I
+8838 CMD PLYPLAY
 8839 RETURN
 
 8840 ' fun Initialize enemy
