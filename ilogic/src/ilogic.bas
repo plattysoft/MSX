@@ -1,12 +1,12 @@
-'FILE "../res/sprites.bin.plet5"
-FILE "./sprites_updated.bin.plet5"
+FILE "../res/sprites.bin.plet5"
+' Updated sprites for legs
+'FILE "./sprites_updated.bin.plet5"
 FILE "../res/map.chr.plet5"
 FILE "../res/map.clr.plet5"
 
 INCLUDE "map_2.inc"
 
-'FILE "../res/map_3_6.plet5" ' What is this screen?
-FILE "../res/cls.plet5"
+FILE "../res/map_full_0_5.plet5" ' 38 - pirpple frame for full screen console messages (intro / ending)
 FILE "../res/ilogic_2.akm"
 
 FILE "../res/splash.chr.plet5" '40
@@ -16,8 +16,6 @@ FILE "../res/splash_0_0.plet5"
 FILE "strings.txt" '43
 FILE "../res/sfx.akx"
 FILE "../res/cls.plet5"
-
-FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console messages (intro / ending)
 
 20 CMD PLYLOAD 39, 44 '39,44
 21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
@@ -103,7 +101,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 
 6100 ' Intro sequence
 6102 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
-6105 CMD WRTSCR 46
+6105 CMD WRTSCR 38
 6109 CMD RESTORE 43:RESTORE 27:TK=1' Text sKip enabled (pressing space)
 6110 ' Blank screen, show text as in a console
 6120 TY=1:GOSUB 10200
@@ -184,7 +182,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8680 ' GAME OVER Placeholder
 8681 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
 8682 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
-8683 CMD WRTSCR 46
+8683 CMD WRTSCR 38
 8684 CMD RESTORE 43:RESTORE 38:TK=0' Text sKip disabled (pressing space)
 8685 ' Blank screen, show text as in a console
 8691 TY=1:GOSUB 10200
@@ -224,7 +222,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 9005 GOSUB 9900 ' Update Enemies
 9009 ' DRAW
 9010 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
-9020 PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
+9020 PUT SPRITE 3,(X,Y+14),14,1+ST+D'PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
 9030 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
@@ -509,9 +507,9 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 8820 IF BT>0 THEN BT=0:TC=0:TS=0:GOSUB 9610
 8821 FOR I=0 TO 672
 8822  TT=VPEEK(&H1800+I)
-8823  IF TT<62 THEN 8837 ' Given that most of the rooms are places you can walk through, this saves a lot of IF checks
-8824  IF TT=62 OR TT=63 THEN NL=1: GOTO 8837 ' There are lasers in the room
-8825  IF TT>=64 AND TT<=74 THEN IR=1:GOTO 8837 ' There are items in the room
+8823  IF TT<62 THEN 8836 ' Given that most of the rooms are places you can walk through, this saves a lot of IF checks
+8824  IF TT=62 OR TT=63 THEN NL=1: GOTO 8836 ' There are lasers in the room
+8825  IF TT>=64 AND TT<=74 THEN IR=1:GOTO 8836 ' There are items in the room
 8826  ' TODO: If we put the enemies together after 192 we can also skip most comparisons here
 8828  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
 8829  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
@@ -574,7 +572,7 @@ FILE "../res/map_full_0_5.plet5" ' 46 - pirpple fra,e for full screen console me
 10000 'fun ending
 10001 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY' Song 2 is silent
 10002 FOR I=0 TO 7:PUT SPRITE I,,0,0:NEXT
-10005 CMD WRTSCR 46
+10005 CMD WRTSCR 38
 10009 CMD RESTORE 43:RESTORE 16:TK=0' Text sKip enable (to skip text using space) disabled
 10010 ' Blank screen, show text as in a console
 10020 TY=1:GOSUB 10200
