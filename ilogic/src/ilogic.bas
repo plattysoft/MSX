@@ -6,7 +6,7 @@ FILE "../res/map.clr.plet5"
 
 INCLUDE "map_2.inc"
 
-FILE "../res/map_full_0_5.plet5" ' 38 - pirpple frame for full screen console messages (intro / ending)
+FILE "../res/map_full_0_5.plet5" ' 38 - purple frame for full screen console messages (intro / ending)
 FILE "../res/ilogic_2.akm"
 
 FILE "../res/splash.chr.plet5" '40
@@ -16,7 +16,7 @@ FILE "../res/splash_0_0.plet5"
 FILE "strings.txt" '43
 FILE "../res/sfx.akx"
 FILE "../res/cls.plet5"
-
+'
 20 CMD PLYLOAD 39, 44 '39,44
 21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
 
@@ -145,7 +145,7 @@ FILE "../res/cls.plet5"
 8110 FOR I=0 TO 6:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8190 GOSUB 8800 ' Load initial room
 8191 DI=-1' Not showing dialog info at the start of a new game
-8195 'CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song TODO play silent to test SFC better
+8195 CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song TODO play silent to test SFC better
 8199 GOTO 9000 ' Start game loop
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
@@ -318,6 +318,7 @@ FILE "../res/cls.plet5"
 9411 IF VY<12 THEN VY=VY+5 ELSE VY=12
 9412 Y=Y+VY/6
 9420 GOSUB 8620
+9421 CMD PLYSOUND 11
 9429 'IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0 'Wall grip never has negative speed
 9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
 9450 S=STICK(SS)
@@ -454,7 +455,7 @@ FILE "../res/cls.plet5"
 
 9820 'fun Double Jump Check
 9821 IF I1=0 THEN RETURN
-9823 IF JD=0 AND STRIG(SS) THEN GS=2:CMD PLYSOUND 8 ELSE 9829
+9823 IF JD=0 AND STRIG(SS) THEN GS=2:CMD PLYSOUND 20 ELSE 9829
 9824 SA=0:ST=4:JD=1:DJ=0:VY=VY-38:IF VY<-38 THEN VY=-38 ELSE IF VY>-28 THEN VY=-28
 9825 S=STICK(SS)
 9826 IF S=3 THEN VX=2:D=0
@@ -493,7 +494,7 @@ FILE "../res/cls.plet5"
 9949 RETURN
 
 8800 ' fun Load new room
-8801 CMD PLYMUTE
+8801 'CMD PLYMUTE pausing music here does more harm than good
 8802 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8010 or so), to make it feel more snappy
 8803 ' Record player state when entering the room
 8004 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
@@ -520,7 +521,7 @@ FILE "../res/cls.plet5"
 8834  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
 8836  VP(I)=TT
 8837 NEXT I
-8838 CMD PLYPLAY
+8838 'CMD PLYPLAY pausing music here does more harm than good
 8839 RETURN
 
 8840 ' fun Initialize enemy
