@@ -676,6 +676,7 @@ FILE "../res/cls.plet5"
 11001 ' Skip laser death check if lasers are off
 11002 IF LS=0 THEN 11091
 11003 ' Horizontal lasers check
+11004 CMD PLYSOUND 16
 11010 I0=X\8+1+Y\8*32
 11011 IF VP(I0)=62 OR VP(I0+32)=62 OR VP(I0+64)=62 OR VP(I0+96)=62 THEN PD=8
 11020 ' Vertical lasers check
