@@ -260,7 +260,7 @@ FILE "../res/cls.plet5"
 9189 GOSUB 9700' Check for item collection
 9190 IF T0<124 AND T1<124 AND T2<124 THEN IF AT>0 THEN AT=AT-1 ELSE GS=3:VX=0:ST=3:SA=4:CMD PLYSOUND 9 ELSE AT=3
 9191 GOSUB 9500' Check for room interaction (switches, fuse, computer)
-9192 IF T0=180 OR T1=180 OR T2=180 THEN X=X-2 ELSE IF T0=183 OR T1=183 OR T2=183 THEN X=X+2 'Handle convoy belts
+9192 IF T0=180 OR T1=180 OR T2=180 THEN X=X-2:CMD PLYSOUND 15 ELSE IF T0=183 OR T1=183 OR T2=183 THEN X=X+2:CMD PLYSOUND 15 'Handle convoy belts
 9197 IF X>=238 THEN C=C+1:X=2:GOSUB 8800' Load new room (right)
 9198 IF X<=1 THEN C=C-1:X=236:GOSUB 8800' Load new room (left)
 9199 RETURN
@@ -377,7 +377,8 @@ FILE "../res/cls.plet5"
 9612 TM=752+BT*16' TeMp value: initial value is 210 tile (210*8), dst tile is 116, 928=116*8, 752=210*8-928
 9613 FOR I=928 TO 935
 9614   A=VPEEK(TM+I):VPOKE I,A:VPOKE &H800+I,A:VPOKE &H1000+I,A
-9619 NEXT
+9618 NEXT
+9619 CMD PLYSOUND 5
 9620 ' Swap bricks
 9621 TM=688+BT*8' TeMp value: initial value is 208 tile (208*8), dst tile is 122, 976=122*8, 688=208*8-976
 9622 FOR I=976 TO 983
@@ -638,6 +639,7 @@ FILE "../res/cls.plet5"
 10379 IF NOT STRIG(SS) THEN 10379
 
 10380 ' Dismiss dialog
+10381 CMD PLYSOUND 4
 10382 KS=&H1905
 10383 FOR I=0 TO 9 'Rows
 10384   FOR J=0 to 21 'Columns
@@ -645,7 +647,6 @@ FILE "../res/cls.plet5"
 10386   NEXT J
 10387 NEXT I
 10388 IF STRIG(SS) THEN 10388
-10389 CMD PLYSOUND 4
 10390 RETURN
 
 10400 ' fun animate convoy belts
