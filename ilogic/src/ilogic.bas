@@ -538,7 +538,7 @@ FILE "../res/cls.plet5"
 
 8860 ' fun Redraw items on the bottom area and number of deaths (only needed on reload of the initial screen and when debugging)
 8862 FOR I=1 TO 6
-8863  IF CI(I)>0 THEN TP=&H29E+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
+8863  IF CI(I)>0 THEN TP=&H2A5+I*3:TV=CI(I):GOSUB 12220' set TV (tile value) into TP (tile position) 16x16 tiles
 8864 NEXT I
 8865 GOSUB 8650:RETURN
 
