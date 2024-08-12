@@ -131,7 +131,7 @@ FILE "../res/cls.plet5"
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
 7996 'C=0:R=0
-7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
+7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
@@ -416,7 +416,7 @@ FILE "../res/cls.plet5"
 9720 ' fun Pick up item
 9721 TV=0:TP=TI:GOSUB 12220 ' Put 0 in TI position (4 tiles)
 9722 NI=NI+1:CI(NI)=VP(TI)
-9723 TV=VP(TI):TP=&H29E+NI*3:GOSUB 12220
+9723 TV=VP(TI):TP=&H2A5+NI*3:GOSUB 12220' Need to add 6
 9724 VP(TI)=0:VP(TI+1)=0
 9725 VP(TI+32)=0:VP(TI+33)=0
 9726 IF RR(R*7+C+1) = 0 THEN RR(R*7+C+1)=TI' Set the item collected position on room details
