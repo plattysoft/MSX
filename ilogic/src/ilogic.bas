@@ -140,7 +140,7 @@ FILE "../res/cls.plet5"
 8050 'FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
-8101 AD=1:X=120:Y=120:GS=1:GI=0:T4=0
+8101 AD=1:X=120:Y=120:GS=1:GI=0:T4=0:BS=0
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
 8110 FOR I=0 TO 6:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8111 FOR I=0 TO 35:RR(I)=0:NEXT I'Clear room resource collected
