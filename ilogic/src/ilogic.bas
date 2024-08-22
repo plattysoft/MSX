@@ -514,12 +514,12 @@ FILE "../res/cls.plet5"
 8824  IF TT=62 OR TT=63 THEN NL=1: GOTO 8836 ' There are lasers in the room
 8825  IF TT>=64 AND TT<=74 THEN IR=1:GOTO 8836 ' There are items in the room
 8826  ' TODO: If we put the enemies together after 192 we can also skip most comparisons here
-8828  IF TT=192 THEN TT=0:GOSUB 8910 ' Parse enemy type 1
-8829  IF TT=160 THEN TT=0:GOSUB 8920 ' Parse enemy type 2
-8830  IF TT=163 THEN TT=0:GOSUB 8930 ' Parse enemy type 3
-8831  IF TT=162 THEN TT=0:GOSUB 8940 ' Parse enemy type 4
-8832  IF TT=120 AND BS=1 THEN TT=152 ' TODO Maybe we can put all the special cases together, so we can save more comparisons
-8833  IF TT=121 AND BS=0 THEN TT=153
+8828  IF TT=108 THEN TT=0:GOSUB 8910:GOTO 8836 ' Parse enemy type 1
+8829  IF TT=76 THEN TT=0:GOSUB 8920:GOTO 8836 ' Parse enemy type 2
+8830  IF TT=79 THEN TT=0:GOSUB 8930:GOTO 8836 ' Parse enemy type 3
+8831  IF TT=78 THEN TT=0:GOSUB 8940:GOTO 8836 ' Parse enemy type 4
+8832  IF TT=120 AND BS=1 THEN TT=152:GOTO 8836 ' TODO Maybe we can put all the special cases together, so we can save more comparisons
+8833  IF TT=121 AND BS=0 THEN TT=153:GOTO 8836
 8834  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
 8836  VP(I)=TT
 8837 NEXT I
