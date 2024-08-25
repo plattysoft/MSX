@@ -131,7 +131,7 @@ FILE "../res/cls.plet5"
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
 7996 'C=0:R=0
-7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
+7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
@@ -146,7 +146,7 @@ FILE "../res/cls.plet5"
 8111 FOR I=0 TO 35:RR(I)=0:NEXT I'Clear room resource collected
 8190 GOSUB 8800 ' Load initial room
 8191 DI=-1' Not showing dialog info at the start of a new game
-8195 CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song TODO play silent to test SFC better
+8195 CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song
 8199 GOTO 9000 ' Start game loop
 
 8600 'fun calculate tiles to right or left (T3, T4, T5, T6 and T7)
@@ -299,7 +299,7 @@ FILE "../res/cls.plet5"
 9354 GOSUB 8600 ' Calculate left and right tiles (T3, T4, T5, T6 and T7)
 9381 IF T3>=128 OR T4>=128 OR T5>=128 OR T6>=128 OR T7>=128 THEN X=X-VX:GOSUB 9800 'Wall jump check
 9385 IF T0>=124 OR T1>=124 OR T2>=124 THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32:CMD PLYSOUND 10
-9390 IF DJ=1 THEN GOSUB 9820 'Double Jump check
+9390 IF DJ>0 THEN GOSUB 9820 'Double Jump check
 9391 GOSUB 9700' Check for item collection
 9396 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9397 IF X>=238 THEN C=C+1:X=2:GOSUB 8800' Load new room
@@ -326,7 +326,7 @@ FILE "../res/cls.plet5"
 9451 IF VX>0 THEN IF S<>7 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3 'Un-sticking from a wall
 9452 IF VX<0 THEN IF S<>3 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3
 9490 ' Check for wall jump actually
-9492 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-38:VX=-VX:JD=1:WT=4:DJ=1:CMD PLYSOUND 7:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
+9492 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-38:VX=-VX:JD=1:WT=4:DJ=2:CMD PLYSOUND 7:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9496 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9499 RETURN
 
