@@ -1,6 +1,6 @@
 ' FILE "../res/sprites.bin.plet5"
 ' Updated sprites for legs
-FILE "./sprites_updated.bin.plet5"
+FILE "../res/sprites_updated.bin.plet5"
 FILE "../res/map.chr.plet5"
 FILE "../res/map.clr.plet5"
 
@@ -130,7 +130,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=4:R=2
+7996 C=4:R=2
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
@@ -307,8 +307,8 @@ FILE "../res/cls.plet5"
 9399 RETURN
 
 9400 'GS=4 Holding into a wall
-9401 WT=WT-1: IF WT>0 GOTO 9450 'The first 4 frames of wall jump are stick (skip tile checks and speed movement)
-9402 LO=14' Legs offset is 2 (it is the only case when we allow offset of 3 sprites, becasue all the other ones look bad
+9401 LO=14' Legs offset is 2 (it is the only case when we allow offset of 3 sprites, becasue all the other ones look bad
+9402 WT=WT-1: IF WT>0 GOTO 9450 'The first 4 frames of wall jump are stick (skip tile checks and speed movement)
 9403 'Wall grip re-check
 9404 TT = (X+VX)/8
 9405 TZ=TT+(Y+24)/8*32
@@ -449,7 +449,7 @@ FILE "../res/cls.plet5"
 9800 'fun Wall jump check: need to have a substantial amount of wall to grip to
 9801 IF I2=0 THEN RETURN' Can't hold to walls without the Glove (I2)
 9802 IF T5>=128 AND (T4>=128 OR T6>=128) THEN 9803 ELSE 9810
-9803 IF GS<4 THEN GS=4:CMD PLYSOUND 11:SA=3:ST=7:WT=4
+9803 IF GS<4 THEN GS=4:LO=14:CMD PLYSOUND 11:SA=3:ST=7:WT=4
 9804 IF VY>12 THEN VY=12 ELSE IF VY<0 THEN VY=0
 9809 RETURN
 9810 ' No grip
