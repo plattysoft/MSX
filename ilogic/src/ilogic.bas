@@ -130,7 +130,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=4:R=2
+7996 'C=4:R=2
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
@@ -241,10 +241,10 @@ FILE "../res/cls.plet5"
 
 9100 'GS=1 Standing
 9101 S=STICK(SS)
-9102 VX=0
+9102 VX=0:LO=16
 9112 IF S=3 OR S=2 OR S=4 THEN VX=2:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9113 IF S=7 OR S=6 OR S=8 THEN VX=-2:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
-9114 SA=4:ST=3:YO=0:LO=16' SA=4 marks a resting position
+9114 SA=4:ST=3:YO=0:LO=16 'SA=4 marks a resting position, make sure to correct LO Lef Offset
 9117 GOTO 9140 ' Skip walk animation (no input)
 9118 IF S0=2 THEN S0=0 ELSE S0=S0+1:GOTO 9140 ' No animation this frame
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
@@ -453,7 +453,7 @@ FILE "../res/cls.plet5"
 9804 IF VY>12 THEN VY=12 ELSE IF VY<0 THEN VY=0
 9809 RETURN
 9810 ' No grip
-9811 IF GS=4 THEN GS=2:CMD PLYSOUND 10
+9811 IF GS=4 THEN GS=2:LO=16:ST=5:CMD PLYSOUND 10
 9819 RETURN
 
 9820 'fun Double Jump Check
