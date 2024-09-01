@@ -1,6 +1,6 @@
-FILE "../res/sprites.bin.plet5"
+' FILE "../res/sprites.bin.plet5"
 ' Updated sprites for legs
-'FILE "./sprites_updated.bin.plet5"
+FILE "./sprites_updated.bin.plet5"
 FILE "../res/map.chr.plet5"
 FILE "../res/map.clr.plet5"
 
@@ -130,7 +130,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 C=5:R=2
+7996 'C=4:R=2
 7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
@@ -140,7 +140,7 @@ FILE "../res/cls.plet5"
 8050 'FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
 
 8100 'New game initialization
-8101 AD=1:X=120:Y=120:GS=1:GI=0:T4=0:BS=0
+8101 AD=1:X=120:Y=120:GS=1:GI=0:T4=0:BS=0:LO=16
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
 8110 FOR I=0 TO 6:CI(I)=0:NEXT I:NI=0' Clear inventory. NI: Number of items collected
 8111 FOR I=0 TO 35:RR(I)=0:NEXT I'Clear room resource collected
@@ -203,11 +203,11 @@ FILE "../res/cls.plet5"
 8705 GOSUB 11320
 
 8750 ' Restore player state to the beginning of the room
-8751 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT
+8751 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT:LO=16
 
 8760 GOSUB 11300 'Teleport initial place
 8761 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
-8762 PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
+8762 PUT SPRITE 3,(X,Y+LO+YO),14,1+ST+D
 8763 GOSUB 11320
 
 8770 ' Draw the number of deaths
@@ -223,7 +223,7 @@ FILE "../res/cls.plet5"
 9005 GOSUB 9900 ' Update Enemies
 9009 ' DRAW
 9010 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
-9020 PUT SPRITE 3,(X,Y+14),14,1+ST+D'PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
+9020 PUT SPRITE 3,(X,Y+LO+YO),14,1+ST+D'PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
 9030 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
@@ -244,7 +244,7 @@ FILE "../res/cls.plet5"
 9102 VX=0
 9112 IF S=3 OR S=2 OR S=4 THEN VX=2:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9113 IF S=7 OR S=6 OR S=8 THEN VX=-2:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
-9114 SA=4:ST=3:YO=0' SA=4 marks a resting position
+9114 SA=4:ST=3:YO=0:LO=16' SA=4 marks a resting position
 9117 GOTO 9140 ' Skip walk animation (no input)
 9118 IF S0=2 THEN S0=0 ELSE S0=S0+1:GOTO 9140 ' No animation this frame
 9120 SA=SA+AD: IF SA=3 THEN AD=-1 ELSE IF SA=0 THEN AD=1
@@ -308,9 +308,10 @@ FILE "../res/cls.plet5"
 
 9400 'GS=4 Holding into a wall
 9401 WT=WT-1: IF WT>0 GOTO 9450 'The first 4 frames of wall jump are stick (skip tile checks and speed movement)
-9402 'Wall grip re-check
-9403 TT = (X+VX)/8
-9404 TZ=TT+(Y+24)/8*32
+9402 LO=14' Legs offset is 2 (it is the only case when we allow offset of 3 sprites, becasue all the other ones look bad
+9403 'Wall grip re-check
+9404 TT = (X+VX)/8
+9405 TZ=TT+(Y+24)/8*32
 9406 IF VX>0 THEN TZ=TZ+2
 9407 T4=VP(TZ):T5=VP(TZ-&H20):T6=VP(TZ-&H40)
 9408 GOSUB 9800 'Re-check wall grip
@@ -321,12 +322,12 @@ FILE "../res/cls.plet5"
 9420 GOSUB 8620
 9421 CMD PLYSOUND 11
 9429 'IF VY<0 AND (T0>=128 OR T1>=128 OR T2>=128) THEN VY=0 'Wall grip never has negative speed
-9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32
+9449 IF VY>0 AND (T0>=124 OR T1>=124 OR T2>=124) THEN GS=1:JD=1:DJ=0:SA=4:ST=4:NK=1:VX=0:Y=((Y+32)/8)*8-32:LO=16
 9450 S=STICK(SS)
-9451 IF VX>0 THEN IF S<>7 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3 'Un-sticking from a wall
-9452 IF VX<0 THEN IF S<>3 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3
+9451 IF VX>0 THEN IF S<>7 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3:LO=16 'Un-sticking from a wall
+9452 IF VX<0 THEN IF S<>3 THEN US=0 ELSE US=US+1:IF US>=4 THEN GS=3:LO=16
 9490 ' Check for wall jump actually
-9492 IF STRIG(SS) AND JD=0 THEN GS=2:VY=-38:VX=-VX:JD=1:WT=4:DJ=2:CMD PLYSOUND 7:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
+9492 IF STRIG(SS) AND JD=0 THEN GS=2:LO=16:VY=-38:VX=-VX:JD=1:WT=4:DJ=2:CMD PLYSOUND 7:IF D=0 THEN D=14 ELSE D=0'JD: Jump Debouncing
 9496 IF Y>=124 THEN R=R+1:Y=0:GOSUB 8800' Load new room
 9499 RETURN
 
