@@ -203,7 +203,7 @@ FILE "../res/cls.plet5"
 8705 GOSUB 11320
 
 8750 ' Restore player state to the beginning of the room
-8751 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT:LO=16
+8751 X=RX:Y=RY:VX=RV:VY=RW:GS=RG:D=RD:SA=RA:ST=RT:LO=O1:YO=O2
 
 8760 GOSUB 11300 'Teleport initial place
 8761 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
@@ -500,7 +500,7 @@ FILE "../res/cls.plet5"
 8801 'CMD PLYMUTE pausing music here does more harm than good
 8802 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8010 or so), to make it feel more snappy
 8803 ' Record player state when entering the room
-8004 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST
+8004 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST:O1=LO:O2=YO
 8005 DI=0:IF GI=-1 THEN GI=0' We show the tutorial action once per room
 8806 CMD WRTSCR R*7+C+3
 8807 IF R=3 AND C=3 THEN GOSUB 8860' This part is only needed on room 3-3, which is the one with the lower part of the screen
