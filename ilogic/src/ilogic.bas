@@ -130,7 +130,7 @@ FILE "../res/cls.plet5"
 
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
-7996 'C=4:R=1
+7996 'C=4:R=0
 7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
