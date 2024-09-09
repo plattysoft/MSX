@@ -131,7 +131,7 @@ FILE "../res/cls.plet5"
 7994 ' DEBUG OVERRIDE INIT
 7995 'GM=0
 7996 'C=4:R=0
-7997 'I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
+7997 I1=1:I2=1:I3=1:I4=1:I5=1:I6=2
 7999 'GOSUB 10000 ' Show the ending
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
@@ -224,11 +224,8 @@ FILE "../res/cls.plet5"
 
 9003 ' UPDATE
 9004 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
-9005 GOSUB 9900 ' Update Enemies
-9009 ' DRAW
-9010 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
-9020 PUT SPRITE 3,(X,Y+LO+YO),14,1+ST+D'PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
-9030 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
+9020 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
+9025 GOSUB 9900 ' Update Enemies
 9031 FOR I=1 TO EC
 9035  PUT SPRITE 3+I,(EX(I),EY(I)),14,25+ES(I)+ET(I)*3
 9039 NEXT I
@@ -241,7 +238,11 @@ FILE "../res/cls.plet5"
 9085 IF PD>0 AND GM=1 THEN GOSUB 8700
 9086 ' Once per second, update the countdown, also check for game over
 9087 CW=CW+1:IF CW=30 THEN CW=0:GOSUB 8670:IF PT=0 GOSUB 8680:GOTO 2000
-9090 IF TIME<2 THEN 9090 ELSE 9000
+9090 IF TIME<2 THEN 9090
+9091 ' DRAW (after the time check, so it does not interfere with the screen refresh
+9092 PUT SPRITE 2,(X,Y+YO),15,D:PUT SPRITE 1,(X,Y+4+YO),4,9+SA+D
+9093 PUT SPRITE 3,(X,Y+LO+YO),14,1+ST+D'PUT SPRITE 3,(X,Y+16+YO),14,1+ST+D
+9099 GOTO 9000
 
 9100 'GS=1 Standing
 9101 S=STICK(SS)
