@@ -14,13 +14,13 @@ THE BOOT SECTOR IS#CORRUPTED^#I NEED A BOOT DISK#TO RESTART IT`
 THE CIRCUIT PANEL#IS STUCK^#I NEED A TOOL TO#OPEN IT`
 I ALREADY REPLACED#THE FUSE^#NOTHING ELSE TO DO#HERE`
 
-BOOT INTEGRITY`@`@`@`@`@`@`@`@`@@@[OK]
-CONFIGURE MFSP`@`@`@`@`@`@`@`@`@@@[OK]
+BOOT INTEGRITY`@`@`@`@`@`@`@`@`@`@`@@@[OK]
+CONFIGURE MFSP`@`@`@`@`@`@`@`@`@`@`@@@[OK]
 @@@ALL SYSTEMS ONLINE`@@@
-THREAT LEVEL`@`@`@`@`@`@`@`@`@`@@@[LOW]@@@
-DISENGAGE LASERS`@`@`@`@`@`@`@@@[OK]
-REMOVE SAWS`@`@`@`@`@`@`@`@`@`@`@`@@@[OK]
-DEACTIVE DEATH RAY`@`@`@`@`@@@[OK]
+THREAT LEVEL`@`@`@`@`@`@`@`@`@`@`@`@@@[LOW]@@@
+DISENGAGE LASERS`@`@`@`@`@`@`@`@`@@@[OK]
+REMOVE SAWS`@`@`@`@`@`@`@`@`@`@`@`@`@`@@@[OK]
+DEACTIVE DEATH RAY`@`@`@`@`@`@`@@@[OK]
 @@@BOOTING COMPLETED`@@@@
 THANK YOU FOR @@YOUR ASSISTANCE^@@@@
 HAVE A NICE DAY`
