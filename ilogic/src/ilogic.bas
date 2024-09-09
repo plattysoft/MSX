@@ -136,9 +136,6 @@ FILE "../res/cls.plet5"
 
 8020 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 
-8049 ' Setup of visual debug
-8050 'FD=2:PUT SPRITE 31,(0,174),FD,0:PUT SPRITE 30,(200,174),PD,0
-
 8100 'New game initialization
 8101 AD=1:X=120:Y=120:GS=1:GI=0:T4=0:BS=0:LO=16
 8103 DIM EX(4),EY(4),EV(4),ET(4),ES(4),EW(4)' Enemy X, Y, Velocity, Type, Sprite, Wait. EC: Enemy Count
@@ -165,19 +162,26 @@ FILE "../res/cls.plet5"
 8629 RETURN
 
 8650 ' Draw the number of deaths
-8661 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1)
+8651 GOSUB 8660
+8654 TX=2:TY=22:GOSUB 10900
+8659 RETURN
+
+8660 T$=STR$(PZ):T$=RIGHT$(T$,LEN(T$)-1)
 8662 IF PZ<100 THEN T$="0"+T$
 8663 IF PZ<10 THEN T$="0"+T$
-8664 TX=2:TY=22:GOSUB 10900
-8669 RETURN
+8664 RETURN
 
 8670 ' Update the timer
 8671 PT=PT-1 ' Check for time's up is done on the calling code to be able to pop all the stack calls
-8672 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
-8673 IF PT<1000 THEN T$="0"+T$
-8674 IF PT<100 THEN T$="0"+T$
-8675 IF PT<10 THEN T$="0"+T$
-8676 TX=27:TY=22:GOSUB 10900
+8672 GOSUB 8675
+8673 TX=27:TY=22:GOSUB 10900
+8674 RETURN
+
+' Fill T$ with timer
+8675 T$=STR$(PT):T$=RIGHT$(T$,LEN(T$)-1)
+8676 IF PT<1000 THEN T$="0"+T$
+8677 IF PT<100 THEN T$="0"+T$
+8678 IF PT<10 THEN T$="0"+T$
 8679 RETURN
 
 8680 ' GAME OVER Placeholder
@@ -497,7 +501,6 @@ FILE "../res/cls.plet5"
 9949 RETURN
 
 8800 ' fun Load new room
-8801 'CMD PLYMUTE pausing music here does more harm than good
 8802 FOR I=0 TO 7: PUT SPRITE I,(0,-16),0:NEXT I' TODO: Maybe reload the player earlier (8010 or so), to make it feel more snappy
 8803 ' Record player state when entering the room
 8004 RX=X:RY=Y:RV=VX:RW=VY:RG=GS:RD=D:RA=SA:RT=ST:O1=LO:O2=YO:A0=AD
@@ -524,7 +527,6 @@ FILE "../res/cls.plet5"
 8834  IF TT=180 OR TT=183 THEN NB=1 ' There are convoy belts in the room
 8836  VP(I)=TT
 8837 NEXT I
-8838 'CMD PLYPLAY pausing music here does more harm than good
 8839 RETURN
 
 8840 ' fun Initialize enemy
@@ -588,8 +590,13 @@ FILE "../res/cls.plet5"
 10052 TY=12:GOSUB 10200
 10070 TY=15:GOSUB 10200
 10080 TY=18:GOSUB 10200
-10090 TY=22:GOSUB 10200
-10091 IF STRIG(SS)=0 THEN 10091
+10090 'TY=22:GOSUB 10200
+10091 'Show derez and timer counters
+10092 GOSUB 8660' Fill T$ with derez counter
+10093 T$="DEREZ "+T$:TX=1:TY=22:GOSUB 10900
+10094 GOSUB 8675
+10095 T$="TIME "+T$:TX=22:TY=22:GOSUB 10900
+10098 IF STRIG(SS)=0 THEN 10098
 10099 RETURN
 
 10200 'Writing text on Screen subroutine (a letter at a time, with sound)
