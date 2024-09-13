@@ -246,7 +246,7 @@ FILE "../res/cls.plet5"
 
 9100 'GS=1 Standing
 9101 S=STICK(SS)
-9102 VX=0:LO=16:YO=0
+9102 VX=0:LO=16:IF YO=4 THEN YO=0
 9112 IF S=3 OR S=2 OR S=4 THEN VX=2:IF D=14 OR SA=4 THEN D=0:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9113 IF S=7 OR S=6 OR S=8 THEN VX=-2:IF D=0 OR SA=4 THEN D=14:AD=1:SA=0:ST=0:GOTO 9140 ELSE GOTO 9118 ' Animate Walk
 9114 SA=4:ST=3 'SA=4 marks a resting position, make sure to correct LO Lef Offset
