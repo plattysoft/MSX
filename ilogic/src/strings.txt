@@ -20,7 +20,7 @@ CONFIGURE MFSP`@`@`@`@`@`@`@`@`@`@`@@@[OK]
 THREAT LEVEL`@`@`@`@`@`@`@`@`@`@`@`@@@[LOW]@@@
 DISENGAGE LASERS`@`@`@`@`@`@`@`@`@@@[OK]
 REMOVE SAWS`@`@`@`@`@`@`@`@`@`@`@`@`@`@@@[OK]
-DEACTIVE DEATH RAY`@`@`@`@`@`@`@@@[OK]
+DEACTIVATE DEATH RAY`@`@`@`@`@@@[OK]
 @@@BOOTING COMPLETED`@@@@
 THANK YOU FOR @@YOUR ASSISTANCE^@@@@
 HAVE A NICE DAY`
