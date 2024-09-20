@@ -221,9 +221,10 @@ FILE "../res/cls.plet5"
 9000 ' BEGIN GAME LOOP
 9001 TIME=0:PD=0' PD: Player Dead, player is not dead at the beginning of each loop
 9002 IF STRIG(SS)=0 THEN JD=0'If the trigger is not pressed, it is debounced
+9003 IF SD=1 THEN IF S<4 OR S>6 THEN SD=0 'SD Switch debouce (0 means debounced is done)
 
-9003 ' UPDATE
-9004 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
+9010 ' UPDATE
+9011 ON GS GOSUB 9100, 9200, 9300, 9400' Update player based on Game State (GS)
 9020 IF EC=0 THEN 9050 'Skip enemy draw if no enemies
 9025 GOSUB 9900 ' Update Enemies
 9031 FOR I=1 TO EC
@@ -348,9 +349,10 @@ FILE "../res/cls.plet5"
 9509 RETURN
 
 9510 ' Fun swap bricks (Icons swap, but only one is actually checked)
-9513 IF GI=0 THEN GI=-1:TR=7:GOSUB 10300:RETURN
-9514 IF S=5 THEN GI=1 ELSE RETURN 'GI: Game Item action performed (if they do it once, we stop showing the tutorial popup)
-9517 IF I3=0 THEN TR=8:GOSUB 10300:RETURN
+9511 IF GI=0 THEN GI=-1:TR=7:GOSUB 10300:RETURN
+9512 IF S=5 AND SD=0 THEN GI=1:SD=1 ELSE RETURN 'GI: Game Item action performed (if they do it once, we stop showing the tutorial popup)
+9513 IF I3=0 THEN TR=8:GOSUB 10300:RETURN
+9514 ' Set the sprite to standing? TODO maybe turn this into a game state?
 9518 IF VP(IC)=84 THEN GOSUB 9600:RETURN ' Swap temp bricks
 9519 IF BS=1 THEN BS=0:TP=&H70 ELSE BS=1:TP=&HD0
 9520 CMD PLYSOUND 5
@@ -369,7 +371,6 @@ FILE "../res/cls.plet5"
 9542   IF VP(I)=120 THEN VP(I)=152 ELSE IF VP(I)=152 THEN VP(I)=120
 9543   IF VP(I)=121 THEN VP(I)=153 ELSE IF VP(I)=153 THEN VP(I)=121
 9544 NEXT
-9545 IF STICK(SS)=5 THEN 9545
 9549 RETURN
 
 9550 ' fun Can we set the fuse in an open box?
@@ -398,7 +399,6 @@ FILE "../res/cls.plet5"
 9631 FOR I=0 TO 672
 9632   IF VP(I)=184 THEN VP(I)=122 ELSE IF VP(I)=122 THEN VP(I)=184
 9633 NEXT
-9648 IF STICK(SS)=5 THEN 9648
 9649 RETURN
 
 9650 ' fun Swap tmp brick color
