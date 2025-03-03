@@ -1,7 +1,9 @@
 FILE "../res/sprites.bin.plet5"
 FILE "../gen/flappas.chr.plet5"
 FILE "../gen/flappas.clr.plet5"
-FILE "../gen/play_0_0.plet5"
+FILE "../gen/flappas_0_0.plet5"
+FILE "../gen/flappas_1_0.plet5"
+' CLRSCR
 'FILE "../res/sfx.akx"
 'FILE "../res/ilogic_2.akm"
 
@@ -12,51 +14,57 @@ FILE "../gen/play_0_0.plet5"
 9 DIM PX(3),PE(3),PY(3,5)
 10 GOSUB 4000 ' Load Sprites
 20 GOSUB 4100 ' Load play screen
-90 V=0: Y=100:aa=0:ab=1
-92 FOR I=0 TO 3:PE(I)=0:NEXT I
-93 BS=0:SS=0:T=0
-94 SPRITE ON:ON SPRITE GOSUB 500
-100 ' ********************
-102 ' *    GAME LOOP     *
-104 ' ********************
-105 TIME=0
-110 PUT SPRITE 0,(50,Y),11,BS\4
-111 I=0:GOSUB 1600:I=1:GOSUB 1600:I=2:GOSUB 1600'Draw the pipes
-120 S=STRIG(0): IF S=0 THEN SS=0 ELSE IF SS=0 THEN V=-3:SS=1
-140 Y=Y+V
-150 V=V+.15
-160 BS=BS+1:IF BS=16 THEN BS=0' Bird sprite update
-180 GOSUB 1800 ' Remap bricks,4
-200 ' PIPE MOVEMENT
-210 FOR I=0 TO 2
-211   IF PE(I) THEN GOSUB 1500 ' Move Pipe
-241 NEXT I
-350 T=T+1:IF T=45 THEN T=0:GOSUB 1700 'Spawn new pipe each 45 frames
-380 IF Y>=159 THEN GOTO 500
-390 IF Y<=15 THEN GOTO 500
-399 IF TIME<1 GOTO 399
-400 GOTO 100
+30 GOTO 5000 ' Initial screen
 
-500 ' ********************
-502 ' *    GAME OVER     *
-504 ' ********************
-505 SPRITE OFF
-506 V=-4:T=0
-510 PUTSPRITE 0,(50,Y),11,4
-530 Y=Y+V+.3*T*4
-540 T=T+1
-549 IF TIME>2 THEN TIME=0 ELSE GOTO 549
-550 IF Y>=175 THEN GOTO 600
-560 GOTO 510
-600 ' ********************
-602 ' *  START NEW GAME  *
-604 ' ********************
-605 'PRESS SPACE TO START
-690 GOTO 90
+6000 ' Main Game
+6001 CMD WRTSCR 3
+6010 V=0: Y=100:aa=0:ab=1
+6092 FOR I=0 TO 3:PE(I)=0:NEXT I
+6093 BS=0:SS=0:T=0
+6094 SPRITE ON:ON SPRITE GOSUB 6500
+6100 ' ********************
+6102 ' *    GAME LOOP     *
+6104 ' ********************
+6105 TIME=0
+6110 PUT SPRITE 0,(50,Y),11,BS\4
+6111 I=0:GOSUB 1600:I=1:GOSUB 1600:I=2:GOSUB 1600'Draw the pipes
+6120 S=STRIG(0): IF S=0 THEN SS=0 ELSE IF SS=0 THEN V=-3:SS=1
+6140 Y=Y+V
+6150 V=V+.15
+6160 BS=BS+1:IF BS=16 THEN BS=0' Bird sprite update
+6180 GOSUB 1800 ' Remap bricks,4
+6200 ' PIPE MOVEMENT
+6210 FOR I=0 TO 2
+6211   IF PE(I) THEN GOSUB 1500 ' Move Pipe
+6241 NEXT I
+6350 T=T+1:IF T=45 THEN T=0:GOSUB 1700 'Spawn new pipe each 45 frames
+6380 IF Y>=152 THEN GOTO 6500
+6390 IF Y<=7 THEN GOTO 6500
+6399 IF TIME<1 GOTO 6399
+6400 GOTO 6100
+
+6500 ' ********************
+6502 ' *    GAME OVER     *
+6504 ' ********************
+6505 SPRITE OFF
+6506 V=-4:T=0
+6510 PUTSPRITE 0,(50,Y),11,4
+6530 Y=Y+V+.3*T*4
+6540 T=T+1
+6549 IF TIME>2 THEN TIME=0 ELSE GOTO 6549
+6550 IF Y>=175 THEN GOTO 6600
+6560 GOTO 6510
+6600 ' ********************
+6602 ' *  START NEW GAME  *
+6604 ' ********************
+6605 'PRESS SPACE TO START
+6650 ' Clean all sprites
+6641 FOR I=0 TO 31: PUT SPRITE I,,,9:NEXT
+6690 GOTO 5000
 
 1500 ' Move pipe
 1510 PX(I)=PX(I)-2
-1520 IF PX(I)<=-16 THEN PE(I)=0
+1520 IF PX(I)<=-15 THEN PE(I)=0
 1530 'GOSUB 1600
 1599 RETURN
 
@@ -87,7 +95,7 @@ FILE "../gen/play_0_0.plet5"
 1722 NEXT I
 1750 PY(CP,4)=PH*16+7
 1760 PY(CP,5)=PH*16+80+7
-1770 PX(CP)=256:PE(CP)=1
+1770 PX(CP)=255:PE(CP)=1
 1780 CP=CP+1:IF CP=3 THEN CP=0
 1799 RETURN
 
@@ -114,9 +122,19 @@ FILE "../gen/play_0_0.plet5"
 4001 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 4002 RETURN
 
-4100 CMD WRTCHR 1:CMD WRTCLR 2:CMD WRTSCR 3'LINE (16,16)-(239,175),4,BF
+4100 CMD WRTCHR 1:CMD WRTCLR 2'LINE (16,16)-(239,175),4,BF
 4110 'GOSUB 2010 ' Load Bricks
 4120 'FOR I=2 to 29: VPOKE &H1800+i, i MOD 2: VPOKE &H1800+i+32, (i+1) MOD 2: next i
 4130 'FOR I=2 to 29: VPOKE &H1800+i+32*22, (i+1) MOD 2: VPOKE &H1800+i+32*23, i MOD 2:next i
 4140' TODO Load the screen as tiles instead
 4150 RETURN
+
+5000 ' Start screen
+5001 'CMD WRTSCR 45
+5011 'CMD PLYMUTE:CMD PLYSONG 1 ' Main screen sound
+5020 CMD WRTSCR 4 ' Main screen
+5021 'CMD PLYPLAY ' Start the music on the main start screen
+5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
+5090 IF STRIG(0) THEN SS=0:GOTO 6000
+5091 IF STRIG(1) THEN SS=1:GOTO 6000
+5099 GOTO 5090
