@@ -7,7 +7,7 @@ FILE "../gen/flappas_1_0.plet5"
 'FILE "../res/sfx.akx"
 'FILE "../res/ilogic_2.akm"
 
-1 COLOR 15,2,2
+1 COLOR 15,1,1
 2 SCREEN 2,2,0
 4 DEFINT A-U
 5 ' V- Velocity and Y-position are double
