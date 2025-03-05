@@ -1,8 +1,7 @@
 IN PROGRESS
 
-* SFX
-
 * Animate bricks again
+* SFX
 
 
 TODO
@@ -14,8 +13,9 @@ TODO
 * Better home screen
 * Add Platty Logo intro
 * Parallax for clouds or something
-
+* MAIN loop performance for 60 FPS
 
 DONE
 
+* SFX placeholders
 * Track Score
