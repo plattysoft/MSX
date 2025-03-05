@@ -4,68 +4,26 @@ FILE "../gen/flappas.clr.plet5"
 FILE "../gen/flappas_0_0.plet5"
 FILE "../gen/flappas_1_0.plet5"
 ' CLRSCR
-'FILE "../res/sfx.akx"
-'FILE "../res/ilogic_2.akm"
+FILE "../gen/sfx.akx"
+FILE "../gen/flappas.akm"
 
 1 COLOR 15,1,1
 2 SCREEN 2,2,0
 4 DEFINT A-U
 5 ' V- Velocity and Y-position are double
 9 DIM PX(3),PE(3),PY(3,5)
-10 GOSUB 4000 ' Load Sprites
-20 GOSUB 4100 ' Load play screen
-30 GOTO 5000 ' Initial screen
 
-6000 ' Main Game
-6001 CMD WRTSCR 3
-6010 V=0: Y=100:aa=0:ab=1:SC=0
-6092 FOR I=0 TO 3:PE(I)=0:NEXT I
-6093 BS=0:SS=0:T=0
-6094 SPRITE ON:ON SPRITE GOSUB 6500
-6100 ' ********************
-6102 ' *    GAME LOOP     *
-6104 ' ********************
-6105 TIME=0
-6110 PUT SPRITE 0,(50,Y),11,BS\4
-6111 I=0:GOSUB 1600:I=1:GOSUB 1600:I=2:GOSUB 1600'Draw the pipes
-6120 S=STRIG(0): IF S=0 THEN SS=0 ELSE IF SS=0 THEN V=-3:SS=1
-6140 Y=Y+V
-6150 V=V+.15
-6160 BS=BS+1:IF BS=16 THEN BS=0' Bird sprite update
-6180 GOSUB 1800 ' Remap bricks,4
-6200 ' PIPE MOVEMENT
-6210 FOR I=0 TO 2
-6211   IF PE(I) THEN GOSUB 1500 ' Move Pipe
-6241 NEXT I
-6350 T=T+1:IF T=45 THEN T=0:GOSUB 1700 'Spawn new pipe each 45 frames
-6380 IF Y>=152 THEN GOTO 6500
-6390 IF Y<=7 THEN GOTO 6500
-6399 IF TIME<1 GOTO 6399
-6400 GOTO 6100
+20 CMD PLYLOAD 6, 5
+21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
 
-6500 ' ********************
-6502 ' *    GAME OVER     *
-6504 ' ********************
-6505 SPRITE OFF
-6506 V=-4:T=0
-6510 PUTSPRITE 0,(50,Y),11,4
-6530 Y=Y+V+.3*T*4
-6540 T=T+1
-6549 IF TIME>2 THEN TIME=0 ELSE GOTO 6549
-6550 IF Y>=175 THEN GOTO 6600
-6560 GOTO 6510
-6600 ' ********************
-6602 ' *  START NEW GAME  *
-6604 ' ********************
-6605 'PRESS SPACE TO START
-6650 ' Clean all sprites
-6641 FOR I=0 TO 31: PUT SPRITE I,,,9:NEXT
-6690 GOTO 5000
+30 GOSUB 4000 ' Load Sprites
+40 GOSUB 4100 ' Load play screen
+50 GOTO 5000 ' Initial screen
 
 1500 ' Move pipe
 1510 PX(I)=PX(I)-2
 1520 IF PX(I)<=-15 THEN PE(I)=0
-1530 IF PX(I)=49 THEN SC=SC+1:GOSUB 8000:TX=8:TY=23:GOSUB 10900
+1530 IF PX(I)=49 THEN SC=SC+1:CMD PLYSOUND 3:GOSUB 8000:TX=8:TY=23:GOSUB 10900
 1599 RETURN
 
 1600 ' Draw Pipe (5-8)-7 [hole] 6-(5-8)
@@ -123,12 +81,60 @@ FILE "../gen/flappas_1_0.plet5"
 5001 'CMD WRTSCR 45
 5011 'CMD PLYMUTE:CMD PLYSONG 1 ' Main screen sound
 5020 CMD WRTSCR 4 ' Main screen
-5021 'CMD PLYPLAY ' Start the music on the main start screen
+5021 CMD PLYPLAY ' Start the music on the main start screen
 5030 IF STRIG(0) OR STRIG(1) THEN 5030 'debounce string press
 5090 IF STRIG(0) THEN SS=0:GOTO 6000
 5091 IF STRIG(1) THEN SS=1:GOTO 6000
 5099 GOTO 5090
 
+6000 ' Main Game
+6001 CMD WRTSCR 3
+6002 'CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song
+6010 V=0: Y=100:aa=0:ab=1:SC=0
+6092 FOR I=0 TO 3:PE(I)=0:NEXT I
+6093 BS=0:SS=0:T=0
+6094 SPRITE ON:ON SPRITE GOSUB 6500
+6100 ' ********************
+6102 ' *    GAME LOOP     *
+6104 ' ********************
+6105 TIME=0
+6110 PUT SPRITE 0,(50,Y),11,BS\4
+6111 I=0:GOSUB 1600:I=1:GOSUB 1600:I=2:GOSUB 1600'Draw the pipes
+6120 S=STRIG(0): IF S=0 THEN SS=0 ELSE IF SS=0 THEN V=-3:SS=1:CMD PLYSOUND 8
+6140 Y=Y+V
+6150 V=V+.15
+6160 BS=BS+1:IF BS=16 THEN BS=0' Bird sprite update
+6180 GOSUB 1800 ' Remap bricks,4
+6200 ' PIPE MOVEMENT
+6210 FOR I=0 TO 2
+6211   IF PE(I) THEN GOSUB 1500 ' Move Pipe
+6241 NEXT I
+6350 T=T+1:IF T=45 THEN T=0:GOSUB 1700 'Spawn new pipe each 45 frames
+6380 IF Y>=152 THEN GOTO 6500
+6390 IF Y<=7 THEN GOTO 6500
+6399 IF TIME<1 GOTO 6399
+6400 GOTO 6100
+
+6500 ' ********************
+6502 ' *    GAME OVER     *
+6504 ' ********************
+6505 'CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
+6506 SPRITE OFF
+6507 V=-4:T=0
+6508 CMD PLYSOUND 4
+6510 PUTSPRITE 0,(50,Y),11,4
+6530 Y=Y+V+.3*T*4
+6540 T=T+1
+6549 IF TIME>2 THEN TIME=0 ELSE GOTO 6549
+6550 IF Y>=175 THEN GOTO 6600
+6560 GOTO 6510
+6600 ' ********************
+6602 ' *  START NEW GAME  *
+6604 ' ********************
+6605 'PRESS SPACE TO START
+6650 ' Clean all sprites
+6641 FOR I=0 TO 31: PUT SPRITE I,,,9:NEXT
+6690 GOTO 5000
 
 8000 ' Prepare score T$
 8075 T$=STR$(SC):T$=RIGHT$(T$,LEN(T$)-1)
