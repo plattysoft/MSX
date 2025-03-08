@@ -4,7 +4,8 @@ Notes:
 
 IN PROGRESS
 
-* Animate bricks again
+* Animate bricks again - tricky with performance
+* Playing jump should not override pipe scoring (need to actually debounce manually)
 
 
 * SFX
@@ -18,11 +19,10 @@ TODO
 * Music
 * Better dithering
 * Better background
-* Better home screen
+* Better home screen - or integrate into the game
 * Add Platty Logo intro
 * Use CLS for transitions
 * Parallax for clouds or something
-* MAIN loop performance for 60 FPS
 
 DONE
 
