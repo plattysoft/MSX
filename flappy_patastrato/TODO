@@ -1,17 +1,27 @@
+Notes:
+- Original flappy does not have parallax
+
+
 IN PROGRESS
 
 * Animate bricks again
-* SFX
 
+
+* SFX
+* Wrong dead sometimes (probably sprite sync)
 
 TODO
 
+* Proper death animation
+* Playing jump should not override pipe scoring
 * Game over dialog
+* Restaring the seed based on timer when we start
 * Music
 * Better dithering
 * Better background
 * Better home screen
 * Add Platty Logo intro
+* Use CLS for transitions
 * Parallax for clouds or something
 * MAIN loop performance for 60 FPS
 
