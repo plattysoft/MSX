@@ -12,10 +12,9 @@ IN PROGRESS
 
 TODO
 
+* Game over dialog
 * Proper death animation
 * Playing jump should not override pipe scoring
-* Game over dialog
-* Restaring the seed based on timer when we start
 * Music
 * Better dithering
 * Better background
@@ -29,3 +28,5 @@ DONE
 
 * SFX placeholders
 * Track Score
+* Optimize for 60FPS
+* Restaring the seed based on timer when we start
