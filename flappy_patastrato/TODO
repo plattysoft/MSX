@@ -5,24 +5,25 @@ Notes:
 IN PROGRESS
 
 * Animate bricks again - tricky with performance
-* Playing jump should not override pipe scoring (need to actually debounce manually)
+* Proper death animation (finish where it should, keep sprite in place
 
 
 * SFX
-* Wrong dead sometimes (probably sprite sync)
+* Wrong dead sometimes (probably sprite sync) - seems to be gone
 
 TODO
 
-* Game over dialog (content)
-* Proper death animation
-* Playing jump should not override pipe scoring
+* Unbound sprite subroutine, mark death and return, handle death on main loop (to prevent stack overflow)
+* Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
 * Music
 * Better dithering
 * Better background
 * Better home screen - or integrate into the game
 * Add Platty Logo intro
 * Use CLS for transitions
-* Parallax for clouds or something
+* Parallax for clouds or something - Probably not, the original one doesn't have it
+
+* Medals: a bronze medal if they reach ten or more points, a silver medal from twenty points, a gold medal from thirty points, and a platinum medal from forty points.
 
 DONE
 
@@ -31,3 +32,4 @@ DONE
 * Optimize for 60FPS
 * Restaring the seed based on timer when we start
 * Game over dialog (structure)
+* Playing jump should not override pipe scoring
