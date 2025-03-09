@@ -4,22 +4,22 @@ Notes:
 
 IN PROGRESS
 
+* Unstack sprite subroutine collision call, mark death and return, handle death on main loop (to prevent stack overflow)
+* Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
 * Animate bricks again - tricky with performance
-* Proper death animation (finish where it should, keep sprite in place
-
 
 * SFX
 * Wrong dead sometimes (probably sprite sync) - seems to be gone
 
 TODO
 
-* Unbound sprite subroutine, mark death and return, handle death on main loop (to prevent stack overflow)
-* Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
+* Flip patastrato when falling after dying
+* Select keyboard or Joystick on the first press of fire (SS) Selected Stick
 * Music
 * Better dithering
 * Better background
 * Better home screen - or integrate into the game
-* Add Platty Logo intro
+* Add Platty Logo intro?
 * Use CLS for transitions
 * Parallax for clouds or something - Probably not, the original one doesn't have it
 
@@ -33,3 +33,4 @@ DONE
 * Restaring the seed based on timer when we start
 * Game over dialog (structure)
 * Playing jump should not override pipe scoring
+* Proper death animation (finish where it should, keep sprite in place)
