@@ -174,7 +174,7 @@ FILE "../gen/flappas.akm"
 6399 IF TIME<1 GOTO 6399
 6400 GOTO 6100
 
-6450 SC=SC+1:CMD PLYSOUND 3:FX=9:GOSUB 8000:TX=8:TY=23:GOSUB 10900
+6450 SC=SC+1:CMD PLYSOUND 3:FX=9:GOSUB 8000:TX=8:TY=23:GOSUB 10900'FX means a SFX is playing with priority and should not play another one (jump)
 6451 RETURN
 
 6500 ' ********************
