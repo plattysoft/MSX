@@ -7,9 +7,8 @@ IN PROGRESS
 * Unstack sprite subroutine collision call, mark death and return, handle death on main loop (to prevent stack overflow)
 * Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
 * Animate bricks again - tricky with performance
-
+* Spawn pipe logic over several frames to avoid framedrop
 * SFX
-* Wrong dead sometimes (probably sprite sync) - seems to be gone
 
 TODO
 
@@ -34,3 +33,4 @@ DONE
 * Game over dialog (structure)
 * Playing jump should not override pipe scoring
 * Proper death animation (finish where it should, keep sprite in place)
+* Wrong dead sometimes (probably sprite sync) - seems to be gone
