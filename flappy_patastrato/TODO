@@ -8,7 +8,7 @@ IN PROGRESS
 * Animate bricks again - tricky with performance
 * Better background
 * Wave before starting (slow up and down in a sinusoidal)
-* Use CLS for transitions
+* Proper cleaning of sprites on transition to initial screen
 
 TODO
 
@@ -34,6 +34,7 @@ DONE
 * Select keyboard or Joystick on the first press of fire (SS) Selected Stick
 * Maximise contrast of pipes and bird with background
 * Drawing the updated score drops a frame, needs optimizing (only update the main digits on 10 and 100)
+* Use CLS for transitions
 
 
 NOT DOING:

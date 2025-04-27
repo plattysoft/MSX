@@ -176,12 +176,10 @@ PE
 
 6630' Dismiss dialog
 6631 CMD PLYSOUND 4
-6632 ' Reload the entire screen
-6633 CMD WRTSCR 4
-6638 IF STRIG(SS) THEN 6638
 
-6650 ' Clean all sprites
+6640 ' Clean all sprites
 6641 FOR I=0 TO 31: PUT SPRITE I,,,9:NEXT
+6648 IF STRIG(SS) THEN 6648
 6690 GOTO 5000
 
 7000 ' Optimized in-game score print
