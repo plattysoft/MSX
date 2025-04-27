@@ -1,29 +1,22 @@
-Notes:
-- Original flappy does not have parallax
-
-
 IN PROGRESS
 
-* Drawing the updated score drops a frame, needs optimizing (only update the main digits on 10 and 100)
 * Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
     Bronze Medal – Awarded for winning between 10 and 19 points.
     Silver Medal – Awarded for winning between 20 and 29 points.
     Gold Medal – Awarded for winning between 30 and 39 points.
     Platinum Medal – Awarded for winning 40 points and up.
 * Animate bricks again - tricky with performance
-* SFX
 * Better background
+* Wave before starting (slow up and down in a sinusoidal)
+* Use CLS for transitions
 
 TODO
 
+* SFX
 * Flip patastrato when falling after dying
 * Music
 * Better home screen - or integrate into the game
 * Add Platty Logo intro?
-* Use CLS for transitions
-
-NOT DOING:
-* Parallax for clouds or something - Probably not, the original one doesn't have it
 
 
 DONE
@@ -40,7 +33,15 @@ DONE
 * Spawn pipe logic over several frames to avoid framedrop
 * Select keyboard or Joystick on the first press of fire (SS) Selected Stick
 * Maximise contrast of pipes and bird with background
+* Drawing the updated score drops a frame, needs optimizing (only update the main digits on 10 and 100)
 
+
+NOT DOING:
+
+* Parallax for clouds or something - Probably not, the original one doesn't have it
+
+
+INFO:
 
 Maximising color contrast:
 * green 3 for the pipes (maximizes contrast with blue)

@@ -3,7 +3,7 @@ FILE "../gen/flappas.chr.plet5"
 FILE "../gen/flappas.clr.plet5"
 FILE "../gen/flappas_0_0.plet5"
 FILE "../gen/flappas_1_0.plet5"
-' CLRSCR
+FILE "../gen/cls.plet5"
 FILE "../gen/sfx.akx"
 FILE "../gen/flappas.akm"
 
@@ -13,11 +13,10 @@ FILE "../gen/flappas.akm"
 5 ' V- Velocity and Y-position are double
 9 DIM PX(3),PE(3),PY(3,5),BT(32)
 
-20 CMD PLYLOAD 6, 5
+20 CMD PLYLOAD 7, 6
 21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
 
 30 GOSUB 4000 ' Initial load
-40 'GOSUB 4100 ' Load play screen
 50 GOTO 5000 ' Initial screen
 
 1500 ' Move pipe
@@ -93,14 +92,12 @@ FILE "../gen/flappas.akm"
 1809 RETURN
 
 4000 ' Load sprites from binary file
-4001 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
-4002 CMD WRTCHR 1:CMD WRTCLR 2
+4001 CMD WRTSCR 4 ' CLS
+4002 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
+4003 CMD WRTCHR 1:CMD WRTCLR 2
 4010 ' Load brick scrolling in an array
 4020 FOR I=0 TO 31: BT(I)=VPEEK(264+I):NEXT
 4099 RETURN
-
-4100 CMD WRTCHR 1:CMD WRTCLR 2
-4150 RETURN
 
 5000 ' Start screen
 5001 'CMD WRTSCR 45
