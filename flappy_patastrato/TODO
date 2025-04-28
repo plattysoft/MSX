@@ -1,21 +1,20 @@
 IN PROGRESS
 
-* Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
-    Bronze Medal – Awarded for winning between 10 and 19 points.
-    Silver Medal – Awarded for winning between 20 and 29 points.
-    Gold Medal – Awarded for winning between 30 and 39 points.
-    Platinum Medal – Awarded for winning 40 points and up.
+* Wave before starting (slow up and down in a sinusoidal)
+* Integrate initial scren into the game
+
+* Sprite overlapped on the medal
+* Empty medal
 * Animate bricks again - tricky with performance
 * Better background
-* Wave before starting (slow up and down in a sinusoidal)
-* Proper cleaning of sprites on transition to initial screen
 
 TODO
 
 * SFX
 * Flip patastrato when falling after dying
 * Music
-* Better home screen - or integrate into the game
+* Add score counting up on game over
+* Add Best score (of this run)
 * Add Platty Logo intro?
 
 
@@ -35,7 +34,12 @@ DONE
 * Maximise contrast of pipes and bird with background
 * Drawing the updated score drops a frame, needs optimizing (only update the main digits on 10 and 100)
 * Use CLS for transitions
-
+* Proper cleaning of sprites on transition to initial screen
+* Game over dialog (content) GAME OVER // SCORE - BEST (or new BEST) // Medal?
+    Bronze Medal – Awarded for winning between 10 and 19 points.
+    Silver Medal – Awarded for winning between 20 and 29 points.
+    Gold Medal – Awarded for winning between 30 and 39 points.
+    Platinum Medal – Awarded for winning 40 points and up.
 
 NOT DOING:
 
