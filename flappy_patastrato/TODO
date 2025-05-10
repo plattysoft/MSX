@@ -1,10 +1,10 @@
 IN PROGRESS
 
-* Wave before starting (slow up and down in a sinusoidal)
 * Integrate initial scren into the game
 
 * Sprite overlapped on the medal
 * Empty medal
+
 * Animate bricks again - tricky with performance
 * Better background
 
@@ -13,9 +13,12 @@ TODO
 * SFX
 * Flip patastrato when falling after dying
 * Music
+
+MAYBE
+
 * Add score counting up on game over
 * Add Best score (of this run)
-* Add Platty Logo intro?
+* Add Platty Logo intro
 
 
 DONE
@@ -40,6 +43,7 @@ DONE
     Silver Medal – Awarded for winning between 20 and 29 points.
     Gold Medal – Awarded for winning between 30 and 39 points.
     Platinum Medal – Awarded for winning 40 points and up.
+* Wave before starting (slow up and down in a sinusoidal)
 
 NOT DOING:
 
