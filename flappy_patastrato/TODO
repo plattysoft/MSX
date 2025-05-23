@@ -1,8 +1,5 @@
 IN PROGRESS
 
-* Sprite overlapped on the medal
-* Empty medal
-
 * Animate bricks again - tricky with performance
 * Better background
 * Realign game over messages
@@ -22,6 +19,8 @@ MAYBE
 
 DONE
 
+* Sprite overlapped on the medal
+* Empty medal
 * Integrate initial scren into the game
 * SFX placeholders
 * Track Score
