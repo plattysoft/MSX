@@ -1,12 +1,11 @@
 IN PROGRESS
 
-* Integrate initial scren into the game
-
 * Sprite overlapped on the medal
 * Empty medal
 
 * Animate bricks again - tricky with performance
 * Better background
+* Realign game over messages
 
 TODO
 
@@ -23,6 +22,7 @@ MAYBE
 
 DONE
 
+* Integrate initial scren into the game
 * SFX placeholders
 * Track Score
 * Optimize for 60FPS

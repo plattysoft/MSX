@@ -3,7 +3,7 @@ SCREEN
 flappas.scr
 TILES
 flappas.til
-ALLBANKS
+ONEBANK
 PALETTE
 flappas.pal
 END
