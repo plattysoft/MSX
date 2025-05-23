@@ -2,13 +2,14 @@ IN PROGRESS
 
 * Animate bricks again - tricky with performance
 * Better background
-* Realign game over messages
 
 TODO
 
 * SFX
 * Flip patastrato when falling after dying
 * Music
+* Transition between dialogs
+* Revise hiding sprites behind menu
 
 MAYBE
 
@@ -19,6 +20,7 @@ MAYBE
 
 DONE
 
+* Realign game over messages
 * Sprite overlapped on the medal
 * Empty medal
 * Integrate initial scren into the game
