@@ -1,25 +1,26 @@
 IN PROGRESS
 
-* Animate bricks again - tricky with performance
-* Better background
+* Spread pipe spawn for performance
 
 TODO
 
 * SFX
-* Flip patastrato when falling after dying
 * Music
 * Transition between dialogs
 * Revise hiding sprites behind menu
+* Add Platty Logo intro
 
 MAYBE
 
+* Flip patastrato when falling after dying
 * Add score counting up on game over
 * Add Best score (of this run)
-* Add Platty Logo intro
 
 
 DONE
 
+* Animate bricks again - tricky with performance
+* Better background
 * Realign game over messages
 * Sprite overlapped on the medal
 * Empty medal
