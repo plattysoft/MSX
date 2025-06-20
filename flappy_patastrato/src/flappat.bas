@@ -6,6 +6,8 @@ FILE "../gen/flappas_1_0.plet5"
 FILE "../gen/cls.plet5"
 FILE "../gen/sfx.akx"
 FILE "../gen/flappas.akm"
+FILE "../gen/splash.chr.plet5" '8
+FILE "../gen/splash.clr.plet5"
 
 1 COLOR 15,1,1
 2 SCREEN 2,2,0
@@ -16,7 +18,8 @@ FILE "../gen/flappas.akm"
 20 CMD PLYLOAD 7, 6
 21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
 
-30 GOSUB 4000 ' Initial load
+30 GOSUB 2000 ' Platty intro
+35 GOSUB 4000 ' Initial load
 50 GOTO 5000 ' Initial screen
 
 1600 ' Draw Pipe 1
@@ -137,6 +140,60 @@ FILE "../gen/flappas.akm"
 1789 NEXT I
 1799 RETURN
 
+
+2000 ' Platty Soft Intro
+2001 CMD WRTSCR 5 'CLS
+2002 RI=8:GOSUB 5100'Load splash and platty tiles
+
+2100 'Prepare the initial position
+2110 FOR I=0 to 3
+2120  FOR K=0 TO 3
+2121   VPOKE &H1906+I+K*32,152+I*32+K
+2122  NEXT K
+2123 NEXT I
+
+2199 CMD PLYSOUND 18
+2200 ' Scroll up 32 times (push everything up and add a line at the bottom on the 4 tiles)
+2210 FOR I=&H4E0 TO &H4FF
+2211 TIME=0
+2212  FOR J=&HCC0 TO &HCDF
+2213   FOR K=0 TO &H300 STEP &H100
+2221    VPOKE J+K, VPEEK(J+K+1)
+2223    VPOKE &H2000+J+K, VPEEK(&H2001+J+K)
+2247   NEXT K
+2248  NEXT J
+2250  FOR K=0 TO &H300 STEP &H100
+2252   VPOKE &HCDF+K, VPEEK(I+K)
+2254   VPOKE &H2CDF+K, VPEEK(&H2800+I+K)
+2296  NEXT K
+2297 IF STRIG(0) OR STRIG(1) THEN 2500
+2298 IF TIME<1 GOTO 2297
+2299 NEXT I
+
+2300 CMD PLYSOUND 19
+2301 FOR I=0 TO 8
+2309  TIME = 0
+2310  FOR K=0 TO I
+2320   VPOKE &H192A+K,172-I+K:VPOKE &H194A+K,204-I+K::VPOKE &H196A+K,236-I+K
+2330  NEXT K
+2331  IF TIME<2 GOTO 2331
+2340 NEXT I
+2400 FOR I=0 TO 5
+2409  TIME = 0
+2410  FOR K=0 TO I
+2420   VPOKE &H1933+K,178-I+K:VPOKE &H1953+K,210-I+K::VPOKE &H1973+K,242-I+K
+2430  NEXT K
+2431  IF STRIG(0) OR STRIG(1) THEN 2500
+2432  IF TIME<2 GOTO 2431
+2440 NEXT I
+
+2450 TIME=0
+2451 IF STRIG(0) OR STRIG(1) THEN 2500
+2460 IF TIME<150 GOTO 2451
+
+2500 ' END OF INTRO
+2501 RETURN
+
 1800 'fun remap bricks
 1801 ON BI GOTO 1810,1820,1830,1840
 
@@ -193,6 +250,12 @@ FILE "../gen/flappas.akm"
 5090 IF STRIG(0) THEN SS=0:GOTO 6000 ' SS: Stick Selected
 5091 IF STRIG(1) THEN SS=1:GOTO 6000
 5099 GOTO 5090
+
+5100 ' Write RI (Resource ID) to pattern table (3 times) and RI+1 to color table (3 times)
+5101 CMD WRTCHR RI:CMD WRTCLR RI+1 ' Load tileset (patterns and colors) Got to load them 3 times
+5102 CMD WRTVRAM RI, &H800:CMD WRTVRAM RI+1, &H2800
+5103 CMD WRTVRAM RI, &H1000:CMD WRTVRAM RI+1, &H3000
+5109 RETURN
 
 6000 ' Main Game (Intro)
 6001 CMD WRTSCR 3
