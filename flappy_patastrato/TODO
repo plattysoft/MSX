@@ -1,13 +1,13 @@
 IN PROGRESS
 
-* Spread pipe spawn for performance
+* Occasional pipe flases out of place (side effect of VPOKE respawn probably)
 
 TODO
 
 * SFX
 * Music
 * Transition between dialogs
-* Revise hiding sprites behind menu
+* Revise hiding sprites behind menu <- hide them all?
 * Add Platty Logo intro
 
 MAYBE
