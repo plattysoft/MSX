@@ -1,24 +1,26 @@
 IN PROGRESS
 
-* Occasional pipe flases out of place (side effect of VPOKE respawn probably)
+* Revise hiding sprites behind menu <- Pull the dialog up by 1 so the vines got adjusted properly
+
 
 TODO
 
-* SFX
-* Music
 * Transition between dialogs
-* Revise hiding sprites behind menu <- hide them all?
-* Add Platty Logo intro
 
 MAYBE
 
 * Flip patastrato when falling after dying
 * Add score counting up on game over
 * Add Best score (of this run)
+* Refine SFX
+* Refine music
 
 
 DONE
 
+* Music
+* Add Platty Logo intro
+* Occasional pipe flases out of place (side effect of VPOKE respawn probably) Need to do sprite redraw at the beginning of the cycle
 * Animate bricks again - tricky with performance
 * Better background
 * Realign game over messages
@@ -53,6 +55,8 @@ NOT DOING:
 
 
 INFO:
+
+Using VPOKE as a way to only modify the X attribute of the sprites and stay on 60 FPS
 
 Maximising color contrast:
 * green 3 for the pipes (maximizes contrast with blue)

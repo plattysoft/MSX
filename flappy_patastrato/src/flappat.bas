@@ -16,8 +16,7 @@ FILE "../gen/splash.clr.plet5"
 9 DIM PY(3,5)
 
 20 CMD PLYLOAD 7, 6
-21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent, but we want SFX
-
+21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent but we want sound effects for the intro
 30 GOSUB 2000 ' Platty intro
 35 GOSUB 4000 ' Initial load
 50 GOTO 5000 ' Initial screen
@@ -106,7 +105,7 @@ FILE "../gen/splash.clr.plet5"
 1745 PUT SPRITE 18,(255,PY(2,5))
 1746 RETURN
 
-1750 ' Spawn Pipe (we could skip the array and put it directly on each set using ON CP GOTO)
+1750 ' Spawn Pipe
 1751 PH=RND(1)*5
 1760 FOR I=0 TO PH
 1761  PY(CP,I)=16*I+7
@@ -152,7 +151,7 @@ FILE "../gen/splash.clr.plet5"
 2122  NEXT K
 2123 NEXT I
 
-2199 CMD PLYSOUND 18
+2199 CMD PLYSOUND 18,2
 2200 ' Scroll up 32 times (push everything up and add a line at the bottom on the 4 tiles)
 2210 FOR I=&H4E0 TO &H4FF
 2211 TIME=0
@@ -170,7 +169,7 @@ FILE "../gen/splash.clr.plet5"
 2298 IF TIME<1 GOTO 2297
 2299 NEXT I
 
-2300 CMD PLYSOUND 19
+2300 CMD PLYSOUND 19,2
 2301 FOR I=0 TO 8
 2309  TIME = 0
 2310  FOR K=0 TO I
@@ -230,15 +229,15 @@ FILE "../gen/splash.clr.plet5"
 1846 BI=1:RETURN
 
 4000 ' Load sprites from binary file
-4001 CMD WRTSCR 4 ' CLS
+4001 CMD WRTSCR 5 ' CLS
 4002 CMD WRTVRAM 0, &H3800 ' Load sprites WRTSPRPAT
 4003 CMD WRTCHR 1:CMD WRTCLR 2
 4013 BI=1
+4020 CMD PLYMUTE:CMD PLYSONG 1 ' Main screen sound
 4099 RETURN
 
 5000 ' Start screen
 5001 'CMD WRTSCR 45
-5011 'CMD PLYMUTE:CMD PLYSONG 1 ' Main screen sound
 5020 CMD WRTSCR 3 ' Main screen
 5021 CMD PLYPLAY ' Start the music on the main start screen
 5025 ' Show a dialog with the text
@@ -259,7 +258,6 @@ FILE "../gen/splash.clr.plet5"
 
 6000 ' Main Game (Intro)
 6001 CMD WRTSCR 3
-6002 'CMD PLYMUTE:CMD PLYSONG 0:CMD PLYPLAY' Actual main song
 6003 A=RND(-TIME):YA=0.1
 6010 V=0: Y=100:aa=0:ab=1:SC=0:GO=0' SC: SCore, GO: Game Over
 6020 E0=0:E1=0:E2=0' E: Pipe Enabled (0,1, and 2)
@@ -273,15 +271,16 @@ FILE "../gen/splash.clr.plet5"
 6054 IF Y<100 AND YA=-0.1 THEN YA=0.1:VY=-1
 6055 Y=Y+VY:VY=VY+YA
 6060 'GOSUB 1800
-6070 S=STRIG(SS): IF S=0 THEN SB=0 ELSE IF SB=0 THEN V=-3:SB=1:CMD PLYSOUND 8:GOTO 6094
+6070 S=STRIG(SS): IF S=0 THEN SB=0 ELSE IF SB=0 THEN V=-3:SB=1:CMD PLYSOUND 8,2:GOTO 6094
 6090 IF TIME<1 GOTO 6090 ELSE 6040
 6094 SPRITE ON:ON SPRITE GOSUB 6490
+6095 CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY' Play silence for the game
 
 6100 ' BEGIN GAME LOOP
 6105 TIME=0
 6111 GOSUB 1600:GOSUB 1650:GOSUB 1700 'Draw the pipes (unwinded)
 6112 PUT SPRITE 0,(50,Y),11,BS
-6120 S=STRIG(SS): IF S=0 THEN SB=0 ELSE IF SB=0 THEN V=-3:SB=1:IF FX<0 THEN CMD PLYSOUND 8
+6120 S=STRIG(SS): IF S=0 THEN SB=0 ELSE IF SB=0 THEN V=-3:SB=1:IF FX<0 THEN CMD PLYSOUND 8,2
 6140 Y=Y+V
 6150 V=V+.15
 6160 ST=ST+1:IF ST=4 THEN ST=0:BS=BS+1:IF BS=4 THEN BS=0' Bird sprite update
@@ -298,17 +297,17 @@ FILE "../gen/splash.clr.plet5"
 6399 IF TIME<1 GOTO 6399
 6400 GOTO 6100 ' END GAME LOOP
 
-6450 SC=SC+1:CMD PLYSOUND 3:FX=9:GOSUB 7000'FX means a SFX is playing with priority and should not play another one (jump)
+6450 SC=SC+1:CMD PLYSOUND 3,2:FX=9:GOSUB 7000'FX means a SFX is playing with priority and should not play another one (jump)
 6451 RETURN
 
 6490 SPRITE OFF
 6491 GO=1:RETURN
 
 6500 ' GAME OVER
-6505 'CMD PLYMUTE:CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent
+6505 CMD PLYMUTE:CMD PLYSONG 1:CMD PLYPLAY ' Back to main song
 6506 SPRITE OFF
 6507 V=-3
-6508 CMD PLYSOUND 4
+6508 CMD PLYSOUND 4,2
 6510 PUT SPRITE 0,(50,Y),11,4
 6530 Y=Y+V:IF Y<8 THEN Y=8:V=0
 6540 V=V+.3
@@ -334,7 +333,7 @@ FILE "../gen/splash.clr.plet5"
 6629 IF TIME<30 OR NOT STRIG(SS) THEN 6629
 
 6630' Dismiss dialog
-6631 CMD PLYSOUND 4
+6631 CMD PLYSOUND 4,2
 
 6640 ' Clean all sprites
 6641 FOR I=0 TO 31: PUT SPRITE I,,,9:NEXT
@@ -403,7 +402,7 @@ FILE "../gen/splash.clr.plet5"
 10351   VPOKE KR+18, 130
 10360 NEXT I
 10370 KS=&H19C6:VPOKE KS,160:FOR J=1 to 17:VPOKE KS+J,161:NEXT J:VPOKE KS+18, 162
-10371 CMD PLYSOUND 3
+10371 CMD PLYSOUND 3,2
 10390 RETURN
 
 10900 'fun Write text T$ on Screen at position TX, TY (in row/column)
