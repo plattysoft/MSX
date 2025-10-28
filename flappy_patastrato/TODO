@@ -1,15 +1,13 @@
 IN PROGRESS
 
-* Revise hiding sprites behind menu <- Pull the dialog up by 1 so the vines got adjusted properly
-
+* Transition between dialogs (gmae over to new game)
 
 TODO
 
-* Transition between dialogs
+* Flip patastrato when falling after dying
 
 MAYBE
 
-* Flip patastrato when falling after dying
 * Add score counting up on game over
 * Add Best score (of this run)
 * Refine SFX
@@ -18,6 +16,7 @@ MAYBE
 
 DONE
 
+* Revise hiding sprites behind menu <- Pull the dialog up by 1 so the vines got adjusted properly
 * Music
 * Add Platty Logo intro
 * Occasional pipe flases out of place (side effect of VPOKE respawn probably) Need to do sprite redraw at the beginning of the cycle
