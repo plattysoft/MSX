@@ -13,7 +13,7 @@ FILE "../gen/splash.clr.plet5"
 2 SCREEN 2,2,0
 4 DEFINT A-U
 5 ' V- Velocity and Y-position are double
-9 DIM PY(3,5)
+9 DIM PY(3,5),PX(3)
 
 20 CMD PLYLOAD 7, 6
 21 CMD PLYSONG 2:CMD PLYPLAY ' Song 2 is silent but we want sound effects for the intro
@@ -382,18 +382,19 @@ FILE "../gen/splash.clr.plet5"
 8099 RETURN
 
 10300 ' fun Display a pop-up
-10301 KS=&H18C6
+10301 KS=&H18A6
+10302 PX(0)=X0:PX(1)=X1:PX(2)=X2
 10309 ' Hide only the sprites that are behind the popup
-10310 ' Pipes (TODO)
+10310 ' Pipes
 10311 FOR I=0 TO 2
-10312   'IF PX(I)<24 OR PX(I)>216 THEN 10319
+10312   IF PX(I)<32 OR PX(I)>198 THEN 10319' first column is 32+16=6 tiles, 7 tiles right 255-7*8
 10316   FOR J=0 TO 6
 10317      IF PY(I,J)>23 AND PY(I,J)<112 THEN PUT SPRITE I*6+J+1,,0,0
 10318   NEXT J
 10319 NEXT I
 
 10320 VPOKE KS,96:FOR J=1 to 17:VPOKE KS+J,97:NEXT J:VPOKE KS+18, 98
-10321 FOR I=1 TO 8 'Rows
+10321 FOR I=1 TO 9 'Rows
 10322   KR=KS+I*32
 10323   VPOKE KR, 128
 10330   FOR J=1 to 17 'Columns
