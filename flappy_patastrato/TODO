@@ -1,10 +1,9 @@
 IN PROGRESS
 
-* Transition between dialogs (gmae over to new game)
+* Flip patastrato when falling after dying
 
 TODO
 
-* Flip patastrato when falling after dying
 
 MAYBE
 
@@ -16,6 +15,7 @@ MAYBE
 
 DONE
 
+* Transition between dialogs (gmae over to new game)
 * Revise hiding sprites behind menu <- Pull the dialog up by 1 so the vines got adjusted properly
 * Music
 * Add Platty Logo intro
